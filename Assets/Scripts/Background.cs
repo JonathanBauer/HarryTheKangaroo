@@ -1,22 +1,24 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Background : MonoBehaviour {
 		
-	public Transform farBackGroundObject;
-	public Transform midBackGroundObject;
+
 	
 	private Vector3 gimbalSquared = Vector3.up;
-	private Vector3 farBackPos = Vector3.up;
-	private Vector3 midBackPos = Vector3.up;
+
 	
-	public Vector2 dampenRegionMin = new Vector2(-12,-12);
-	public Vector2 dampenRegionMax = new Vector2(12,12);
+	private Vector3 elementPos = Vector3.up;
 	
 	public float dampenFactor = 1f;
 	
-	public float farBackGroundMovementRate = 0.1f;
-	public float midBackGroundMovementRate = 0.2f;
+	
+	//public List<GameObject> pictureObjects;
+	
+	public List<GameObject> pictureElement = new List<GameObject>();
+	public List<float> pictureRate = new List<float>();
+
 	
 	public GimbalControl gimbal;
 	
@@ -26,32 +28,28 @@ public class Background : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+		float v = pictureElement.Count;
+		
 		gimbalSquared.x = gimbal.rotX * Mathf.Abs(gimbal.rotX);
-		farBackPos.x = gimbalSquared.x * farBackGroundMovementRate * dampenFactor;
-		midBackPos.x = gimbalSquared.x * midBackGroundMovementRate * dampenFactor;
-	
-		
 		gimbalSquared.y = gimbal.rotY * Mathf.Abs(gimbal.rotY);
-		farBackPos.y = - gimbalSquared.y * farBackGroundMovementRate * dampenFactor;
-		midBackPos.y = - gimbalSquared.y * midBackGroundMovementRate * dampenFactor;
-
-
-				
 		
-		farBackGroundObject.transform.localPosition = farBackPos;
+		for (int i = 0; i < v; i ++)
+		{
+			elementPos.x = gimbalSquared.x * pictureRate[i]* dampenFactor;
+			elementPos.y = - gimbalSquared.y * pictureRate[i]* dampenFactor;
+			pictureElement[i].transform.localPosition = elementPos;
+			
+			
+		}
 		
-		
-		
-		
-		midBackGroundObject.transform.localPosition = midBackPos;
-
 	
 	}
+	
 	void OnGUI () {
 		
-		GUILayout.Label("RotX: " + gimbal.rotX);
-		GUILayout.Label("RotY: " + gimbal.rotY);
-		GUILayout.Label("RotY: " + gimbal.rotY);
+		//GUILayout.Label("RotX: " + pictureElement.Count);
+		//GUILayout.Label("RotY: " + i);
+		//GUILayout.Label("RotY: " + gimbal.rotY);
 	}
 	
 }
