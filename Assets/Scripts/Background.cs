@@ -6,6 +6,7 @@ public class Background : MonoBehaviour {
 	public Transform farBackGroundObject;
 	public Transform midBackGroundObject;
 	
+	private Vector3 gimbalSquared = Vector3.up;
 	private Vector3 farBackPos = Vector3.up;
 	private Vector3 midBackPos = Vector3.up;
 	
@@ -25,23 +26,16 @@ public class Background : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		if (gimbal.rotX > dampenRegionMin.x && gimbal.rotX < dampenRegionMax.x) {
-			farBackPos.x = gimbal.rotX * farBackGroundMovementRate * dampenFactor;
-			midBackPos.x = gimbal.rotX * midBackGroundMovementRate * dampenFactor;
-		}
-		else {
-			farBackPos.x = gimbal.rotX * farBackGroundMovementRate;
-			midBackPos.x = gimbal.rotX * midBackGroundMovementRate;
-		}
+		gimbalSquared.x = gimbal.rotX * Mathf.Abs(gimbal.rotX);
+		farBackPos.x = gimbalSquared.x * farBackGroundMovementRate * dampenFactor;
+		midBackPos.x = gimbalSquared.x * midBackGroundMovementRate * dampenFactor;
+	
 		
-		if (gimbal.rotY > dampenRegionMin.y && gimbal.rotY < dampenRegionMax.y) {
-			farBackPos.y = - gimbal.rotY * farBackGroundMovementRate * dampenFactor;
-			midBackPos.y = - gimbal.rotY * midBackGroundMovementRate * dampenFactor;
-		}
-		else {
-			farBackPos.y = - gimbal.rotY * farBackGroundMovementRate;
-			midBackPos.y = - gimbal.rotY * midBackGroundMovementRate;
-		}
+		gimbalSquared.y = gimbal.rotY * Mathf.Abs(gimbal.rotY);
+		farBackPos.y = - gimbalSquared.y * farBackGroundMovementRate * dampenFactor;
+		midBackPos.y = - gimbalSquared.y * midBackGroundMovementRate * dampenFactor;
+
+
 				
 		
 		farBackGroundObject.transform.localPosition = farBackPos;
@@ -56,6 +50,7 @@ public class Background : MonoBehaviour {
 	void OnGUI () {
 		
 		GUILayout.Label("RotX: " + gimbal.rotX);
+		GUILayout.Label("RotY: " + gimbal.rotY);
 		GUILayout.Label("RotY: " + gimbal.rotY);
 	}
 	
