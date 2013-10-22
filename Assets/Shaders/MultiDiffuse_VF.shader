@@ -63,8 +63,8 @@ Shader "Custom/MultiDiffuse_VF"
                 v2f o;
                 o.pos = mul( UNITY_MATRIX_MVP, v.vertex);
                 
-                o.uv = TRANSFORM_TEX (v.texcoord, _MainTex);
-                o.uv2 = TRANSFORM_TEX (v.texcoord1, _MultiTex);
+                o.uv2 = TRANSFORM_TEX (v.texcoord, _MainTex);
+                o.uv = TRANSFORM_TEX (v.texcoord1, _MultiTex);
                   
                 return o;
             }
@@ -72,13 +72,14 @@ Shader "Custom/MultiDiffuse_VF"
             float4 frag(v2f i) : COLOR
             {
 
-                float4 c = tex2D (_MainTex, i.uv);
+                float4 c = tex2D (_MainTex, i.uv2);
                 
 
-                float4 m=tex2D(_MultiTex,i.uv2);
+                float4 m=tex2D(_MultiTex,i.uv);
                 
 
                 c.rgb =c * m;
+                
 
                 
                 
