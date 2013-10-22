@@ -1,6 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Shaders\MultiDiffuse_VF.shader">
+    <Files>
+      <File FileName="Assets\Shaders\MultiDiffuse_VF.shader" Line="66" Column="49" />
+      <File FileName="Assets\Scripts\TextureOffset.cs" Line="27" Column="24" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
