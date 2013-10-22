@@ -6,6 +6,8 @@ Shader "Custom/MultiDiffuse_VF"
 		_MainTex ("Diffuse", 2D) = "white" {}
 
       	_MultiTex("MultiplyTexture", 2D) = "white" {}
+      	
+      	_Cutoff ("Alpha cutoff", Range(0,1)) = 0.5
 
 
     }
@@ -21,10 +23,6 @@ Shader "Custom/MultiDiffuse_VF"
         LOD 200
  
         Pass {
- 
-            Cull Back
-			ZWrite On
-			Alphatest Greater 0.5
 
  
             CGPROGRAM
@@ -37,6 +35,7 @@ Shader "Custom/MultiDiffuse_VF"
  
             sampler2D _MainTex;
             fixed4 _MainTex_ST;
+            fixed _Cutoff;
 
             sampler2D _MultiTex;
             fixed4 _MultiTex_ST;
@@ -79,6 +78,7 @@ Shader "Custom/MultiDiffuse_VF"
                 
 
                 c.rgb =c * m;
+                clip(c.a - _Cutoff);
                 
 
                 
