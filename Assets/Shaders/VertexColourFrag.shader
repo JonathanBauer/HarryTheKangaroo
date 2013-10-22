@@ -3,6 +3,7 @@ Shader "Custom/VertexColourFrag" {
 Properties {
 
 		_MainTex ("Diffuse", 2D) = "white" {}
+		_Cutoff ("Alpha cutoff", Range(0,1)) = 0.5
 
      
 
@@ -10,9 +11,7 @@ Properties {
   SubShader {
     Pass {
     
-    Cull Back
-			ZWrite On
-			Alphatest Greater 0.5
+   
       CGPROGRAM
       #pragma vertex vert
       #pragma fragment frag
@@ -20,6 +19,7 @@ Properties {
       
       sampler2D _MainTex;
       fixed4 _MainTex_ST;
+      fixed _Cutoff;
       
       struct appdata {
     	float4 vertex : POSITION;
@@ -48,6 +48,7 @@ Properties {
       fixed4 frag (v2f i) : COLOR {
       
       	float4 c = tex2D (_MainTex, i.uv);
+      	clip(c.a - _Cutoff);
       	
       	return c * i.color;
         //return i.color; 
