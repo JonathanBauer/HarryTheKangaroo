@@ -83,9 +83,12 @@ public class PageManager : MonoBehaviour {
 		
 		// Arrays start at zero, so the last entry is always the count minus one
 		lastPage = ebookPage.Length - 1;
-		
+		Debug.Log ("eBook Page Length = " + ebookPage.Length);
+		Debug.Log ("Page 1 = " + ebookPage[0]);
 		// Total pages are known, so the initial X position array for the page covers matches this
 		pageCoverInitialXPos = new float[ebookPage.Length];
+		Debug.Log ("Page Cover Initial Pos X Length = " + pageCoverInitialXPos.Length);
+		Debug.Log ("Page Cover 1 = " + pageCoverRenderer[0]);
 			
 		// The page covers cover the entire screen corner to corner to hide the transition of the page prefabs
 		Vector2 screenSize = new Vector2(0,0);

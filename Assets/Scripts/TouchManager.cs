@@ -55,9 +55,9 @@ public class TouchManager : MonoBehaviour {
 			myInstance = this;
 		
 		cam = gameObject.GetComponentInChildren<Camera>();
-		Debug.Log ("Screen Width:" + Screen.width);
-		Debug.Log ("Screen Height:" + Screen.height);
-		Debug.Log (cam);
+		//Debug.Log ("Screen Width:" + Screen.width);
+		//Debug.Log ("Screen Height:" + Screen.height);
+		//Debug.Log (cam);
 		
 		EbookEventManager.EbookStart += EbookStart;
 		EbookEventManager.EbookBackToMenu += EbookBackToMenu;
