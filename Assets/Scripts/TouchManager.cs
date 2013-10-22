@@ -156,11 +156,11 @@ public class TouchManager : MonoBehaviour {
 				
 				if (Mathf.Abs(dragDistance) > minimumDragDistance)
 				{
-					if (dragDistance > 0)
+					if (dragDistance < 0)
 					{
 						PageManager.Instance.PageTurnPrevious ();
 					}
-					else if (dragDistance < 0)
+					else if (dragDistance > 0)
 					{
 						PageManager.Instance.PageTurnNext ();
 					}
