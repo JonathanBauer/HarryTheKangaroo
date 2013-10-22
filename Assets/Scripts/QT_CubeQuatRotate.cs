@@ -10,7 +10,7 @@ public class QT_CubeQuatRotate : MonoBehaviour {
 	public Vector3 myFirstAngle = new Vector3(30,20,10);
 	public Vector3 mySecondAngle = new Vector3(60,90,30);
 	private Quaternion myFirstQuaternion;
-	private Quaternion mySecondQuaternion;
+	//private Quaternion mySecondQuaternion;
 	public Vector3 myVector;
 	
 	void OnGUI()
@@ -20,7 +20,7 @@ public class QT_CubeQuatRotate : MonoBehaviour {
 		GUILayout.Label("My First Angle in Quaternions: " + Quaternion.Euler(myFirstAngle));
 		GUILayout.Label("My Second Angle in Quaternions: " + Quaternion.Euler(mySecondAngle));
 		myFirstQuaternion = Quaternion.Euler(myFirstAngle);
-		mySecondQuaternion = Quaternion.Euler(mySecondAngle);
+		//mySecondQuaternion = Quaternion.Euler(mySecondAngle);
 		
 		GUILayout.Label("My First Quaternion in Euler Angles: " + myFirstQuaternion.eulerAngles);
 		GUILayout.Label("My First Quaternion x Quaternion Identity: " + (myFirstQuaternion * Quaternion.identity));

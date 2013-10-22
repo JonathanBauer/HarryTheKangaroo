@@ -14,9 +14,9 @@ public class GyroController_new : MonoBehaviour
 	const float lowPassFilterFactor = 0.2f;
 
 	Quaternion baseIdentity =  Quaternion.Euler(90, 0, 0);
-	Quaternion landscapeRight =  Quaternion.Euler(0, 0, 90);
-	Quaternion landscapeLeft =  Quaternion.Euler(0, 0, -90);
-	Quaternion upsideDown =  Quaternion.Euler(0, 0, 180);
+	//Quaternion landscapeRight =  Quaternion.Euler(0, 0, 90);
+	//Quaternion landscapeLeft =  Quaternion.Euler(0, 0, -90);
+	//Quaternion upsideDown =  Quaternion.Euler(0, 0, 180);
 	
 	Quaternion cameraBase =  Quaternion.identity;
 	Quaternion calibration =  Quaternion.identity;

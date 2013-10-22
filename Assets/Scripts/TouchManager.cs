@@ -3,6 +3,20 @@ using System.Collections;
 
 public class TouchManager : MonoBehaviour {
 	
+	static TouchManager myInstance;
+	static int instances = 0;
+	
+	public static TouchManager Instance
+	{
+		get
+		{
+			if (myInstance == null)
+				myInstance = FindObjectOfType (typeof(TouchManager)) as TouchManager;
+			
+			return myInstance;
+		}
+	}
+	
 	enum ControlState
 	{
 		WaitingForFirstTouch,
@@ -15,19 +29,14 @@ public class TouchManager : MonoBehaviour {
 	private float firstTouchTime = 0.0f;
 	private bool zeroTouchPromptGiven = false;
 	private bool oneTouchPromptGiven = false;
-	private bool isDragging = false;
+	//private bool isDragging = false;
 	
 	public float minimumTimeUntilDrag = 0.25f;
 	public float minimumDragDistance = 300f;
 	
 	private float rayCastX;
 	private float rayCastY;
-	
-	public GameObject cameraObject;
-	public GameObject cameraPivot;
-	private Transform thisTransform;
-	private CameraGravityTest camGravTest;
-	
+		
 	private Vector2 fingerStartPosition = new Vector2( 0, 0 );
 	private Vector2 fingerRecordedPosition = new Vector2( 0, 0 );
 	
@@ -37,12 +46,22 @@ public class TouchManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		
+		instances++;
+		
+		if (instances > 1)
+			Debug.Log ("There is more than one Touch Manager in the level");
+		else
+			myInstance = this;
+		
+		cam = gameObject.GetComponentInChildren<Camera>();
 		Debug.Log ("Screen Width:" + Screen.width);
 		Debug.Log ("Screen Height:" + Screen.height);
+		Debug.Log (cam);
 		
-		camGravTest = (CameraGravityTest)cameraPivot.GetComponent( typeof(CameraGravityTest) );
-		cam = cameraObject.camera;
-		thisTransform = transform;
+		EbookEventManager.EbookStart += EbookStart;
+		EbookEventManager.EbookBackToMenu += EbookBackToMenu;
+
 		
 		ResetControlState();
 	
@@ -103,50 +122,29 @@ public class TouchManager : MonoBehaviour {
 		
 		if (Input.GetKeyDown (KeyCode.Alpha1))
 		{
-				PageTurnPrevious ();
+				PageManager.Instance.PageTurnPrevious();
 		}
 		if (Input.GetKeyDown (KeyCode.Alpha2))
 		{
-				PageTurnNext ();
+				PageManager.Instance.PageTurnNext();
 		}
-		
-		if (Input.GetKeyDown (KeyCode.UpArrow))
+		/*
+		if (Input.GetKeyDown (KeyCode.Alpha3))
 		{
-			camGravTest.RotateUp ();
+				PageManager.Instance.ScreenCap();
 		}
-		
-		if (Input.GetKeyDown (KeyCode.DownArrow))
-		{
-			camGravTest.RotateDown ();
-		}
-		
-		if (Input.GetKeyDown (KeyCode.LeftArrow))
-		{
-			camGravTest.RotateLeft ();
-		}
-		
-		if (Input.GetKeyDown (KeyCode.RightArrow))
-		{
-			camGravTest.RotateRight ();
-		}
+		*/
+
 		
 		
 	}
 	
-	void PageTurnPrevious ()
-	{
-		Debug.Log("Page has turned to Previous"); 	
-	}
-	
-	void PageTurnNext ()
-	{
-		Debug.Log("Page has turned to Next"); 	
-	}
+
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		Debug.Log(state);
+		//Debug.Log(state);
 		
 		int touchCount = Input.touchCount;
 		
@@ -160,11 +158,11 @@ public class TouchManager : MonoBehaviour {
 				{
 					if (dragDistance > 0)
 					{
-						PageTurnPrevious ();
+						PageManager.Instance.PageTurnPrevious ();
 					}
 					else if (dragDistance < 0)
 					{
-						PageTurnNext ();
+						PageManager.Instance.PageTurnNext ();
 					}
 					
 					
@@ -181,7 +179,7 @@ public class TouchManager : MonoBehaviour {
 		else
 		{
 			firstTouchTime = 0.0f;
-			isDragging = false;
+			//isDragging = false;
 			
 			Touch touch;
 			Touch[] touches = Input.touches;
@@ -209,7 +207,7 @@ public class TouchManager : MonoBehaviour {
 						state = (int)ControlState.DragBegins;
 						fingerStartPosition = touch.position;
 						fingerRecordedPosition = fingerStartPosition;
-						isDragging = true;
+						//isDragging = true;
 						
 					}
 				}
@@ -227,5 +225,11 @@ public class TouchManager : MonoBehaviour {
 		
 		InteractionControl();
 					
+	}
+	
+	private void EbookStart () {
+	}
+	
+	private void EbookBackToMenu () {
 	}
 }
