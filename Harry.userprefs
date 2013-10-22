@@ -1,14 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PageManager.cs">
-    <Files>
-      <File FileName="Assets\Scripts\PageManager.cs" Line="52" Column="3" />
-      <File FileName="Assets\Scripts\RTtest02.cs" Line="28" Column="41" />
-      <File FileName="Assets\Scripts\RenderTextureFree02.cs" Line="26" Column="2" />
-      <File FileName="Assets\Scripts\PageCover.cs" Line="32" Column="3" />
-      <File FileName="Assets\Scripts\TouchManager.cs" Line="136" Column="5" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

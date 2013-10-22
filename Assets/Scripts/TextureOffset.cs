@@ -24,7 +24,8 @@ public class TextureOffset : MonoBehaviour {
 			{
 	
 				if (Time.time > wordTime[i] && wordTime[i] != -1)  {
-					textureOffset.x = textureOffset.x + offsetForWord[i];
+					textureOffset.x = offsetForWord[i];
+					//textureOffset.x = textureOffset.x + offsetForWord[i];
 					renderer.material.SetTextureOffset ("_MultiTex", textureOffset);
 					
 					textureScale.x = scaleForWord[i];

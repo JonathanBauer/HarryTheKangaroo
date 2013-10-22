@@ -41,26 +41,30 @@ Shader "Custom/MultiDiffuse_VF"
             sampler2D _MultiTex;
             fixed4 _MultiTex_ST;
 
+			struct a2v {
+                float4 vertex : POSITION;
+                float2  texcoord : TEXCOORD0;
+                float2 texcoord1 : TEXCOORD1;
+            };
+
 
             struct v2f
             {
                 float4 pos : POSITION;
-                float2 uv : TEXCOORD0;
-                fixed3 color : COLOR; 
-                
-                float2 uv2 : TEXCOORD2;
+                float2 uv : TEXCOORD0;              
+                float2 uv2 : TEXCOORD1;
               
                   
             };
  
  			
-            v2f vert (appdata_base v)
+            v2f vert (a2v v)
             {
                 v2f o;
                 o.pos = mul( UNITY_MATRIX_MVP, v.vertex);
                 
                 o.uv = TRANSFORM_TEX (v.texcoord, _MainTex);
-                o.uv2 = TRANSFORM_TEX (v.texcoord, _MultiTex);
+                o.uv2 = TRANSFORM_TEX (v.texcoord1, _MultiTex);
                   
                 return o;
             }
