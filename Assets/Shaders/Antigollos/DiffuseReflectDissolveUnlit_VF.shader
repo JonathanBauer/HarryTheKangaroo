@@ -28,9 +28,7 @@ Shader "Antigollos/DiffuseReflectDissolveUnlit_VF"
  
         Pass {
  
-            Cull Back
-			ZWrite On
-			AlphaTest Greater [_AlphaCutOut]
+      
  
             CGPROGRAM
 			// Upgrade NOTE: excluded shader from DX11 and Xbox360; has structs without semantics (struct v2f members uv,color)
@@ -56,7 +54,7 @@ Shader "Antigollos/DiffuseReflectDissolveUnlit_VF"
             fixed4 _DissolveTexture_ST;
 			float4 _DissolveColor;
 			float _DissolveWidth;
-			float _AlphaCutOut;           
+			fixed _AlphaCutOut;           
 
             uniform float4 _RimColor;
             uniform float _RimWidth;
@@ -116,6 +114,11 @@ Shader "Antigollos/DiffuseReflectDissolveUnlit_VF"
                 
 				//alpha is dissolve
                 c.a = Tex2D2;
+                clip(c.a - _AlphaCutOut);
+                
+                
+                
+                
                 
                 
                 return c;

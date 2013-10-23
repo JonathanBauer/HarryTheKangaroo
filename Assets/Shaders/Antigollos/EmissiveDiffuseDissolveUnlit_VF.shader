@@ -115,6 +115,7 @@ Shader "Antigollos/EmissiveDiffuseDissolveUnlit_VF"
                 
 				//alpha is dissolve
                 c.a = Tex2D2;
+                clip(c.a - _AlphaCutOut);
                 
                 
                 return c;
