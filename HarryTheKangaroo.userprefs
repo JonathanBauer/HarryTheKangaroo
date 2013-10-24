@@ -1,13 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GimbalControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GyroAidControl.cs">
     <Files>
-      <File FileName="Assets/Shaders/Antigollos/DiffuseReflectDissolveUnlit_VF.shader" Line="1" Column="1" />
-      <File FileName="Assets/Shaders/Antigollos/EmissiveDiffuseDissolveUnlit_VF.shader" Line="1" Column="1" />
-      <File FileName="Assets/Shaders/Antigollos/FresnelDiffuseDissolveUnlit_VF.shader" Line="1" Column="1" />
-      <File FileName="Assets/Shaders/Antigollos/FresnelDiffuseReflectDissolveUnlit_VF.shader" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/GyroController_new.cs" Line="56" Column="3" />
-      <File FileName="Assets/Scripts/GimbalControl.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/GyroController_stripped.cs" Line="26" Column="2" />
+      <File FileName="Assets/Scripts/GyroAidControl.cs" Line="120" Column="61" />
+      <File FileName="Assets/Scripts/GyroController_new.cs" Line="75" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

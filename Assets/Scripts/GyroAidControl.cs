@@ -16,6 +16,11 @@ public class GyroAidControl : MonoBehaviour {
 	public Transform gyroAidYaw;
 	public Transform gyroAidPitch;
 	
+	private Vector3 gyroAidYawControl;		
+	private Vector3 gyroAidPitchControl;
+	
+	private float gyroAidYawOffset = 0.0f;
+	private float gyroAidPitchOffset = 0.0f;
 	
 	private Vector2 previousMousePos = new Vector2(0,0);
 	private Vector2 currentMousePos = new Vector2(0,0);
@@ -73,14 +78,15 @@ public class GyroAidControl : MonoBehaviour {
 		
 		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, trackingSpeed); 
 		
-		Vector3 gyroAidYawControl = (transform.localRotation).eulerAngles;
+		gyroAidYawControl = (transform.localRotation).eulerAngles;
 		
-		Vector3 gyroAidPitchControl = (transform.localRotation).eulerAngles;
+		gyroAidPitchControl = (transform.localRotation).eulerAngles;
 		
 		gyroAidYawControl.x = 0;
 		
 		gyroAidYawControl.z = 0;
 		
+		gyroAidYawControl.y -= gyroAidYawOffset;
 		//gyroAidYawControl.y = 90;
 		
 		gyroAidYaw.transform.localRotation = Quaternion.Euler(gyroAidYawControl);
@@ -90,6 +96,8 @@ public class GyroAidControl : MonoBehaviour {
 		gyroAidPitchControl.z = 0;
 		
 		gyroAidPitchControl.y = 0;
+		
+		gyroAidPitchControl.x -= gyroAidPitchOffset;
 		
 		gyroAidPitch.transform.localRotation = Quaternion.Euler(gyroAidPitchControl);
 		
@@ -106,6 +114,21 @@ public class GyroAidControl : MonoBehaviour {
 		GUILayout.Label("RotX: " + rotX);
 		GUILayout.Label("RotY: " + rotY);
 		GUILayout.Label("Transform.rotation (euler): " + transform.rotation.eulerAngles);
+		GUILayout.Label("gyroAidYawControl.y " + gyroAidYawControl.y);
+		GUILayout.Label("gyroAidPitchControl.x " + gyroAidPitchControl.x);
+		GUILayout.Label("gyroAidYawOffset " + gyroAidYawOffset);
+		GUILayout.Label("gyroAidPitchOffset " + gyroAidPitchOffset);
+		
+		if (GUILayout.Button("Calibate Pitch and Yaw", GUILayout.Height(80)))
+		{
+			gyroAidYawOffset = gyroAidYawControl.y;
+			
+			gyroAidYaw.transform.localRotation = Quaternion.Euler(gyroAidYawControl);
+			
+			gyroAidPitchOffset = gyroAidPitchControl.x;
+			
+			gyroAidPitch.transform.localRotation = Quaternion.Euler(gyroAidPitchControl);
+		}
 		
 		
 		
