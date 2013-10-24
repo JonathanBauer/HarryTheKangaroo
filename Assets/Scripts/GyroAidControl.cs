@@ -13,6 +13,10 @@ public class GyroAidControl : MonoBehaviour {
 	private bool onGyro;
 	private bool onRightMouseButton = false;
 	
+	public Transform gyroAidYaw;
+	public Transform gyroAidPitch;
+	
+	
 	private Vector2 previousMousePos = new Vector2(0,0);
 	private Vector2 currentMousePos = new Vector2(0,0);
 	private Vector2 gimbalRotationAmount = new Vector2(0,0);
@@ -34,7 +38,9 @@ public class GyroAidControl : MonoBehaviour {
 		if (onGyro)
 		{
 		
+			//targetRotation = ConvertRotation(Quaternion.Euler (0,0,-90) * Input.gyro.attitude);
 			
+			//targetRotation = ConvertRotation(Input.gyro.attitude);
 			targetRotation = ConvertRotation(Quaternion.Euler (-90,0,0) * Input.gyro.attitude);
 		}
 		
@@ -56,12 +62,38 @@ public class GyroAidControl : MonoBehaviour {
 			previousMousePos = currentMousePos;
 			
 			targetRotation = Quaternion.Euler(rotY,rotX, 0);
+			
+		
+			
+			//gyroAidPitch.transform.localRotation
 		}
 		
 		// X and Y must be swapped for Quaternion calculation (No idea why)
 		
 		
 		transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, trackingSpeed); 
+		
+		Vector3 gyroAidYawControl = (transform.localRotation).eulerAngles;
+		
+		Vector3 gyroAidPitchControl = (transform.localRotation).eulerAngles;
+		
+		gyroAidYawControl.x = 0;
+		
+		gyroAidYawControl.z = 0;
+		
+		gyroAidYawControl.y -= 90;
+		
+		gyroAidYaw.transform.localRotation = Quaternion.Euler(gyroAidYawControl);
+		
+		gyroAidPitchControl.z = gyroAidPitchControl.x;
+		
+		gyroAidPitchControl.x = 0;
+		
+		gyroAidPitchControl.y = 0;
+		
+		gyroAidPitch.transform.localRotation = Quaternion.Euler(gyroAidPitchControl);
+		
+		
 	
 	}
 	
