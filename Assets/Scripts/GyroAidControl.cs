@@ -81,13 +81,13 @@ public class GyroAidControl : MonoBehaviour {
 		
 		gyroAidYawControl.z = 0;
 		
-		gyroAidYawControl.y -= 90;
+		//gyroAidYawControl.y = 90;
 		
 		gyroAidYaw.transform.localRotation = Quaternion.Euler(gyroAidYawControl);
 		
-		gyroAidPitchControl.z = gyroAidPitchControl.x;
+		//gyroAidPitchControl.z = gyroAidPitchControl.x;
 		
-		gyroAidPitchControl.x = 0;
+		gyroAidPitchControl.z = 0;
 		
 		gyroAidPitchControl.y = 0;
 		
