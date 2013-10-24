@@ -34,11 +34,13 @@ public class GyroController_new : MonoBehaviour
 
 	void Update() 
 	{
-		
+		/*
 		if (!gyroEnabled)
 			return;
 		transform.rotation = Quaternion.Slerp(transform.rotation,
 			cameraBase * ( ConvertRotation(referanceRotation * Input.gyro.attitude) * GetRotFix()), lowPassFilterFactor);
+		*/
+		transform.rotation = Quaternion.Slerp(transform.rotation,ConvertRotation(Quaternion.Euler (-90,0,0) * Input.gyro.attitude), lowPassFilterFactor);
 	}
 
 	void OnGUI()
@@ -51,6 +53,7 @@ public class GyroController_new : MonoBehaviour
 		GUILayout.Label("Camera base: " + cameraBase);
 		GUILayout.Label("input.gyro.attitude: " + Input.gyro.attitude);
 		GUILayout.Label("transform.rotation: " + transform.rotation);
+		
 
 		if (GUILayout.Button("On/off gyro: " + Input.gyro.enabled, GUILayout.Height(100)))
 		{
