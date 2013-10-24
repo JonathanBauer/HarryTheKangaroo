@@ -10,7 +10,7 @@ public class GyroAidControl : MonoBehaviour {
 	
 	public float trackingSpeed = 10.0f;
 	
-	private bool onGyro =true;
+	private bool onGyro;
 	private bool onRightMouseButton = false;
 	
 	private Vector2 previousMousePos = new Vector2(0,0);
@@ -21,7 +21,7 @@ public class GyroAidControl : MonoBehaviour {
 
 	
 	void Start () {
-		//onGyro = SystemInfo.supportsGyroscope;
+		onGyro = SystemInfo.supportsGyroscope;
 		previousMousePos.x = Screen.width / 2;
 		previousMousePos.y = Screen.height / 2;
 		
@@ -48,13 +48,14 @@ public class GyroAidControl : MonoBehaviour {
 			
 			//Reverse the rotation direction of X axis
 			gimbalRotationAmount.y = - gimbalRotationAmount.y;
+			gimbalRotationAmount.x = - gimbalRotationAmount.x;
 			
 			rotX = rotX + gimbalRotationAmount.x;
 			rotY = rotY + gimbalRotationAmount.y;
 			
 			previousMousePos = currentMousePos;
 			
-			targetRotation = Quaternion.Euler(rotX,rotY, 0);
+			targetRotation = Quaternion.Euler(rotY,rotX, 0);
 		}
 		
 		// X and Y must be swapped for Quaternion calculation (No idea why)
