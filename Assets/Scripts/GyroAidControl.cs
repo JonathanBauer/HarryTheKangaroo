@@ -16,7 +16,7 @@ public class GyroAidControl : MonoBehaviour {
 	public Vector2 mouseRotSpeed = new Vector2(0.1f,0.1f);
 	
 	private bool useGyro = true;
-	public Vector2 acceleromaterRotRate= new Vector2(30,30);
+	public Vector2 accelerometerRotRate= new Vector2(30,30);
 
 	private Quaternion targetRotation = Quaternion.identity;
 	private bool onGyro;
@@ -52,8 +52,8 @@ public class GyroAidControl : MonoBehaviour {
 			}
 			else
 				{
-			rotX = Input.gyro.gravity.x * acceleromaterRotRate.x;
-			rotY = Input.gyro.gravity.y * acceleromaterRotRate.y;
+			rotX = Input.gyro.gravity.x * accelerometerRotRate.x;
+			rotY = Input.gyro.gravity.y * accelerometerRotRate.y;
 			
 			// Y reversed to make gimbal act like a spirit level
 			rotY = -rotY;
@@ -144,7 +144,7 @@ public class GyroAidControl : MonoBehaviour {
 			if (GUILayout.Button("Gyro over Accelerometer? " + useGyro, GUILayout.Height(80)))
 			{
 				
-				ToggleCalibrationSlerp();
+				ToggleUseGyro();
 				
 			}
 			
@@ -161,6 +161,7 @@ public class GyroAidControl : MonoBehaviour {
 				ToggleCalibrationSlerp();
 				
 			}
+			
 		
 		}
 		

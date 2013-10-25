@@ -4,7 +4,7 @@ using System.Collections;
 public class GimbalGyroAidControl : MonoBehaviour {
 	
 	
-	public float trackingSpeed = 0.75f;
+	public float trackingSpeed = 1f;
 	
 	public Transform gimbal;
 	public Transform gyroAidYaw;
@@ -15,13 +15,14 @@ public class GimbalGyroAidControl : MonoBehaviour {
 	
 	public Vector2 mouseRotSpeed = new Vector2(0.1f,0.1f);
 	
-	
+	private bool useGyro = true;
+	public Vector2 accelerometerRotRate= new Vector2(60,60);
 
 	private Quaternion targetRotation = Quaternion.identity;
 	private bool onGyro;
 	private bool debug = true;
 	
-	private Vector3 gyroAidPosition;
+	public Vector3 gyroAid = new Vector3(0,0,0);			// This is used by the pages
 	private Vector3 gyroAidOffset = new Vector3(0,0,0);
 	
 	private Vector2 previousMousePos = new Vector2(0,0);
@@ -44,11 +45,21 @@ public class GimbalGyroAidControl : MonoBehaviour {
 	void Update () {
 		if (onGyro)
 		{
+			if(useGyro)
+			{
 		
-			//targetRotation = ConvertRotation(Quaternion.Euler (0,0,-90) * Input.gyro.attitude);
-			
-			//targetRotation = ConvertRotation(Input.gyro.attitude);
 			targetRotation = ConvertRotation(Quaternion.Euler (-90,0,0) * Input.gyro.attitude);
+			}
+			else
+				{
+			rotX = Input.gyro.gravity.x * accelerometerRotRate.x;
+			rotY = Input.gyro.gravity.y * accelerometerRotRate.y;
+			
+			// Y reversed to make gimbal act like a spirit level
+			rotY = -rotY;
+			targetRotation = Quaternion.Euler(rotY,rotX, 0);
+			}
+				
 		}
 		
 		onRightMouseButton = Input.GetMouseButton (1);
@@ -79,44 +90,44 @@ public class GimbalGyroAidControl : MonoBehaviour {
 		
 		gimbal.transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, trackingSpeed); 
 				
-		// gyroAidPosition reports the orientation of the iPhone gyroscope
+		// gyroAid reports the orientation of the iPhone gyroscope
 		// but is also controlled by the mouse
 		
-		gyroAidPosition = (gimbal.transform.localRotation).eulerAngles;
+		gyroAid = (gimbal.transform.localRotation).eulerAngles;
 				
 		// To use the iPhone gyroscope, the 'virtual' gyro needs to be calibrated so that
 		// the direction the device is pointing when the app starts has x = 0 and y = 0.
 		// This is accomplished by applying an offset to the virtual gyro
 		
-		gyroAidPosition.x += gyroAidOffset.x;
+		gyroAid.x += gyroAidOffset.x;
 		
-		gyroAidPosition.y +=gyroAidOffset.y;
+		gyroAid.y +=gyroAidOffset.y;
 		
-		// The virtual gyro objects then display gyroAidPosition as Yaw and Pitch
+		// The virtual gyro objects then display gyroAid as Yaw and Pitch
 		// If calibrationSlerp is on, the gyro will move toward 0,0,0 instead of snapping to it
 		
 		if (calibrationSlerp)
 		{
 			gyroAidYaw.transform.localRotation = Quaternion.Slerp(gyroAidYaw.transform.localRotation,
-													Quaternion.Euler(0,gyroAidPosition.y,0),
+													Quaternion.Euler(0,gyroAid.y,0),
 													calibrationSlerpSpeed);
 			
 			gyroAidPitch.transform.localRotation = Quaternion.Slerp(gyroAidPitch.transform.localRotation,
-													Quaternion.Euler(gyroAidPosition.x,0,0),
+													Quaternion.Euler(gyroAid.x,0,0),
 													calibrationSlerpSpeed);
 		}
 		else
 		{
 		
-			gyroAidYaw.transform.localRotation = Quaternion.Euler(0,gyroAidPosition.y,0);
+			gyroAidYaw.transform.localRotation = Quaternion.Euler(0,gyroAid.y,0);
 			
-			gyroAidPitch.transform.localRotation = Quaternion.Euler(gyroAidPosition.x,0,0);
+			gyroAidPitch.transform.localRotation = Quaternion.Euler(gyroAid.x,0,0);
 		}
 
 	
 	}
 	
-	void OnGUI () {
+	void OnGUI () { 
 		
 		if (debug)
 		{
@@ -125,11 +136,17 @@ public class GimbalGyroAidControl : MonoBehaviour {
 			GUILayout.Label("Target Rotation " + targetRotation);
 			GUILayout.Label("RotX: " + rotX);
 			GUILayout.Label("RotY: " + rotY);
-			GUILayout.Label("Transform.rotation (euler): " + transform.rotation.eulerAngles);
-			GUILayout.Label("gyroAidPosition .y " + gyroAidPosition .y);
-			GUILayout.Label("gyroAidPosition .x " + gyroAidPosition .x);
+			GUILayout.Label("gyroAid.y " + gyroAid .y);
+			GUILayout.Label("gyroAid.x " + gyroAid .x);
 			GUILayout.Label("gyroAidOffset.y " + gyroAidOffset.y);
 			GUILayout.Label("gyroAidOffset.x " + gyroAidOffset.x);
+			
+			if (GUILayout.Button("Gyro over Accelerometer? " + useGyro, GUILayout.Height(80)))
+			{
+				
+				ToggleUseGyro();
+				
+			}
 			
 			if (GUILayout.Button("Calibate Pitch and Yaw", GUILayout.Height(80)))
 			{
@@ -144,6 +161,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 				ToggleCalibrationSlerp();
 				
 			}
+			
 		
 		}
 		
@@ -164,13 +182,18 @@ public class GimbalGyroAidControl : MonoBehaviour {
 		// it's the difference between the current rotation and the offset
 		// changed to a negative
 		
-		gyroAidOffset.y -= gyroAidPosition.y;
+		gyroAidOffset.y -= gyroAid.y;
 			
-		gyroAidOffset.x -= gyroAidPosition.x;
+		gyroAidOffset.x -= gyroAid.x;
 	}
 	
 	private void ToggleCalibrationSlerp()
 	{
 		calibrationSlerp = !calibrationSlerp;
+	}
+	
+	private void ToggleUseGyro()
+	{
+		useGyro = !useGyro;
 	}
 }

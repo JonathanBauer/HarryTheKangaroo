@@ -2,9 +2,9 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GyroAidControl.cs">
     <Files>
-      <File FileName="Assets/Scripts/GyroController_stripped.cs" Line="26" Column="2" />
-      <File FileName="Assets/Scripts/GyroAidControl.cs" Line="120" Column="61" />
-      <File FileName="Assets/Scripts/GyroController_new.cs" Line="75" Column="3" />
+      <File FileName="Assets/Scripts/GyroController_stripped.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/GyroAidControl.cs" Line="52" Column="49" />
+      <File FileName="Assets/Scripts/GyroController_new.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
