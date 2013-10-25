@@ -20,7 +20,7 @@ public class PageControl : MonoBehaviour {
 	public List<float> pictureRate = new List<float>();
 
 	
-	public GimbalControl gimbal;
+	public GimbalGyroAidControl gimbal;
 	
 	
 
@@ -30,8 +30,8 @@ public class PageControl : MonoBehaviour {
 		
 		float v = pictureElement.Count;
 		
-		gimbalSquared.x = gimbal.rotX * Mathf.Abs(gimbal.rotX);
-		gimbalSquared.y = gimbal.rotY * Mathf.Abs(gimbal.rotY);
+		gimbalSquared.x = gimbal.reportedRotation.x * Mathf.Abs(gimbal.reportedRotation.x);
+		gimbalSquared.y = gimbal.reportedRotation.y * Mathf.Abs(gimbal.reportedRotation.y);
 		
 		for (int i = 0; i < v; i ++)
 		{

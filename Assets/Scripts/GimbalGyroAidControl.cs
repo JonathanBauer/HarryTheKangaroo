@@ -15,7 +15,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 	
 	public Vector2 mouseRotSpeed = new Vector2(0.1f,0.1f);
 	
-	private bool useGyro = true;
+	private bool useGyro = false;
 	public Vector2 accelerometerRotRate= new Vector2(60,60);
 
 	private Quaternion targetRotation = Quaternion.identity;
@@ -24,6 +24,8 @@ public class GimbalGyroAidControl : MonoBehaviour {
 	
 	public Vector3 gyroAid = new Vector3(0,0,0);			// This is used by the pages
 	private Vector3 gyroAidOffset = new Vector3(0,0,0);
+	
+	public Vector3 reportedRotation = new Vector3(0,0,0);
 	
 	private Vector2 previousMousePos = new Vector2(0,0);
 	private Vector2 currentMousePos = new Vector2(0,0);
@@ -49,6 +51,8 @@ public class GimbalGyroAidControl : MonoBehaviour {
 			{
 		
 			targetRotation = ConvertRotation(Quaternion.Euler (-90,0,0) * Input.gyro.attitude);
+				
+				
 			}
 			else
 				{
@@ -123,6 +127,29 @@ public class GimbalGyroAidControl : MonoBehaviour {
 			
 			gyroAidPitch.transform.localRotation = Quaternion.Euler(gyroAid.x,0,0);
 		}
+		
+		
+		
+		if (gyroAid.x > 180)
+		{
+			reportedRotation.y =  -(360 - gyroAid.x);
+		}
+		else
+		{
+			reportedRotation.y = gyroAid.x;
+		}
+			
+		if (gyroAid.y > 180)
+		{
+			reportedRotation.x =  (360 - gyroAid.y);
+		}
+		else
+		{
+			reportedRotation.x = - gyroAid.y;
+		}
+				
+		
+		
 
 	
 	}
