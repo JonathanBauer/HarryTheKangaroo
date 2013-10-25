@@ -1,17 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-public class GyroAidControl : MonoBehaviour {
+public class GimbalGyroAidControl : MonoBehaviour {
 	
 	
-	public float trackingSpeed = 0.05f;
+	public float trackingSpeed = 0.75f;
 	
 	public Transform gimbal;
 	public Transform gyroAidYaw;
 	public Transform gyroAidPitch;
 	
 	public bool calibrationSlerp = true;
-	public float calibrationSlerpSpeed = 0.05f;
+	public float calibrationSlerpSpeed = 0.1f;
 	
 	public Vector2 mouseRotSpeed = new Vector2(0.1f,0.1f);
 	

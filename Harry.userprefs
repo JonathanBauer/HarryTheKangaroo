@@ -1,14 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Shaders\Antigollos\DiffuseReflectDissolveUnlit_VF.shader">
-    <Files>
-      <File FileName="Assets\Shaders\Antigollos\DiffuseReflectDissolveUnlit_VF.shader" Line="1" Column="1" />
-      <File FileName="Assets\Shaders\Vertex Coloured.shader" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\TextureOffset.cs" Line="1" Column="1" />
-      <File FileName="Assets\Shaders\VertexColourFrag.shader" Line="1" Column="1" />
-      <File FileName="Assets\Shaders\MultiDiffuse_VF.shader" Line="38" Column="27" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -8,23 +8,33 @@ ModelImporter:
     100004: //RootNode
     100006: Orientation_Sphere
     100008: World_Sphere
+    100010: GyroAid_PitchMaster
+    100012: GyroAid_YawMaster
     400000: GyroAid_Pitch
     400002: GyroAid_Yaw
     400004: //RootNode
     400006: Orientation_Sphere
     400008: World_Sphere
+    400010: GyroAid_PitchMaster
+    400012: GyroAid_YawMaster
     2300000: GyroAid_Pitch
     2300002: GyroAid_Yaw
     2300004: Orientation_Sphere
     2300006: World_Sphere
+    2300008: GyroAid_PitchMaster
+    2300010: GyroAid_YawMaster
     3300000: GyroAid_Pitch
     3300002: GyroAid_Yaw
     3300004: Orientation_Sphere
     3300006: World_Sphere
+    3300008: GyroAid_PitchMaster
+    3300010: GyroAid_YawMaster
     4300000: GyroAid_Pitch
     4300002: GyroAid_Yaw
     4300004: Orientation_Sphere
     4300006: World_Sphere
+    4300008: GyroAid_YawMaster
+    4300010: GyroAid_PitchMaster
     9500000: //RootNode
   materials:
     importMaterials: 1
