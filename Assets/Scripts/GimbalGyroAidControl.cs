@@ -26,6 +26,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 	private Vector3 gyroAidOffset = new Vector3(0,0,0);
 	
 	public Vector3 reportedRotation = new Vector3(0,0,0);
+	public Vector2 reportedRotationLimit = new Vector2(40,40);
 	
 	private Vector2 previousMousePos = new Vector2(0,0);
 	private Vector2 currentMousePos = new Vector2(0,0);
@@ -103,9 +104,60 @@ public class GimbalGyroAidControl : MonoBehaviour {
 		// the direction the device is pointing when the app starts has x = 0 and y = 0.
 		// This is accomplished by applying an offset to the virtual gyro
 		
-		gyroAid.x += gyroAidOffset.x;
+		if ((gyroAid.x + gyroAidOffset.x) > 180)
+		{
+			gyroAid.x =  -(360 - (gyroAid.x + gyroAidOffset.x));
+		}
+		else if ((gyroAid.x + gyroAidOffset.x) < -180)
+		{
+			gyroAid.x =  360 + (gyroAid.x + gyroAidOffset.x);
+		}
+		else
+		{
+			gyroAid.x = gyroAid.x + gyroAidOffset.x;	
+		}
+			
+		if ((gyroAid.y + gyroAidOffset.y) > 180)
+		{
+			gyroAid.y =  -(360 - (gyroAid.y + gyroAidOffset.y));
+		}
+		else if ((gyroAid.y + gyroAidOffset.y) < -180)
+		{
+			gyroAid.y =  360 + (gyroAid.y + gyroAidOffset.y);
+		}
+		else
+		{
+			gyroAid.y = gyroAid.y + gyroAidOffset.y;	
+		}
 		
-		gyroAid.y +=gyroAidOffset.y;
+		
+		if (gyroAid.x > reportedRotationLimit.y)
+		{
+			reportedRotation.y = reportedRotationLimit.y;
+		}
+		else if (gyroAid.x < -(reportedRotationLimit.y))
+		{
+			reportedRotation.y = -(reportedRotationLimit.y);
+		}
+		else
+		{
+			reportedRotation.y  =  gyroAid.x;	
+		}
+		
+		if (gyroAid.y > reportedRotationLimit.x)
+		{
+			reportedRotation.x = reportedRotationLimit.x;
+		}
+		else if (gyroAid.y < -(reportedRotationLimit.x))
+		{
+			reportedRotation.x = -(reportedRotationLimit.x);
+		}
+		else
+		{
+			reportedRotation.x  =  gyroAid.y;	
+		}
+	
+
 		
 		// The virtual gyro objects then display gyroAid as Yaw and Pitch
 		// If calibrationSlerp is on, the gyro will move toward 0,0,0 instead of snapping to it
@@ -129,27 +181,6 @@ public class GimbalGyroAidControl : MonoBehaviour {
 		}
 		
 		
-		
-		if (gyroAid.x > 180)
-		{
-			reportedRotation.y =  -(360 - gyroAid.x);
-		}
-		else
-		{
-			reportedRotation.y = gyroAid.x;
-		}
-			
-		if (gyroAid.y > 180)
-		{
-			reportedRotation.x =  (360 - gyroAid.y);
-		}
-		else
-		{
-			reportedRotation.x = - gyroAid.y;
-		}
-				
-		
-		
 
 	
 	}
@@ -167,6 +198,8 @@ public class GimbalGyroAidControl : MonoBehaviour {
 			GUILayout.Label("gyroAid.x " + gyroAid .x);
 			GUILayout.Label("gyroAidOffset.y " + gyroAidOffset.y);
 			GUILayout.Label("gyroAidOffset.x " + gyroAidOffset.x);
+			GUILayout.Label("reportedRotation.y " + reportedRotation.y);
+			GUILayout.Label("reportedRotation.x " + reportedRotation.x);
 			
 			if (GUILayout.Button("Gyro over Accelerometer? " + useGyro, GUILayout.Height(80)))
 			{

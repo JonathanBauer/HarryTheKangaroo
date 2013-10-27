@@ -5,41 +5,107 @@ using System.Collections;
 
 public class QT_CubeQuatRotate : MonoBehaviour {
 	
-	public float smooth = 2.0f;
-	public float tiltAngle = 30.0f;
-	public Vector3 myFirstAngle = new Vector3(30,20,10);
-	public Vector3 mySecondAngle = new Vector3(60,90,30);
-	private Quaternion myFirstQuaternion;
-	//private Quaternion mySecondQuaternion;
-	public Vector3 myVector;
+	
+	public enum FunctionOption {
+		Invert,
+		RotateHalfwayToward,
+		JustAngleAxis
+		
+	
+		
+		
+	}
+	
+	
+	public FunctionOption function;
+	
+
+	// Define a delegate type. Note the "Quaternion"'s defined just like you would with a ordinary method
+	private delegate Quaternion FunctionDelegate (Quaternion a);
+	
+	// Define a static variable (all the values are already in it, thus static) of the type FunctionDelegate
+	// called functionDelegates. The enumeration is the same order as FunctionOption.
+	private static FunctionDelegate[] functionDelegates = {
+		Invert,
+		RotateHalfwayToward,
+		JustAngleAxis
+	
+	
+		
+		
+	};
+	
+	
+	
+	
+	public float mouseRate = 30.0f;
+	private Vector3 rotateAmount = new Vector3(0,0,0);
+	private Vector3 rotationEuler = new Vector3(0,0,0);
+	
+	public Transform fabulousAssistant;
+	public Transform evilHenchman;
 	
 	void OnGUI()
 	{
 		GUILayout.Label("Mouse X Axis: " + Input.GetAxis("Mouse X"));
 		GUILayout.Label("Mouse y Axis: " + Input.GetAxis("Mouse Y"));
-		GUILayout.Label("My First Angle in Quaternions: " + Quaternion.Euler(myFirstAngle));
-		GUILayout.Label("My Second Angle in Quaternions: " + Quaternion.Euler(mySecondAngle));
-		myFirstQuaternion = Quaternion.Euler(myFirstAngle);
-		//mySecondQuaternion = Quaternion.Euler(mySecondAngle);
-		
-		GUILayout.Label("My First Quaternion in Euler Angles: " + myFirstQuaternion.eulerAngles);
-		GUILayout.Label("My First Quaternion x Quaternion Identity: " + (myFirstQuaternion * Quaternion.identity));
-		myVector = myFirstQuaternion * -Vector3.forward;
-		
-		GUILayout.Label("My First Angle x Vector3.back " + myVector);
-		GUILayout.Label("My First Angle FromToRotation My SecondAngle " + (Quaternion.FromToRotation ( myFirstAngle, mySecondAngle )).eulerAngles);
+		GUILayout.Label("Rotate Amount: " + rotateAmount);
+		GUILayout.Label("transform.eulerangles: " + transform.rotation.eulerAngles);
+		GUILayout.Label("Quaternion Angle: " + Quaternion.Angle (transform.rotation, fabulousAssistant.transform.rotation));
+		GUILayout.Label("RotateTowards Delta: " + Time.time*10f);
 	}
+	
+
 	
 	
 	// Update is called once per frame
 	void Update () {
+	
+	
+		// This simply has to use the public enum "function" 
+		// I have no idea how to make it work privately
+		FunctionDelegate f = functionDelegates[(int)function];
 		
-		float tiltAroundZ = Input.GetAxis("Mouse X") * tiltAngle;
-		float tiltAroundX = Input.GetAxis("Mouse Y") * tiltAngle;
-		Quaternion target = Quaternion.Euler (tiltAroundX, 0, tiltAroundZ);
+		rotateAmount.y = Input.GetAxis("Mouse X") * mouseRate;
+		rotateAmount.z = - (Input.GetAxis("Mouse Y") * mouseRate);
+		rotateAmount.x = 0;
+		rotationEuler = rotationEuler + rotateAmount;
+		transform.rotation = Quaternion.Euler (rotationEuler);
 		
 		
-		transform.rotation =  Quaternion.Slerp (transform.rotation, target, Time.deltaTime * smooth);
+		//fabulousAssistant.transform.rotation = f(transform.rotation );
+		
+		fabulousAssistant.transform.rotation.SetFromToRotation((transform.rotation * Vector3.up), Vector3.forward );
+		
+		fabulousAssistant.transform.Rotate(0,0,1);
+		
+		
+		
 	
 	}
+	
+	private static Quaternion Invert (Quaternion a) {
+		return Quaternion.Inverse(a);
+	}
+	
+	private static Quaternion RotateHalfwayToward (Quaternion a) {
+		
+		
+		return Quaternion.RotateTowards(a, Quaternion.identity,(Time.time*10f));
+	}
+	
+	private static Quaternion JustAngleAxis (Quaternion a) {
+		
+		// Notice that tempAngle values of 90 and 270 move on the "same axis" but in opposite directions.
+		float tempAngle = 90f;
+		
+		Vector3 tempVector = new Vector3(0, Mathf.Sin(Mathf.Deg2Rad * tempAngle), Mathf.Cos(Mathf.Deg2Rad * tempAngle));
+		
+		return Quaternion.AngleAxis(a.eulerAngles.y, tempVector);
+	}
+	
+
+
+	
+		
 }
