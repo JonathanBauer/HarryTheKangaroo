@@ -10,6 +10,7 @@ public class PageManager : MonoBehaviour {
 	
 	static PageManager myInstance;
 	static int instances = 0;
+	private GimbalGyroAidControl gimbalGyroAidControl;
 	
 	public static PageManager Instance
 	{
@@ -24,6 +25,7 @@ public class PageManager : MonoBehaviour {
 	
 	// PageManager automatically checks how many page prefabs are in the Pages object and
 	// places them within arrays to move them
+	
 	
 	private GameObject pageRoot;				//for the Pages Object
 	private PageControl[] ebookPage;
@@ -72,6 +74,8 @@ public class PageManager : MonoBehaviour {
 		
 		EbookEventManager.EbookStart += EbookStart;
 		EbookEventManager.EbookBackToMenu += EbookBackToMenu;
+		
+		gimbalGyroAidControl = GetComponentInChildren<GimbalGyroAidControl>();
 		
 		// Find the "Pages" object and place all the PageControls into the ebookPage array
 		pageRoot = GameObject.Find("Pages");
@@ -243,6 +247,8 @@ public class PageManager : MonoBehaviour {
 			pageCoverMovement = - (pageTurnSpeed);
 			pageTurnDestination = - (distanceBetweenPages);
 			pageCoverDestination = - (screenCoverSize.x);
+			
+			gimbalGyroAidControl.CalibrateGyro ();
 		}
 	}
 	
@@ -258,6 +264,8 @@ public class PageManager : MonoBehaviour {
 			pageCoverMovement = pageTurnSpeed;
 			pageTurnDestination = distanceBetweenPages;
 			pageCoverDestination = screenCoverSize.x;
+			
+			gimbalGyroAidControl.CalibrateGyro ();
 		}
 	}
 	

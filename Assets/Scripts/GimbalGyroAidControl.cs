@@ -21,6 +21,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 	private Quaternion targetRotation = Quaternion.identity;
 	private bool onGyro;
 	private bool debug = true;
+	private bool invertRotation = false;
 	
 	public Vector3 gyroAid = new Vector3(0,0,0);			// This is used by the pages
 	private Vector3 gyroAidOffset = new Vector3(0,0,0);
@@ -130,37 +131,17 @@ public class GimbalGyroAidControl : MonoBehaviour {
 			gyroAid.y = gyroAid.y + gyroAidOffset.y;	
 		}
 		
-		/*
-		if (gyroAid.x > reportedRotationLimit.y)
+		
+		if (invertRotation)
 		{
-			reportedRotation.y = reportedRotationLimit.y;
-		}
-		else if (gyroAid.x < -(reportedRotationLimit.y))
-		{
-			reportedRotation.y = -(reportedRotationLimit.y);
+		reportedRotation.y  =  - gyroAid.x;	
+		reportedRotation.x  =  - gyroAid.y;	
 		}
 		else
 		{
-			reportedRotation.y  =  gyroAid.x;	
-		}
-		
-		if (gyroAid.y > reportedRotationLimit.x)
-		{
-			reportedRotation.x = reportedRotationLimit.x;
-		}
-		else if (gyroAid.y < -(reportedRotationLimit.x))
-		{
-			reportedRotation.x = -(reportedRotationLimit.x);
-		}
-		else
-		{
-			reportedRotation.x  =  gyroAid.y;	
-		}
-		*/
-		
 		reportedRotation.y  =  gyroAid.x;	
 		reportedRotation.x  =  gyroAid.y;	
-
+		}
 		
 		// The virtual gyro objects then display gyroAid as Yaw and Pitch
 		// If calibrationSlerp is on, the gyro will move toward 0,0,0 instead of snapping to it
@@ -241,6 +222,13 @@ public class GimbalGyroAidControl : MonoBehaviour {
 				
 			}
 			
+			if (GUILayout.Button("Invert Rotation " + invertRotation, GUILayout.Height(80)))
+			{
+				
+				ToggleInvertRotation();
+				
+			}
+			
 		
 		}
 		
@@ -254,7 +242,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 		return new Quaternion(q.x, q.y, -q.z, -q.w);	
 	}
 	
-	private void CalibrateGyro()
+	public void CalibrateGyro()
 	{
 		// Reseting the gyro to face forwards involves changing the offset value.
 		// Through long trials and error I worked out
@@ -274,5 +262,10 @@ public class GimbalGyroAidControl : MonoBehaviour {
 	private void ToggleUseGyro()
 	{
 		useGyro = !useGyro;
+	}
+	
+	private void ToggleInvertRotation()
+	{
+		invertRotation = !invertRotation;
 	}
 }
