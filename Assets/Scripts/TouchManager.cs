@@ -40,6 +40,8 @@ public class TouchManager : MonoBehaviour {
 	private Vector2 fingerStartPosition = new Vector2( 0, 0 );
 	private Vector2 fingerRecordedPosition = new Vector2( 0, 0 );
 	
+	public bool debugMode = true;
+	
 	
 	private Camera cam;
 	
@@ -128,6 +130,11 @@ public class TouchManager : MonoBehaviour {
 		{
 				PageManager.Instance.PageTurnNext();
 		}
+		
+		if (Input.GetKeyDown (KeyCode.Alpha7))
+		{
+				ToggleDebugMode();
+		}
 		/*
 		if (Input.GetKeyDown (KeyCode.Alpha3))
 		{
@@ -152,20 +159,25 @@ public class TouchManager : MonoBehaviour {
 		{
 			if (state == (int)ControlState.DragBegins)
 			{
-				float dragDistance = fingerStartPosition.x - fingerRecordedPosition.x;
+				Vector2 dragDistance = new Vector2(fingerStartPosition.x - fingerRecordedPosition.x, fingerStartPosition.y - fingerRecordedPosition.y) ;
 				
-				if (Mathf.Abs(dragDistance) > minimumDragDistance)
+				if (Mathf.Abs(dragDistance.x) > minimumDragDistance)
 				{
-					if (dragDistance < 0)
+					if (dragDistance.x < 0)
 					{
 						PageManager.Instance.PageTurnPrevious ();
 					}
-					else if (dragDistance > 0)
+					else if (dragDistance.x > 0)
 					{
 						PageManager.Instance.PageTurnNext ();
+					}	
+				}
+				else if (Mathf.Abs(dragDistance.y) > minimumDragDistance)
+				{
+					if (dragDistance.y < 0 )
+					{
+					ToggleDebugMode();
 					}
-					
-					
 				}
 				
 			}
@@ -225,6 +237,12 @@ public class TouchManager : MonoBehaviour {
 		
 		InteractionControl();
 					
+	}
+	
+	private void ToggleDebugMode ()
+	{
+		
+		debugMode = !debugMode;
 	}
 	
 	private void EbookStart () {

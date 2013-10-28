@@ -7,11 +7,12 @@ public class PageControl : MonoBehaviour {
 
 	
 	private Vector3 gimbalSquared = Vector3.up;
-
 	
+	private Vector2 pageRotation = new Vector2(0,0);
+	public Vector2 pageRotationLimit = new Vector2(30,20);
 	private Vector3 elementPos = Vector3.up;
 	
-	public float dampenFactor = 1f;
+	public Vector2 dampenFactor = new Vector2(0.4f,0.4f);
 	
 	
 	//public List<GameObject> pictureObjects;
@@ -28,15 +29,41 @@ public class PageControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+		pageRotation.y = gimbal.reportedRotation.y;
+		
+		pageRotation.x = gimbal.reportedRotation.x;
+		
+		if (pageRotation.y > pageRotationLimit.y)
+		{
+			pageRotation.y = pageRotationLimit.y;
+		}
+		if (pageRotation.y < -(pageRotationLimit.y))
+		{
+			pageRotation.y = -(pageRotationLimit.y);
+		}
+		
+		
+		if (pageRotation.x > pageRotationLimit.x)
+		{
+			pageRotation.x = pageRotationLimit.x;
+		}
+		if (pageRotation.x < -(pageRotationLimit.x))
+		{
+			pageRotation.x = -(pageRotationLimit.x);
+		}
+		
+		
+		
+		
 		float v = pictureElement.Count;
 		
-		gimbalSquared.x = gimbal.reportedRotation.x * Mathf.Abs(gimbal.reportedRotation.x);
-		gimbalSquared.y = gimbal.reportedRotation.y * Mathf.Abs(gimbal.reportedRotation.y);
+		gimbalSquared.x = pageRotation.x * Mathf.Abs(pageRotation.x);
+		gimbalSquared.y = pageRotation.y * Mathf.Abs(pageRotation.y);
 		
 		for (int i = 0; i < v; i ++)
 		{
-			elementPos.x = gimbalSquared.x * pictureRate[i]* dampenFactor;
-			elementPos.y = - gimbalSquared.y * pictureRate[i]* dampenFactor;
+			elementPos.x = gimbalSquared.x * pictureRate[i]* dampenFactor.x;
+			elementPos.y = - gimbalSquared.y * pictureRate[i]* dampenFactor.y;
 			pictureElement[i].transform.localPosition = elementPos;
 			
 			

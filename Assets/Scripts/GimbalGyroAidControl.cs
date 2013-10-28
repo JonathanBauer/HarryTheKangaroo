@@ -15,7 +15,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 	
 	public Vector2 mouseRotSpeed = new Vector2(0.1f,0.1f);
 	
-	private bool useGyro = false;
+	private bool useGyro = true;
 	public Vector2 accelerometerRotRate= new Vector2(60,60);
 
 	private Quaternion targetRotation = Quaternion.identity;
@@ -26,7 +26,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 	private Vector3 gyroAidOffset = new Vector3(0,0,0);
 	
 	public Vector3 reportedRotation = new Vector3(0,0,0);
-	public Vector2 reportedRotationLimit = new Vector2(40,40);
+	
 	
 	private Vector2 previousMousePos = new Vector2(0,0);
 	private Vector2 currentMousePos = new Vector2(0,0);
@@ -130,7 +130,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 			gyroAid.y = gyroAid.y + gyroAidOffset.y;	
 		}
 		
-		
+		/*
 		if (gyroAid.x > reportedRotationLimit.y)
 		{
 			reportedRotation.y = reportedRotationLimit.y;
@@ -156,7 +156,10 @@ public class GimbalGyroAidControl : MonoBehaviour {
 		{
 			reportedRotation.x  =  gyroAid.y;	
 		}
-	
+		*/
+		
+		reportedRotation.y  =  gyroAid.x;	
+		reportedRotation.x  =  gyroAid.y;	
 
 		
 		// The virtual gyro objects then display gyroAid as Yaw and Pitch
@@ -180,6 +183,22 @@ public class GimbalGyroAidControl : MonoBehaviour {
 			gyroAidPitch.transform.localRotation = Quaternion.Euler(gyroAid.x,0,0);
 		}
 		
+		if (!TouchManager.Instance.debugMode)
+		{
+			gimbal.renderer.enabled = false;
+			gyroAidYaw.renderer.enabled = false;
+			gyroAidPitch.renderer.enabled = false;
+			
+			
+		}
+		else
+		{
+			gimbal.renderer.enabled = true;
+			gyroAidYaw.renderer.enabled = true;
+			gyroAidPitch.renderer.enabled = true;
+			
+		}
+		
 		
 
 	
@@ -187,7 +206,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 	
 	void OnGUI () { 
 		
-		if (debug)
+		if (TouchManager.Instance.debugMode)
 		{
 	
 			GUILayout.Label("Gyro Attitude " + Input.gyro.attitude);
