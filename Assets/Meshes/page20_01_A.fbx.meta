@@ -7,19 +7,44 @@ ModelImporter:
     100002: //RootNode
     100004: water_and_mountains
     100006: mountains
+    100008: gumtree01
+    100010: grass01
+    100012: grass02
+    100014: grass03
+    100016: grass04
     400000: harry
     400002: //RootNode
     400004: water_and_mountains
     400006: mountains
+    400008: gumtree01
+    400010: grass01
+    400012: grass02
+    400014: grass03
+    400016: grass04
     2300000: harry
     2300002: water_and_mountains
     2300004: mountains
+    2300006: gumtree01
+    2300008: grass01
+    2300010: grass02
+    2300012: grass03
+    2300014: grass04
     3300000: harry
     3300002: water_and_mountains
     3300004: mountains
+    3300006: gumtree01
+    3300008: grass01
+    3300010: grass02
+    3300012: grass03
+    3300014: grass04
     4300000: water_and_mountains
     4300002: harry
     4300004: mountains
+    4300006: gumtree01
+    4300008: grass01
+    4300010: grass02
+    4300012: grass03
+    4300014: grass04
     9500000: //RootNode
     11100000: //RootNode
   materials:
