@@ -10,7 +10,10 @@ public class PageControl : MonoBehaviour {
 	public float textTravelSpeed = 1.0f;
 		
 	private TextTextureOffset[] ebookText;
-	private float[] ebookTextTime;
+	private float[] textStartTime;
+	
+	private float startPageTextTime = -1.0f;
+	private int currentTextObject = -1;
 	
 	private Vector3 gimbalSquared = Vector3.up;
 	
@@ -33,12 +36,42 @@ public class PageControl : MonoBehaviour {
 		
 		ebookText = GetComponentsInChildren<TextTextureOffset>();
 		
+		int textObjectCount;
+		
+		textObjectCount = ebookText.Length;
+		
+		textStartTime = new float[textObjectCount];
+		
+		float sumOfTextTimes = 0f;
+		
+		if (textObjectCount > 0) {
+			
+			for (int i = 0; i < textObjectCount; i ++) {
+				
+				textStartTime[i] = sumOfTextTimes;
+				
+				sumOfTextTimes += ebookText[i].sentenceTime + (ebookText[i].travelTime *2) + ebookText[i].endSentencePause;
+				Debug.Log("Start time for Text Object "+i+" "+ebookText[i]+" is "+textStartTime[i]);
+			}
+		}
 
 	}
 	
 	
 	// Update is called once per frame
 	void Update () {
+		
+		
+		if (Input.GetKeyDown (KeyCode.Alpha9))
+		{
+				StartPageText ();
+		}
+		
+		if (Input.GetKeyDown (KeyCode.Alpha0))
+		{
+				ResetPageText ();
+		}
+		
 		
 		pageRotation.y = gimbal.reportedRotation.y;
 		
@@ -80,6 +113,48 @@ public class PageControl : MonoBehaviour {
 			
 		}
 		
+		
+		// if there's a time given to start the text on this page
+		if (startPageTextTime > 0)
+		{
+			
+			int textObjectCount;
+			
+			// Count the text objects (
+			textObjectCount = ebookText.Length;
+			
+			
+			// if there are text objects under this page control
+			if (textObjectCount > 0) {
+				
+				
+				for (int i = 0; i < textObjectCount; i ++)
+				{
+					float t = startPageTextTime + textStartTime[i];
+		
+					// currentTextObject begins at -1 so that the below statement can be true when i is 0			
+		
+					if (Time.time > (startPageTextTime + textStartTime[i]) && currentTextObject < i)
+					{
+						currentTextObject = i;
+							
+						Debug.Log ("TIME to Start Text Object "+ currentTextObject);
+						
+						ebookText[i].StartText ();
+							
+					}
+					
+				}
+				
+			}
+			
+		}
+			
+		
+			
+		
+		/*
+		
 		if (isCurrent)
 		{
 			float startTime = Time.time;
@@ -104,15 +179,22 @@ public class PageControl : MonoBehaviour {
 			
 			isCurrent = false;
 		}
-		
+		*/
 	
 	}
 	
-	void OnGUI () {
+	public void StartPageText () {
 		
-		//GUILayout.Label("RotX: " + pictureElement.Count);
-		//GUILayout.Label("RotY: " + i);
-		//GUILayout.Label("RotY: " + gimbal.rotY);
+		startPageTextTime = Time.time;
+		
+		Debug.Log ("Page Begun");
+
+	}
+	
+	public void ResetPageText () {
+		
+		startPageTextTime = -1;
+
 	}
 	
 	

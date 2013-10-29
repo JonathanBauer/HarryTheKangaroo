@@ -10,6 +10,7 @@ public class TextTextureOffset : MonoBehaviour {
 	public float endSentencePause = 0.5f;	// The specified time a sentence waits once it's finished
 	
 	private float textStartTime = -1.0f;
+	private bool inPlace = false;
 	
 	private Vector3 startPosition;
 	private Vector2 startOffset;
@@ -62,6 +63,7 @@ public class TextTextureOffset : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+		// For testing TextTextureOffset
 		/*
 		if (Input.GetKeyDown (KeyCode.Alpha9))
 		{
@@ -78,10 +80,19 @@ public class TextTextureOffset : MonoBehaviour {
 		
 		if (textStartTime > -1)
 		{
+			if (Time.time > (textStartTime + sentenceTime + endSentencePause + travelTime) && inPlace ) {
+				
+				Debug.Log("Reseting");
+				
+				ResetText ();
+				
+				
+			}
+			
 			// If time has passed for the sentence to play, it's time to pull the text object back to start
 			// A Mathf lerp is a nice way to make something travel over a specific time
 			
-			if (Time.time > (textStartTime + sentenceTime + endSentencePause)) {
+			else if (Time.time > (textStartTime + sentenceTime + endSentencePause) && inPlace ) {
 				
 				Debug.Log("Moving out");
 				
@@ -91,17 +102,19 @@ public class TextTextureOffset : MonoBehaviour {
 			}
 			// Otherwise, once Time.time has passed textStartTime, the travel Time is over. The transform
 			// must be locked to 0,0,0
-			else if (Time.time > textStartTime) {
+			else if (Time.time > textStartTime && !inPlace) {
 				
 				Debug.Log("In Place");
 				
 				transform.localPosition = new Vector3(0,0,0);
 				
+				inPlace = true;
+				
 			}
 			
 			// Otherwise, the text object must still be moving outwards
 		
-			else if (Time.time > (textStartTime - travelTime)) {
+			else if (Time.time > (textStartTime - travelTime) && !inPlace) {
 				
 				Debug.Log("Moving in");
 				
@@ -170,6 +183,8 @@ public class TextTextureOffset : MonoBehaviour {
 		renderer.material.SetTextureScale ("_MultiTex", startScale);
 			
 		transform.localPosition = startPosition;
+		
+		inPlace = false;
 	}
 	
 	
