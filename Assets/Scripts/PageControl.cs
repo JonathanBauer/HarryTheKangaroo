@@ -3,13 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PageControl : MonoBehaviour {
-	
-	public bool isCurrent = false;
-	
-	public Vector3 textTravelDistance = new Vector2(200,0);
-	public float textTravelSpeed = 1.0f;
-		
-	private TextTextureOffset[] ebookText;
+			
+	private TextTextureOffset[] ebookTextObject;
 	private float[] textStartTime;
 	
 	private float startPageTextTime = -1.0f;
@@ -34,11 +29,11 @@ public class PageControl : MonoBehaviour {
 	
 	void Start (){
 		
-		ebookText = GetComponentsInChildren<TextTextureOffset>();
+		ebookTextObject = GetComponentsInChildren<TextTextureOffset>();
 		
 		int textObjectCount;
 		
-		textObjectCount = ebookText.Length;
+		textObjectCount = ebookTextObject.Length;
 		
 		textStartTime = new float[textObjectCount];
 		
@@ -50,8 +45,8 @@ public class PageControl : MonoBehaviour {
 				
 				textStartTime[i] = sumOfTextTimes;
 				
-				sumOfTextTimes += ebookText[i].sentenceTime + (ebookText[i].travelTime *2) + ebookText[i].endSentencePause;
-				Debug.Log("Start time for Text Object "+i+" "+ebookText[i]+" is "+textStartTime[i]);
+				sumOfTextTimes += ebookTextObject[i].sentenceTime + (ebookTextObject[i].travelTime *2) + ebookTextObject[i].endSentencePause;
+				//Debug.Log("Start time for Text Object "+i+" "+ebookTextObject[i]+" is "+textStartTime[i]);
 			}
 		}
 
@@ -61,7 +56,7 @@ public class PageControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		
+		/*
 		if (Input.GetKeyDown (KeyCode.Alpha9))
 		{
 				StartPageText ();
@@ -71,6 +66,7 @@ public class PageControl : MonoBehaviour {
 		{
 				ResetPageText ();
 		}
+		*/
 		
 		
 		pageRotation.y = gimbal.reportedRotation.y;
@@ -121,7 +117,7 @@ public class PageControl : MonoBehaviour {
 			int textObjectCount;
 			
 			// Count the text objects (
-			textObjectCount = ebookText.Length;
+			textObjectCount = ebookTextObject.Length;
 			
 			
 			// if there are text objects under this page control
@@ -138,9 +134,9 @@ public class PageControl : MonoBehaviour {
 					{
 						currentTextObject = i;
 							
-						Debug.Log ("TIME to Start Text Object "+ currentTextObject);
+						//Debug.Log ("TIME to Start Text Object "+ currentTextObject);
 						
-						ebookText[i].StartText ();
+						ebookTextObject[i].StartText ();
 							
 					}
 					
@@ -149,37 +145,7 @@ public class PageControl : MonoBehaviour {
 			}
 			
 		}
-			
-		
-			
-		
-		/*
-		
-		if (isCurrent)
-		{
-			float startTime = Time.time;
-			
-			for( int i = 0; i < ebookText.Length; i++) 
-			{
-				Vector3 startPosition = ebookText[i].transform.localPosition;
-				
-				Vector3 position = new Vector3 (0,0,0);
-				
-				position.x = Mathf.Lerp (startPosition.x,
-								startPosition.x + textTravelDistance.x,
-								(Time.time - startTime) * textTravelSpeed  );
-				
-				position.y = Mathf.Lerp (startPosition.x,
-								startPosition.x + textTravelDistance.x,
-								(Time.time - startTime) * textTravelSpeed  );
-				
-				
-				ebookText[i].transform.localPosition = position;
-			}
-			
-			isCurrent = false;
-		}
-		*/
+
 	
 	}
 	
@@ -187,13 +153,32 @@ public class PageControl : MonoBehaviour {
 		
 		startPageTextTime = Time.time;
 		
-		Debug.Log ("Page Begun");
+		
+		Debug.Log ("startPageTextTime is "+Time.time);
 
 	}
 	
 	public void ResetPageText () {
 		
 		startPageTextTime = -1;
+		
+		Debug.Log ("Text Reset");
+		
+		currentTextObject = -1;
+		
+		int textObjectCount;
+		
+		textObjectCount = ebookTextObject.Length;
+		
+		if (textObjectCount > 0) {
+			
+			for (int i = 0; i < textObjectCount; i ++) {
+				
+				ebookTextObject[i].ResetText ();
+			}
+		}
+		
+		
 
 	}
 	

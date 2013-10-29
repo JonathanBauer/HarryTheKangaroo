@@ -35,6 +35,8 @@ public class PageManager : MonoBehaviour {
 	
 	private float[] pageCoverInitialXPos;
 	
+	
+	
 
 	private int currentPage = 0;
 	private int turnToPage = 0;
@@ -87,8 +89,8 @@ public class PageManager : MonoBehaviour {
 		
 		// Arrays start at zero, so the last entry is always the count minus one
 		lastPage = ebookPage.Length - 1;
-		Debug.Log ("eBook Page Length = " + ebookPage.Length);
-		Debug.Log ("Page 1 = " + ebookPage[0]);
+		//Debug.Log ("eBook Page Length = " + ebookPage.Length);
+		//Debug.Log ("Page 1 = " + ebookPage[0]);
 		// Total pages are known, so the initial X position array for the page covers matches this
 		pageCoverInitialXPos = new float[ebookPage.Length];
 		Debug.Log ("Page Cover Initial Pos X Length = " + pageCoverInitialXPos.Length);
@@ -129,19 +131,51 @@ public class PageManager : MonoBehaviour {
 			pageCoverInitialXPos[i] = pageCoverPosition.x;
 			
 		}	
+		
+		ebookPage[currentPage].StartPageText ();
 	
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+
+			
+		
+		if (Input.GetKeyDown (KeyCode.Alpha0))
+		{	
+			int i;
+		
+			for( i = 0; i < (lastPage + 1); i++) 
+			{
+				Debug.Log ("Page "+i+" is "+ebookPage[i]);
+			}
+			Debug.Log ("Current Page is "+ebookPage[currentPage]);
+			
+			
+		}
+				
+		/*
+		
+		if (Input.GetKeyDown (KeyCode.Alpha9))
+		{
+				
+				ebookPage[currentPage].StartPageText ();
+		}
+		
+		if (Input.GetKeyDown (KeyCode.Alpha0))
+		{
+				ebookPage[currentPage].ResetPageText ();
+		}
+		*/
+		
 		// if the page covers are meant to be moving..	
 		if (pageCoverMovement != 0) 
 		{  
 			
 			if (pageCoverTravel == 0)
 			{
-				Debug.Log("Page Cover Travel Begun");
+				//Debug.Log("Page Cover Travel Begun");
 				
 				int i;
 			
@@ -175,7 +209,7 @@ public class PageManager : MonoBehaviour {
 			// the page cover has reached its destination
 			else if (Mathf.Abs(pageCoverTravel) > Mathf.Abs(pageCoverDestination)) 
 			{
-				Debug.Log("Page Cover Travel Ended");
+				//Debug.Log("Page Cover Travel Ended");
 				
 				int i;
 			
@@ -203,12 +237,14 @@ public class PageManager : MonoBehaviour {
 				// turned page is now the current page
 				
 				currentPage = turnToPage;	
+				
+				ebookPage[currentPage].StartPageText ();
 			}
 			
 			else 
 				
 			{
-				Debug.Log("Page Cover Travelling");
+				//Debug.Log("Page Cover Travelling");
 				
 				// pageCoverMovement can be positive or negative.
 				// Because multiple pages and page covers are being moved,
@@ -249,6 +285,8 @@ public class PageManager : MonoBehaviour {
 			pageCoverDestination = - (screenCoverSize.x);
 			
 			gimbalGyroAidControl.CalibrateGyro ();
+			
+			ebookPage[currentPage].ResetPageText ();
 		}
 	}
 	
@@ -266,6 +304,8 @@ public class PageManager : MonoBehaviour {
 			pageCoverDestination = screenCoverSize.x;
 			
 			gimbalGyroAidControl.CalibrateGyro ();
+			
+			ebookPage[currentPage].ResetPageText ();
 		}
 	}
 	

@@ -82,7 +82,7 @@ public class TextTextureOffset : MonoBehaviour {
 		{
 			if (Time.time > (textStartTime + sentenceTime + endSentencePause + travelTime) && inPlace ) {
 				
-				Debug.Log("Reseting");
+				//Debug.Log("Reseting");
 				
 				ResetText ();
 				
@@ -94,7 +94,7 @@ public class TextTextureOffset : MonoBehaviour {
 			
 			else if (Time.time > (textStartTime + sentenceTime + endSentencePause) && inPlace ) {
 				
-				Debug.Log("Moving out");
+				//Debug.Log("Moving out");
 				
 				transform.localPosition += (startPosition / travelTime) * Time.deltaTime;
 				
@@ -104,7 +104,7 @@ public class TextTextureOffset : MonoBehaviour {
 			// must be locked to 0,0,0
 			else if (Time.time > textStartTime && !inPlace) {
 				
-				Debug.Log("In Place");
+				//Debug.Log("In Place");
 				
 				transform.localPosition = new Vector3(0,0,0);
 				
@@ -116,7 +116,7 @@ public class TextTextureOffset : MonoBehaviour {
 		
 			else if (Time.time > (textStartTime - travelTime) && !inPlace) {
 				
-				Debug.Log("Moving in");
+				//Debug.Log("Moving in");
 				
 				transform.localPosition -= (startPosition / travelTime) * Time.deltaTime;
 				
