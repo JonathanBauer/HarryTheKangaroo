@@ -3,8 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PageControl : MonoBehaviour {
+	
+	public bool isCurrent = false;
+	
+	public Vector3 textTravelDistance = new Vector2(200,0);
+	public float textTravelSpeed = 1.0f;
 		
-
+	private TextTextureOffset[] ebookText;
+	private float[] ebookTextTime;
 	
 	private Vector3 gimbalSquared = Vector3.up;
 	
@@ -23,8 +29,13 @@ public class PageControl : MonoBehaviour {
 	
 	public GimbalGyroAidControl gimbal;
 	
-	
+	void Start (){
+		
+		ebookText = GetComponentsInChildren<TextTextureOffset>();
+		
 
+	}
+	
 	
 	// Update is called once per frame
 	void Update () {
@@ -67,6 +78,31 @@ public class PageControl : MonoBehaviour {
 			pictureElement[i].transform.localPosition = elementPos;
 			
 			
+		}
+		
+		if (isCurrent)
+		{
+			float startTime = Time.time;
+			
+			for( int i = 0; i < ebookText.Length; i++) 
+			{
+				Vector3 startPosition = ebookText[i].transform.localPosition;
+				
+				Vector3 position = new Vector3 (0,0,0);
+				
+				position.x = Mathf.Lerp (startPosition.x,
+								startPosition.x + textTravelDistance.x,
+								(Time.time - startTime) * textTravelSpeed  );
+				
+				position.y = Mathf.Lerp (startPosition.x,
+								startPosition.x + textTravelDistance.x,
+								(Time.time - startTime) * textTravelSpeed  );
+				
+				
+				ebookText[i].transform.localPosition = position;
+			}
+			
+			isCurrent = false;
 		}
 		
 	
