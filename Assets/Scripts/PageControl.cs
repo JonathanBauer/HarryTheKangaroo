@@ -34,7 +34,7 @@ public class PageControl : MonoBehaviour {
 		int textObjectCount;
 		
 		textObjectCount = ebookTextObject.Length;
-		
+		/*
 		textStartTime = new float[textObjectCount];
 		
 		float sumOfTextTimes = 0f;
@@ -43,12 +43,15 @@ public class PageControl : MonoBehaviour {
 			
 			for (int i = 0; i < textObjectCount; i ++) {
 				
+				// sumOfTextTimes is 0 when i = 0. The first object starts immediately
 				textStartTime[i] = sumOfTextTimes;
 				
+				// sumOfTextTimes goes up for each Text Object afterwards
 				sumOfTextTimes += ebookTextObject[i].sentenceTime + (ebookTextObject[i].travelTime *2) + ebookTextObject[i].endSentencePause;
-				//Debug.Log("Start time for Text Object "+i+" "+ebookTextObject[i]+" is "+textStartTime[i]);
+				Debug.Log("Start time for Text Object "+i+" "+ebookTextObject[i]+" is "+textStartTime[i]);
 			}
 		}
+		*/
 
 	}
 	
@@ -123,6 +126,29 @@ public class PageControl : MonoBehaviour {
 			// if there are text objects under this page control
 			if (textObjectCount > 0) {
 				
+				//remove start
+				
+				textStartTime = new float[textObjectCount];
+		
+				float sumOfTextTimes = 0f;
+		
+
+			
+				for (int i = 0; i < textObjectCount; i ++) {
+				
+					// sumOfTextTimes is 0 when i = 0. The first object starts immediately
+					textStartTime[i] = sumOfTextTimes;
+					
+					// sumOfTextTimes goes up for each Text Object afterwards
+					sumOfTextTimes += ebookTextObject[i].sentenceTime + (ebookTextObject[i].travelTime *2) + ebookTextObject[i].endSentencePause;
+					Debug.Log("Start time for Text Object "+i+" "+ebookTextObject[i]+" is "+textStartTime[i]);
+				}	
+
+				//remove end
+				
+				
+				
+				
 				
 				for (int i = 0; i < textObjectCount; i ++)
 				{
@@ -134,7 +160,7 @@ public class PageControl : MonoBehaviour {
 					{
 						currentTextObject = i;
 							
-						//Debug.Log ("TIME to Start Text Object "+ currentTextObject);
+						Debug.Log ("TIME to Start Text Object "+ currentTextObject);
 						
 						ebookTextObject[i].StartText ();
 							

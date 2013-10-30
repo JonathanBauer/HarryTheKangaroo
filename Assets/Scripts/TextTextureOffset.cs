@@ -38,6 +38,8 @@ public class TextTextureOffset : MonoBehaviour {
 			
 			sentenceTime = wordTime[v-1];
 			
+			Debug.Log("Sentence time for "+transform+" is "+sentenceTime);
+			
 		}
 		
 		// Get the starting positions of the object
