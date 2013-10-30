@@ -14,15 +14,16 @@ public class TextTextureOffset : MonoBehaviour {
 	
 	private Vector3 startPosition;
 	private Vector2 startOffset;
-	private Vector2 startScale;
+	private Vector2 startTiling;
 	
 	public List<float> wordTime = new List<float>();
+	public List<float> TilingForWord = new List<float>();
 	public List<float> offsetForWord = new List<float>();
-	public List<float> scaleForWord = new List<float>();
+	
 	private bool[] isPlayed;
 	
 	private Vector2 textureOffset = new Vector2 (0,0);
-	private Vector2 textureScale = new Vector2 (0,0);
+	private Vector2 textureTiling = new Vector2 (0,0);
 	
 	void Start () {
 		
@@ -45,7 +46,7 @@ public class TextTextureOffset : MonoBehaviour {
 		
 		startOffset = renderer.material.GetTextureOffset ("_MultiTex");
 		
-		startScale = renderer.material.GetTextureScale ("_MultiTex");
+		startTiling = renderer.material.GetTextureScale ("_MultiTex");
 		
 		// isPlayed array defined here, entries are added in ResetText ()
 		
@@ -138,8 +139,8 @@ public class TextTextureOffset : MonoBehaviour {
 						//textureOffset.x = textureOffset.x + offsetForWord[i];
 						renderer.material.SetTextureOffset ("_MultiTex", textureOffset);
 						
-						textureScale.x = scaleForWord[i];
-						renderer.material.SetTextureScale ("_MultiTex", textureScale);
+						textureTiling.x = TilingForWord[i];
+						renderer.material.SetTextureScale ("_MultiTex", textureTiling);
 						isPlayed[i] = true;
 						
 					}
@@ -180,7 +181,7 @@ public class TextTextureOffset : MonoBehaviour {
 		
 		renderer.material.SetTextureOffset ("_MultiTex", startOffset);
 		
-		renderer.material.SetTextureScale ("_MultiTex", startScale);
+		renderer.material.SetTextureScale ("_MultiTex", startTiling);
 			
 		transform.localPosition = startPosition;
 		
