@@ -12,6 +12,7 @@ ModelImporter:
     100012: fgnear
     100014: harry
     100016: //RootNode
+    100018: activated
     400000: background
     400002: bgfar
     400004: bgmid
@@ -21,6 +22,7 @@ ModelImporter:
     400012: fgnear
     400014: harry
     400016: //RootNode
+    400018: activated
     2300000: background
     2300002: bgfar
     2300004: bgmid
@@ -29,6 +31,7 @@ ModelImporter:
     2300010: fgmid
     2300012: fgnear
     2300014: harry
+    2300016: activated
     3300000: background
     3300002: bgfar
     3300004: bgmid
@@ -37,6 +40,7 @@ ModelImporter:
     3300010: fgmid
     3300012: fgnear
     3300014: harry
+    3300016: activated
     4300000: background
     4300002: bgfar
     4300004: bgmid
@@ -45,6 +49,7 @@ ModelImporter:
     4300010: fgmid
     4300012: harry
     4300014: fgnear
+    4300016: activated
     9500000: //RootNode
     11100000: //RootNode
   materials:
