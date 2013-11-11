@@ -40,6 +40,8 @@ public class TouchManager : MonoBehaviour {
 	private Vector2 fingerStartPosition = new Vector2( 0, 0 );
 	private Vector2 fingerRecordedPosition = new Vector2( 0, 0 );
 	
+	private TouchActivate touchActivated;
+	
 	public bool debugMode = true;
 	
 	
@@ -106,12 +108,28 @@ public class TouchManager : MonoBehaviour {
 				rayCastY = cursorScreenPosition.y;
 			}
 			
+			// RaycastHit is the structure used to get information back from a raycast
 			RaycastHit hit;
+			
+			// A ray is an infinite line starting at origin and going in some direction
 			Ray ray = cam.ScreenPointToRay( new Vector3 (rayCastX, rayCastY ) );
+			
+			
 			if ( Physics.Raycast ( ray, out hit) )
 			{
 				Debug.Log("Ray Cast Hit on Object");
 				oneTouchPromptGiven = true;
+				
+				if (hit.collider != null) {
+					
+					touchActivated = hit.collider.GetComponent<TouchActivate>();
+					
+					//Debug.Log (touchActivated);
+					
+					touchActivated.HasBeenTouched ();
+					
+				}
+					
 			}
 			else
 			{

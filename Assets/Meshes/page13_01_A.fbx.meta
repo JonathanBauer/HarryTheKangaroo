@@ -8,23 +8,28 @@ ModelImporter:
     100004: //RootNode
     100006: seat
     100008: windows
+    100010: activated
     400000: background
     400002: harrykevin
     400004: //RootNode
     400006: seat
     400008: windows
+    400010: activated
     2300000: background
     2300002: harrykevin
     2300004: seat
     2300006: windows
+    2300008: activated
     3300000: background
     3300002: harrykevin
     3300004: seat
     3300006: windows
+    3300008: activated
     4300000: background
     4300002: windows
     4300004: seat
     4300006: harrykevin
+    4300008: activated
     9500000: //RootNode
     11100000: //RootNode
   materials:

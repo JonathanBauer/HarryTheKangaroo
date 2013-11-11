@@ -23,6 +23,8 @@ public class PageControl : MonoBehaviour {
 	
 	public List<GameObject> pictureElement = new List<GameObject>();
 	public List<float> pictureRate = new List<float>();
+	
+	public TouchActivate touchActivateObject;
 
 	
 	public GimbalGyroAidControl gimbal;

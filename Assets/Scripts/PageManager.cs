@@ -36,7 +36,7 @@ public class PageManager : MonoBehaviour {
 	private float[] pageCoverInitialXPos;
 	
 	
-	
+	private bool canProgress = true;
 
 	private int currentPage = 0;
 	private int turnToPage = 0;
@@ -59,6 +59,9 @@ public class PageManager : MonoBehaviour {
 	
 	public float cameraOrthographicSize = 34f;
 	public float screenCoverScale = 1f;
+	public float touchActivateWaitTime = 0.5f;
+	
+	private float activationWaitTimer = -1;
 	
 	private Vector3 screenCoverSize = new Vector3(1,1,1);
 	
@@ -139,6 +142,36 @@ public class PageManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+		// Check to see if this page has a TouchActivate object
+		TouchActivate hasTouchActivate = ebookPage[currentPage].touchActivateObject;
+		
+
+		// if it has one
+		if (hasTouchActivate != null) {
+			// and it has just been activated
+			if (canProgress != hasTouchActivate.touched) {
+				
+				// activate the timer
+				
+				activationWaitTimer = Time.time;
+				
+				canProgress = hasTouchActivate.touched;
+				
+				
+			}
+	
+		}
+		
+		if (activationWaitTimer > 0) {
+			
+			if (Time.time > (activationWaitTimer + touchActivateWaitTime)) {
+				
+				PageTurnNext ();
+				activationWaitTimer = -1f;
+				
+			}
+		}
+		
 
 			
 		
@@ -239,6 +272,9 @@ public class PageManager : MonoBehaviour {
 				currentPage = turnToPage;	
 				
 				ebookPage[currentPage].StartPageText ();
+				
+				
+				
 			}
 			
 			else 
@@ -292,10 +328,14 @@ public class PageManager : MonoBehaviour {
 	
 	public void PageTurnNext ()
 	{
-		if (currentPage >= lastPage) {
+		if (!canProgress){
+			Debug.Log("You need to touch an object first");
+		}		
+		else if (currentPage >= lastPage) {
 			Debug.Log("You're on the last page");
 		}
-		else
+		
+		else 
 		{
 			turnToPage = currentPage +1;
 			Debug.Log("Turning up to Page " +turnToPage );
