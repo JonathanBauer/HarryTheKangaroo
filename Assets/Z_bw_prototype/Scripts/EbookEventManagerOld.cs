@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public static class EbookEventManager {
+public static class EbookEventManagerOld {
 
 	public delegate void EbookEvent();
 	

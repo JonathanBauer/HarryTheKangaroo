@@ -164,7 +164,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 			gyroAidPitch.transform.localRotation = Quaternion.Euler(gyroAid.x,0,0);
 		}
 		
-		if (!TouchManager.Instance.debugMode)
+		if (!TouchManagerOld.Instance.debugMode)
 		{
 			gimbal.renderer.enabled = false;
 			gyroAidYaw.renderer.enabled = false;
@@ -187,7 +187,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 	
 	void OnGUI () { 
 		
-		if (TouchManager.Instance.debugMode)
+		if (TouchManagerOld.Instance.debugMode)
 		{
 	
 			GUILayout.Label("Gyro Attitude " + Input.gyro.attitude);

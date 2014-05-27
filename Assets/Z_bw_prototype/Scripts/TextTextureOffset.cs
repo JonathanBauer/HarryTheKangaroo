@@ -28,7 +28,7 @@ public class TextTextureOffset : MonoBehaviour {
 	void Start () {
 		
 		//Find the last offset entry and record its time as the sentence time
-		//Which will be passed to PageControl
+		//Which will be passed to PageControlOld
 		
 		int v = wordTime.Count;	
 			

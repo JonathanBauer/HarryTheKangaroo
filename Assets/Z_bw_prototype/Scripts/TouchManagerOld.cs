@@ -1,17 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-public class TouchManager : MonoBehaviour {
+public class TouchManagerOld : MonoBehaviour {
 	
-	static TouchManager myInstance;
+	static TouchManagerOld myInstance;
 	static int instances = 0;
 	
-	public static TouchManager Instance
+	public static TouchManagerOld Instance
 	{
 		get
 		{
 			if (myInstance == null)
-				myInstance = FindObjectOfType (typeof(TouchManager)) as TouchManager;
+				myInstance = FindObjectOfType (typeof(TouchManagerOld)) as TouchManagerOld;
 			
 			return myInstance;
 		}
@@ -40,7 +40,7 @@ public class TouchManager : MonoBehaviour {
 	private Vector2 fingerStartPosition = new Vector2( 0, 0 );
 	private Vector2 fingerRecordedPosition = new Vector2( 0, 0 );
 	
-	private TouchActivate touchActivated;
+	private TouchActivateOld touchActivated;
 	
 	public bool debugMode = true;
 	
@@ -63,8 +63,8 @@ public class TouchManager : MonoBehaviour {
 		//Debug.Log ("Screen Height:" + Screen.height);
 		//Debug.Log (cam);
 		
-		EbookEventManager.EbookStart += EbookStart;
-		EbookEventManager.EbookBackToMenu += EbookBackToMenu;
+		EbookEventManagerOld.EbookStart += EbookStart;
+		EbookEventManagerOld.EbookBackToMenu += EbookBackToMenu;
 
 		
 		ResetControlState();
@@ -122,7 +122,7 @@ public class TouchManager : MonoBehaviour {
 				
 				if (hit.collider != null) {
 					
-					touchActivated = hit.collider.GetComponent<TouchActivate>();
+					touchActivated = hit.collider.GetComponent<TouchActivateOld>();
 					
 					//Debug.Log (touchActivated);
 					
@@ -142,11 +142,11 @@ public class TouchManager : MonoBehaviour {
 		
 		if (Input.GetKeyDown (KeyCode.Alpha1))
 		{
-				PageManager.Instance.PageTurnPrevious();
+				PageManagerOld.Instance.PageTurnPrevious();
 		}
 		if (Input.GetKeyDown (KeyCode.Alpha2))
 		{
-				PageManager.Instance.PageTurnNext();
+				PageManagerOld.Instance.PageTurnNext();
 		}
 		
 		if (Input.GetKeyDown (KeyCode.Alpha7))
@@ -156,7 +156,7 @@ public class TouchManager : MonoBehaviour {
 		/*
 		if (Input.GetKeyDown (KeyCode.Alpha3))
 		{
-				PageManager.Instance.ScreenCap();
+				PageManagerOld.Instance.ScreenCap();
 		}
 		*/
 
@@ -183,11 +183,11 @@ public class TouchManager : MonoBehaviour {
 				{
 					if (dragDistance.x < 0)
 					{
-						PageManager.Instance.PageTurnPrevious ();
+						PageManagerOld.Instance.PageTurnPrevious ();
 					}
 					else if (dragDistance.x > 0)
 					{
-						PageManager.Instance.PageTurnNext ();
+						PageManagerOld.Instance.PageTurnNext ();
 					}	
 				}
 				else if (Mathf.Abs(dragDistance.y) > minimumDragDistance)

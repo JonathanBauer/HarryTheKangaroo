@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class TouchActivate : MonoBehaviour {
+public class TouchActivateOld : MonoBehaviour {
 	
 	
 	public bool touched = false;

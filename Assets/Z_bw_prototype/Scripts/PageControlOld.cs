@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class PageControl : MonoBehaviour {
+public class PageControlOld : MonoBehaviour {
 			
 	private TextTextureOffset[] ebookTextObject;
 	private float[] textStartTime;
@@ -24,7 +24,7 @@ public class PageControl : MonoBehaviour {
 	public List<GameObject> pictureElement = new List<GameObject>();
 	public List<float> pictureRate = new List<float>();
 	
-	public TouchActivate touchActivateObject;
+	public TouchActivateOld touchActivateObject;
 
 	
 	public GimbalGyroAidControl gimbal;

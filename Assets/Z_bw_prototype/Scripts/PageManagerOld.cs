@@ -1,34 +1,34 @@
 using UnityEngine;
 using System.Collections;
 
-public class PageManager : MonoBehaviour {
+public class PageManagerOld : MonoBehaviour {
 	
 	/* A singleton is a design pattern that restricts the instantiation of a class to one object. 
 	 * 
 	 * 
 	 */
 	
-	static PageManager myInstance;
+	static PageManagerOld myInstance;
 	static int instances = 0;
 	private GimbalGyroAidControl gimbalGyroAidControl;
 	
-	public static PageManager Instance
+	public static PageManagerOld Instance
 	{
 		get
 		{
 			if (myInstance == null)
-				myInstance = FindObjectOfType (typeof(PageManager)) as PageManager;
+				myInstance = FindObjectOfType (typeof(PageManagerOld)) as PageManagerOld;
 			
 			return myInstance;
 		}
 	}
 	
-	// PageManager automatically checks how many page prefabs are in the Pages object and
+	// PageManagerOld automatically checks how many page prefabs are in the Pages object and
 	// places them within arrays to move them
 	
 	
 	private GameObject pageRoot;				//for the Pages Object
-	private PageControl[] ebookPage;
+	private PageControlOld[] ebookPage;
 	
 	private GameObject pageCoverRoot;			//for the Page Screen Covers Object
 	private Renderer[] pageCoverRenderer;
@@ -77,14 +77,14 @@ public class PageManager : MonoBehaviour {
 			myInstance = this;
 		
 		
-		EbookEventManager.EbookStart += EbookStart;
-		EbookEventManager.EbookBackToMenu += EbookBackToMenu;
+		EbookEventManagerOld.EbookStart += EbookStart;
+		EbookEventManagerOld.EbookBackToMenu += EbookBackToMenu;
 		
 		gimbalGyroAidControl = GetComponentInChildren<GimbalGyroAidControl>();
 		
-		// Find the "Pages" object and place all the PageControls into the ebookPage array
+		// Find the "Pages" object and place all the PageControlOlds into the ebookPage array
 		pageRoot = GameObject.Find("Pages");
-		ebookPage = pageRoot.GetComponentsInChildren<PageControl>();
+		ebookPage = pageRoot.GetComponentsInChildren<PageControlOld>();
 		
 		// Find the "PageScreenCovers" object and place all the Renderables into the pageCoverRenderer array
 		pageCoverRoot = GameObject.Find("PageScreenCovers");
@@ -142,20 +142,20 @@ public class PageManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		// Check to see if this page has a TouchActivate object
-		TouchActivate hasTouchActivate = ebookPage[currentPage].touchActivateObject;
+		// Check to see if this page has a TouchActivateOld object
+		TouchActivateOld hasTouchActivateOld = ebookPage[currentPage].touchActivateObject;
 		
 
 		// if it has one
-		if (hasTouchActivate != null) {
+		if (hasTouchActivateOld != null) {
 			// and it has just been activated
-			if (canProgress != hasTouchActivate.touched) {
+			if (canProgress != hasTouchActivateOld.touched) {
 				
 				// activate the timer
 				
 				activationWaitTimer = Time.time;
 				
-				canProgress = hasTouchActivate.touched;
+				canProgress = hasTouchActivateOld.touched;
 				
 				
 			}
