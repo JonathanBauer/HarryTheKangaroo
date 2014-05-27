@@ -7,7 +7,7 @@ public class RTtest02 : MonoBehaviour
 	
 	private static Texture2D tex2D;
 	private static Texture tex;
-	private Rect myRectangle = new Rect( 0f, 0f, Screen.width, Screen.height );
+	//private Rect myRectangle = new Rect( 0f, 0f, Screen.width, Screen.height );
  
 	// Update is called once per frame
 	void Start (){

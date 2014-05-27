@@ -20,7 +20,7 @@ public class GimbalGyroAidControl : MonoBehaviour {
 
 	private Quaternion targetRotation = Quaternion.identity;
 	private bool onGyro;
-	private bool debug = true;
+	//private bool debug = true;
 	private bool invertRotation = false;
 	
 	public Vector3 gyroAid = new Vector3(0,0,0);			// This is used by the pages

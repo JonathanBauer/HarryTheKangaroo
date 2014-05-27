@@ -33,9 +33,9 @@ public class PageControl : MonoBehaviour {
 		
 		ebookTextObject = GetComponentsInChildren<TextTextureOffset>();
 		
-		int textObjectCount;
+		//int textObjectCount;
 		
-		textObjectCount = ebookTextObject.Length;
+		//textObjectCount = ebookTextObject.Length;
 		/*
 		textStartTime = new float[textObjectCount];
 		
@@ -119,24 +119,24 @@ public class PageControl : MonoBehaviour {
 		if (startPageTextTime > 0)
 		{
 			
-			int textObjectCount;
+			//int textObjectCount;
 			
 			// Count the text objects (
-			textObjectCount = ebookTextObject.Length;
+			//textObjectCount = ebookTextObject.Length;
 			
 			
 			// if there are text objects under this page control
-			if (textObjectCount > 0) {
+			if (ebookTextObject.Length > 0) {
 				
 				//remove start
 				
-				textStartTime = new float[textObjectCount];
+				textStartTime = new float[ebookTextObject.Length];
 		
 				float sumOfTextTimes = 0f;
 		
 
 			
-				for (int i = 0; i < textObjectCount; i ++) {
+				for (int i = 0; i < ebookTextObject.Length; i ++) {
 				
 					// sumOfTextTimes is 0 when i = 0. The first object starts immediately
 					textStartTime[i] = sumOfTextTimes;
@@ -152,9 +152,9 @@ public class PageControl : MonoBehaviour {
 				
 				
 				
-				for (int i = 0; i < textObjectCount; i ++)
+				for (int i = 0; i < ebookTextObject.Length; i ++)
 				{
-					float t = startPageTextTime + textStartTime[i];
+					// float t = startPageTextTime + textStartTime[i];
 		
 					// currentTextObject begins at -1 so that the below statement can be true when i is 0			
 		
@@ -194,13 +194,13 @@ public class PageControl : MonoBehaviour {
 		
 		currentTextObject = -1;
 		
-		int textObjectCount;
+		//int textObjectCount;
 		
-		textObjectCount = ebookTextObject.Length;
+		//textObjectCount = ebookTextObject.Length;
 		
-		if (textObjectCount > 0) {
+		if (ebookTextObject.Length > 0) {
 			
-			for (int i = 0; i < textObjectCount; i ++) {
+			for (int i = 0; i < ebookTextObject.Length; i ++) {
 				
 				ebookTextObject[i].ResetText ();
 			}

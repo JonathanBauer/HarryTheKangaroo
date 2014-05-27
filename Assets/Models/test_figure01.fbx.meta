@@ -1,0 +1,291 @@
+fileFormatVersion: 2
+guid: 9348476b35b52ca4bb0608d362c3ddb4
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: body
+    100002: figure01
+    100004: figure01_root
+    100006: head01
+    100008: left_arm
+    100010: left_arm_end
+    100012: left_shoulder
+    100014: right_arm
+    100016: right_arm_end
+    100018: right_leg
+    100020: right_leg_end
+    100022: right_shoulder
+    100024: right_thigh
+    100026: skirt
+    100028: skirt_end
+    100030: //RootNode
+    100032: UVA_animate
+    100034: head02
+    100036: UVB_animate
+    400000: body
+    400002: figure01
+    400004: figure01_root
+    400006: head01
+    400008: left_arm
+    400010: left_arm_end
+    400012: left_shoulder
+    400014: right_arm
+    400016: right_arm_end
+    400018: right_leg
+    400020: right_leg_end
+    400022: right_shoulder
+    400024: right_thigh
+    400026: skirt
+    400028: skirt_end
+    400030: //RootNode
+    400032: UVA_animate
+    400034: head02
+    400036: UVB_animate
+    4300000: figure01
+    7400000: StartLoop
+    7400002: AnimationPlay
+    7400004: Extra
+    9500000: //RootNode
+    11100000: //RootNode
+    13700000: figure01
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: StartLoop
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 70
+      wrapMode: 2
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: figure01
+        weight: 1
+      - path: figure01_root
+        weight: 1
+      - path: figure01_root/body
+        weight: 1
+      - path: figure01_root/body/head01
+        weight: 1
+      - path: figure01_root/body/head01/UVA_animate
+        weight: 1
+      - path: figure01_root/body/left_shoulder
+        weight: 1
+      - path: figure01_root/body/left_shoulder/left_arm
+        weight: 1
+      - path: figure01_root/body/left_shoulder/left_arm/left_arm_end
+        weight: 1
+      - path: figure01_root/body/right_shoulder
+        weight: 1
+      - path: figure01_root/body/right_shoulder/right_arm
+        weight: 1
+      - path: figure01_root/body/right_shoulder/right_arm/right_arm_end
+        weight: 1
+      - path: figure01_root/body/right_thigh
+        weight: 1
+      - path: figure01_root/body/right_thigh/right_leg
+        weight: 1
+      - path: figure01_root/body/right_thigh/right_leg/right_leg_end
+        weight: 1
+      - path: figure01_root/body/skirt
+        weight: 1
+      - path: figure01_root/body/skirt/skirt_end
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: AnimationPlay
+      takeName: Take 001
+      firstFrame: 80
+      lastFrame: 124
+      wrapMode: 1
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: figure01
+        weight: 1
+      - path: figure01_root
+        weight: 1
+      - path: figure01_root/body
+        weight: 1
+      - path: figure01_root/body/head01
+        weight: 1
+      - path: figure01_root/body/head01/UVA_animate
+        weight: 1
+      - path: figure01_root/body/head02
+        weight: 1
+      - path: figure01_root/body/head02/UVB_animate
+        weight: 1
+      - path: figure01_root/body/left_shoulder
+        weight: 1
+      - path: figure01_root/body/left_shoulder/left_arm
+        weight: 1
+      - path: figure01_root/body/left_shoulder/left_arm/left_arm_end
+        weight: 1
+      - path: figure01_root/body/right_shoulder
+        weight: 1
+      - path: figure01_root/body/right_shoulder/right_arm
+        weight: 1
+      - path: figure01_root/body/right_shoulder/right_arm/right_arm_end
+        weight: 1
+      - path: figure01_root/body/right_thigh
+        weight: 1
+      - path: figure01_root/body/right_thigh/right_leg
+        weight: 1
+      - path: figure01_root/body/right_thigh/right_leg/right_leg_end
+        weight: 1
+      - path: figure01_root/body/skirt
+        weight: 1
+      - path: figure01_root/body/skirt/skirt_end
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Extra
+      takeName: Take 001
+      firstFrame: 125
+      lastFrame: 180
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: figure01
+        weight: 1
+      - path: figure01_root
+        weight: 1
+      - path: figure01_root/body
+        weight: 1
+      - path: figure01_root/body/head01
+        weight: 1
+      - path: figure01_root/body/head01/UVA_animate
+        weight: 1
+      - path: figure01_root/body/head02
+        weight: 1
+      - path: figure01_root/body/head02/UVB_animate
+        weight: 1
+      - path: figure01_root/body/left_shoulder
+        weight: 1
+      - path: figure01_root/body/left_shoulder/left_arm
+        weight: 1
+      - path: figure01_root/body/left_shoulder/left_arm/left_arm_end
+        weight: 1
+      - path: figure01_root/body/right_shoulder
+        weight: 1
+      - path: figure01_root/body/right_shoulder/right_arm
+        weight: 1
+      - path: figure01_root/body/right_shoulder/right_arm/right_arm_end
+        weight: 1
+      - path: figure01_root/body/right_thigh
+        weight: 1
+      - path: figure01_root/body/right_thigh/right_leg
+        weight: 1
+      - path: figure01_root/body/right_thigh/right_leg/right_leg_end
+        weight: 1
+      - path: figure01_root/body/skirt
+        weight: 1
+      - path: figure01_root/body/skirt/skirt_end
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 

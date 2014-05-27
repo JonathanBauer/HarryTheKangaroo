@@ -25,6 +25,7 @@ public class QT_CubeQuatRotate : MonoBehaviour {
 	
 	// Define a static variable (all the values are already in it, thus static) of the type FunctionDelegate
 	// called functionDelegates. The enumeration is the same order as FunctionOption.
+	/*
 	private static FunctionDelegate[] functionDelegates = {
 		Invert,
 		RotateHalfwayToward,
@@ -34,7 +35,8 @@ public class QT_CubeQuatRotate : MonoBehaviour {
 		
 		
 	};
-	
+	Commented to remove annoying never used errors
+	*/
 	
 	
 	
@@ -64,7 +66,8 @@ public class QT_CubeQuatRotate : MonoBehaviour {
 	
 		// This simply has to use the public enum "function" 
 		// I have no idea how to make it work privately
-		FunctionDelegate f = functionDelegates[(int)function];
+
+		// FunctionDelegate f = functionDelegates[(int)function];
 		
 		rotateAmount.y = Input.GetAxis("Mouse X") * mouseRate;
 		rotateAmount.z = - (Input.GetAxis("Mouse Y") * mouseRate);

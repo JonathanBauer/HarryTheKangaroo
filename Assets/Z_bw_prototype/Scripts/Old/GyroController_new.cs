@@ -13,17 +13,17 @@ public class GyroController_new : MonoBehaviour
 	bool gyroEnabled = true;
 	const float lowPassFilterFactor = 0.2f;
 
-	Quaternion baseIdentity =  Quaternion.Euler(90, 0, 0);
+	//Quaternion baseIdentity =  Quaternion.Euler(90, 0, 0);
 	//Quaternion landscapeRight =  Quaternion.Euler(0, 0, 90);
 	//Quaternion landscapeLeft =  Quaternion.Euler(0, 0, -90);
 	//Quaternion upsideDown =  Quaternion.Euler(0, 0, 180);
 	
 	Quaternion cameraBase =  Quaternion.identity;
 	Quaternion calibration =  Quaternion.identity;
-	Quaternion baseOrientation =  Quaternion.Euler(90, 0, 0);
+	//Quaternion baseOrientation =  Quaternion.Euler(90, 0, 0);
 	Quaternion baseOrientationRotationFix =  Quaternion.identity;
 
-	Quaternion referanceRotation = Quaternion.identity;
+	//Quaternion referanceRotation = Quaternion.identity;
 	bool debug = true;
 
 	
@@ -204,7 +204,7 @@ public class GyroController_new : MonoBehaviour
 	void ResetBaseOrientation()
 	{
 		baseOrientationRotationFix = GetRotFix();
-		baseOrientation = baseOrientationRotationFix * baseIdentity;
+		//baseOrientation = baseOrientationRotationFix * baseIdentity;
 	}
 
 	/// <summary>
@@ -212,7 +212,7 @@ public class GyroController_new : MonoBehaviour
 	/// </summary>
 	void RecalculateReferenceRotation()
 	{
-		referanceRotation = Quaternion.Inverse(baseOrientation)*Quaternion.Inverse(calibration);
+		//referanceRotation = Quaternion.Inverse(baseOrientation)*Quaternion.Inverse(calibration);
 	}
 
 	

@@ -55,7 +55,7 @@ public class PageManager : MonoBehaviour {
 	private float pageCoverDestination = 0f;
 		
 	
-	private Vector2 screenSize = new Vector2(0,0);
+	//private Vector2 screenSize = new Vector2(0,0);
 	
 	public float cameraOrthographicSize = 34f;
 	public float screenCoverScale = 1f;
@@ -100,12 +100,12 @@ public class PageManager : MonoBehaviour {
 		Debug.Log ("Page Cover 1 = " + pageCoverRenderer[0]);
 			
 		// The page covers cover the entire screen corner to corner to hide the transition of the page prefabs
-		Vector2 screenSize = new Vector2(0,0);
+		//Vector2 screenSize = new Vector2(0,0);
 		
-		screenSize.x = Screen.width;
-		screenSize.y = Screen.height;
+		//screenSize.x = Screen.width;
+		//screenSize.y = Screen.height;
 		
-		float aspectRatio = screenSize.x / screenSize.y;
+		float aspectRatio = Screen.width / Screen.height;
 		
 		screenCoverSize.y = (cameraOrthographicSize * 2)* screenCoverScale ;
 		screenCoverSize.x = (screenCoverSize.y * aspectRatio) * screenCoverScale;
