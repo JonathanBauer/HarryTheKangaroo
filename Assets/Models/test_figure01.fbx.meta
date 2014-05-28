@@ -42,9 +42,9 @@ ModelImporter:
     400034: head02
     400036: UVB_animate
     4300000: figure01
-    7400000: StartLoop
-    7400002: AnimationPlay
-    7400004: Extra
+    7400000: idle
+    7400002: play
+    7400004: extra
     9500000: //RootNode
     11100000: //RootNode
     13700000: figure01
@@ -64,11 +64,11 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: StartLoop
+      name: idle
       takeName: Take 001
       firstFrame: 0
       lastFrame: 70
-      wrapMode: 2
+      wrapMode: 1
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -124,7 +124,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: AnimationPlay
+      name: play
       takeName: Take 001
       firstFrame: 80
       lastFrame: 124
@@ -188,11 +188,11 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: Extra
+      name: extra
       takeName: Take 001
       firstFrame: 125
       lastFrame: 180
-      wrapMode: 0
+      wrapMode: 8
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0

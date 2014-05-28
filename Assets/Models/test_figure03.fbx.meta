@@ -1,25 +1,51 @@
 fileFormatVersion: 2
-guid: 6d324f0c7ca94a84abfc64f39c3f9729
+guid: 03715204689bed34c890b7a49537c9d2
 ModelImporter:
   serializedVersion: 16
   fileIDToRecycleName:
     100000: body
-    100002: figure02
-    100004: figure02_root
-    100006: hinge
-    100008: hinge_end
-    100010: //RootNode
+    100002: figure01
+    100004: figure01_root
+    100006: head01
+    100008: head02
+    100010: left_arm
+    100012: left_arm_end
+    100014: left_shoulder
+    100016: right_arm
+    100018: right_arm_end
+    100020: right_leg
+    100022: right_leg_end
+    100024: right_shoulder
+    100026: right_thigh
+    100028: skirt
+    100030: skirt_end
+    100032: //RootNode
+    100034: UVA_animate
+    100036: UVB_animate
     400000: body
-    400002: figure02
-    400004: figure02_root
-    400006: hinge
-    400008: hinge_end
-    400010: //RootNode
-    4300000: figure02
-    7400000: idle
+    400002: figure01
+    400004: figure01_root
+    400006: head01
+    400008: head02
+    400010: left_arm
+    400012: left_arm_end
+    400014: left_shoulder
+    400016: right_arm
+    400018: right_arm_end
+    400020: right_leg
+    400022: right_leg_end
+    400024: right_shoulder
+    400026: right_thigh
+    400028: skirt
+    400030: skirt_end
+    400032: //RootNode
+    400034: UVA_animate
+    400036: UVB_animate
+    4300000: figure01
+    7400000: play
     9500000: //RootNode
     11100000: //RootNode
-    13700000: figure02
+    13700000: figure01
   materials:
     importMaterials: 1
     materialName: 1
@@ -36,11 +62,11 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: idle
+      name: play
       takeName: Take 001
-      firstFrame: 0
-      lastFrame: 40
-      wrapMode: 2
+      firstFrame: 80
+      lastFrame: 124
+      wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -61,15 +87,41 @@ ModelImporter:
       transformMask:
       - path: 
         weight: 1
-      - path: figure02
+      - path: figure01
         weight: 1
-      - path: figure02_root
+      - path: figure01_root
         weight: 1
-      - path: figure02_root/body
+      - path: figure01_root/body
         weight: 1
-      - path: figure02_root/body/hinge
+      - path: figure01_root/body/head01
         weight: 1
-      - path: figure02_root/body/hinge/hinge_end
+      - path: figure01_root/body/head01/UVA_animate
+        weight: 1
+      - path: figure01_root/body/head02
+        weight: 1
+      - path: figure01_root/body/head02/UVB_animate
+        weight: 1
+      - path: figure01_root/body/left_shoulder
+        weight: 1
+      - path: figure01_root/body/left_shoulder/left_arm
+        weight: 1
+      - path: figure01_root/body/left_shoulder/left_arm/left_arm_end
+        weight: 1
+      - path: figure01_root/body/right_shoulder
+        weight: 1
+      - path: figure01_root/body/right_shoulder/right_arm
+        weight: 1
+      - path: figure01_root/body/right_shoulder/right_arm/right_arm_end
+        weight: 1
+      - path: figure01_root/body/right_thigh
+        weight: 1
+      - path: figure01_root/body/right_thigh/right_leg
+        weight: 1
+      - path: figure01_root/body/right_thigh/right_leg/right_leg_end
+        weight: 1
+      - path: figure01_root/body/skirt
+        weight: 1
+      - path: figure01_root/body/skirt/skirt_end
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
