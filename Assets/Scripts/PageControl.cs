@@ -4,122 +4,200 @@ using System.Collections.Generic;
 
 public class PageControl : MonoBehaviour {
 
-	public bool debugMode = true;
-	public float startPageTime = -1f;
+	public bool debugMode = true;					// Toggle debug messages
+	public bool isValid = true;						// Ensures there are no empty entries before running
+	public float startPageTime = -1f;				// Records when the page's StartAnimations() began
 	
-	public List<Animation> animationTarget;
-	public List<float> animationStartTime;
-	//public List<float> animationLength;
-	public List<bool> playAnimationTriggered;
-	public List<bool> playAnimationFinished;
+	public List<Animation> animationTarget;			// All plugged-in animating objects
+	public List<bool> hasIdleAnimation;				// Does this object have an idle animation that loops on start
+	public List<float> animationStartTime;			// The delay before the story-oriented play animation starts
+	public List<bool> playAnimationStarted;			// Check for the play animation starting due to animationStartTime
+	public List<bool> playAnimationFinished;		// Check for the play animation finishing due to animationStartTime
+
+	public List<bool> triggeredAnimationStarted;	// Toggle the animation starting due to user interaction.
 
 	// Use this for initialization
 	void Start () {
-	
-		// Start all animations
+
+		// Validation check to ensure every entry in animationTarget is an Animation
 		for (int i=0; i < animationTarget.Count; i++)
 		{
-			if (!animationTarget[i].animation["play"])
+			if (!animationTarget[i])
 			{
 				if (debugMode)
-					Debug.Log(animationTarget[i].name + " has no play animation.");
+					Debug.Log(this.name + " has a null entry at index "+i+". This page is invalid.");
+				isValid = false;
 				
-			} else {
-				
-				animationTarget[i].animation["play"].wrapMode = WrapMode.Once;
-
-				// Check that the animation clip has a corresponding start time. 
-				// animationStartTime.Length must have 1 subtracted, because the first array entry starts at 0
-				if (i > (animationStartTime.Count - 1))
-				{
-					// If there is no start time for this clip, a new entry is added to animationStartTime[].
-					// A value of -1 indicates that animation clip "play" will never play when the target is triggered.
-					animationStartTime.Add(2);
-					//animationLength.Add(-1);
-
-					if (debugMode)
-						Debug.Log(animationTarget[i].name+ " has a play animation but no start time entry. Creating 2 second entry.");
-					
-				} 
-			
 			}
 
-			// Make a trigger bool for this animation to record when it's triggered
-			playAnimationTriggered.Add(false);
-			playAnimationFinished.Add(false);
+		}
+	
+		if (isValid)
+		{
+			for (int i=0; i < animationTarget.Count; i++)
+			{
 
+				// Check that every animationTarget has an idle animation and make it's boolean true if it does
+				if (!animationTarget[i].animation["idle"])
+				{
+					if (debugMode)
+						Debug.Log(animationTarget[i].name + " has no idle animation.");
+
+					hasIdleAnimation.Add(false);
+
+				} else {
+
+					// There's an idle animation. Set the wrapmode to Loop.
+					hasIdleAnimation.Add(true);
+					animationTarget[i].animation["idle"].wrapMode = WrapMode.Loop;
+
+				}
+			
+				// Check that every animationTarget has a play animation.
+				// If it doesn't, check if there is a corresponding start time entry.
+				// animationStartTime.Length must have 1 subtracted, because the first array entry starts at 0
+				// If there isn't a start time entry, create one with -1 in it to prevent playing "play"
+				// If the is a start time entry. Change it to -1.
+				if (!animationTarget[i].animation["play"])
+				{
+					if (debugMode)
+						Debug.Log(animationTarget[i].name + " has no play animation.");
+
+					if (i > (animationStartTime.Count - 1))
+					{
+
+						animationStartTime.Add(-1f);
+
+					} else {
+
+						animationStartTime[i] = -1f;
+					}
+					
+				} else {
+					
+					animationTarget[i].animation["play"].wrapMode = WrapMode.Once;
+
+					if (i > (animationStartTime.Count - 1))
+
+					{
+						// If there isn't a start time entry, create one with 2 in it so that the "play" animation is seen.
+						animationStartTime.Add(2);
+
+						if (debugMode)
+							Debug.Log(animationTarget[i].name+ " has a play animation but no start time entry. Creating 2 second entry.");
+						
+					} 
+				
+				}
+			
+			// Make a trigger bool for this animation to record if it's started and finished.
+			// Also give an de-activated trigger time.
+			playAnimationStarted.Add(false);
+			playAnimationFinished.Add(false);
+			triggeredAnimationStarted.Add(false);
+			}
 		}
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-		// Debug triggers
-		if (Input.GetKeyDown (KeyCode.Alpha0))
+		if (isValid) 
 		{
-			if (debugMode)
-				Debug.Log ("START");
-			startPageTime = Time.time;
-			StartAnimations ();
-		}
 
-		if (Input.GetKeyDown (KeyCode.Alpha1))
-		{
-			Debug.Log ("TRIGGER 1");
-		}
-
-		if (Input.GetKeyDown (KeyCode.Alpha2))
-		{
-			Debug.Log ("TRIGGER 2");
-		}
-
-		if (Input.GetKeyDown (KeyCode.Alpha3))
-		{
-			Debug.Log ("TRIGGER 3");
-		}
-
-		if (Input.GetKeyDown (KeyCode.Alpha4))
-		{
-			Debug.Log (animationTarget[0].animation["idle"]);
-			Debug.Log (animationTarget[2].animation["idle"]);
-		}
-
-
-		
-		// Go through each animationTarget
-		if (startPageTime > -1)
-		{
-			for (int i=0; i < animationTarget.Count; i++)
+			// Debug triggers
+			if (Input.GetKeyDown (KeyCode.Alpha0))
 			{
-				// If the time passes the target's start time, the play animation has not been triggered and it actually has a start time
-				if ((Time.time > animationStartTime[i] + startPageTime) && !playAnimationTriggered[i] && animationStartTime[i] != -1)
-				{
-					animationTarget[i].Play ("play");
-					playAnimationTriggered[i] = true;
-				}
-				// If the play animation has been triggered, the play animation has finished playing and the finish declaration hasn't happened
-				if (playAnimationTriggered[i] && !animationTarget[i].IsPlaying("play") && !playAnimationFinished[i])
-				{
-					if (debugMode)
-						Debug.Log(animationTarget[i].name + " has finished playing 'play'");
-					playAnimationFinished[i] = true;
+				if (debugMode)
+					Debug.Log ("START");
 
-					// Restart the idle animation if the animationTarget has one
-					if (!animationTarget[i].animation["idle"])
+				StartAnimations ();
+			}
+
+			if (Input.GetKeyDown (KeyCode.Alpha9))
+			{
+				if (debugMode)
+					Debug.Log ("STOP");
+				StopAnimations ();
+			}
+
+			if (Input.GetKeyDown (KeyCode.Alpha1))
+			{
+				if (debugMode)
+					Debug.Log ("TRIGGER 1");
+
+				if (startPageTime != -1)
+					triggeredAnimationStarted[0] = true;
+
+			}
+
+			if (Input.GetKeyDown (KeyCode.Alpha2))
+			{
+				if (debugMode)
+					Debug.Log ("TRIGGER 2");
+
+				if (startPageTime != -1)
+					triggeredAnimationStarted[1] = true;
+			}
+
+			if (Input.GetKeyDown (KeyCode.Alpha3))
+			{
+				if (debugMode)
+					Debug.Log ("TRIGGER 3");
+
+				if (startPageTime != -1)
+					triggeredAnimationStarted[2] = true;
+			}
+			
+			// Go through each animationTarget
+			if (startPageTime > -1)
+			{
+				for (int i=0; i < animationTarget.Count; i++)
+				{
+
+					// If the time passes the target's start time, the play animation has not been triggered and it actually has a start time
+					if ((Time.time > animationStartTime[i] + startPageTime) && !playAnimationStarted[i] && animationStartTime[i] != -1)
 					{
+						animationTarget[i].Play ("play");
+						playAnimationStarted[i] = true;
 						if (debugMode)
-							Debug.Log(animationTarget[i].name + " has no idle animation. Skipping,");
-						
-					} else {
-
-						animationTarget[i].Play ("idle");
-						
+							Debug.Log(animationTarget[i].name + " has begun playing 'play' as a start event");
 					}
 
+					if (triggeredAnimationStarted[i] && animationStartTime[i] != -1)
+					{
+						animationTarget[i].Stop ();
+						animationTarget[i].Play ("play");
+						if (debugMode)
+							Debug.Log(animationTarget[i].name + " has begun playing 'play' as a triggered event");
+						triggeredAnimationStarted[i] = false;
 
+					}
+
+					// If the play animation has been triggered, the play animation has finished playing and the finish declaration hasn't happened
+					if (playAnimationStarted[i] && !animationTarget[i].IsPlaying("play") && !playAnimationFinished[i])
+					{
+						if (debugMode)
+							Debug.Log(animationTarget[i].name + " has finished playing 'play' as a start event");
+						playAnimationFinished[i] = true;
+
+						// Restart the idle animation if the animationTarget has one
+						if (hasIdleAnimation[i])
+							animationTarget[i].Play ("idle");
+							
+					}
+
+					if (playAnimationStarted[i] && !animationTarget[i].IsPlaying("play") && !playAnimationFinished[i])
+					{
+						if (debugMode)
+							Debug.Log(animationTarget[i].name + " has finished playing 'play' as a triggered event");
+						
+						// Restart the idle animation if the animationTarget has one
+						if (hasIdleAnimation[i])
+							animationTarget[i].Play ("idle");
+						
+					}
 				}
-
 			}
 		}
 
@@ -127,19 +205,29 @@ public class PageControl : MonoBehaviour {
 	}
 
 	void StartAnimations () {
-
-		for (int i=0; i < animationTarget.Count; i++)
+		if (isValid)
 		{
-			if (!animationTarget[i].animation["idle"])
+			startPageTime = Time.time;
+			for (int i=0; i < animationTarget.Count; i++)
 			{
-				if (debugMode)
-					Debug.Log(animationTarget[i].name + " has no idle animation. Skipping,");
-
-			} else {
 			
-				animationTarget[i].animation["idle"].wrapMode = WrapMode.Loop;
-				animationTarget[i].Play ("idle");
+				if (hasIdleAnimation[i])
+					animationTarget[i].Play ("idle");
 
+			}
+		}
+	}
+
+	void StopAnimations () {
+		if (isValid)
+		{
+			startPageTime = -1f;
+			for (int i=0; i < animationTarget.Count; i++)
+			{
+				animationTarget[i].Stop(); 
+				playAnimationStarted[i] = false;
+				playAnimationFinished[i] = false;
+			
 			}
 		}
 	}
