@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class UVAnimateAuto : MonoBehaviour {
 
+	public bool debugMode = false;
+
 	public Vector2 tileSize = new Vector2(4,4);			// The number of tiles on the animated material texture
 
 	private SkinnedMeshRenderer[] bonedMesh;			// All SkinnedMeshRenderers inside the prefab
@@ -64,7 +66,8 @@ public class UVAnimateAuto : MonoBehaviour {
 			//Debug.Log ("Has SkinnedMeshRenderer");
 
 		} else {
-			Debug.Log(this+" has no SkinnededMeshRenderer. Ignoring");
+			if (debugMode)
+				Debug.Log(this+" has no SkinnededMeshRenderer. Ignoring");
 			hasBonedMesh = false;
 		}
 		
@@ -84,14 +87,16 @@ public class UVAnimateAuto : MonoBehaviour {
 					if (bonedMesh[mesh].materials[mat].name.IndexOf("UVA") != -1)
 					{
 						UVAMaterial = bonedMesh[mesh].materials[mat];
-						//Debug.Log("UVA Materials is "+ UVAMaterial);
+						if (debugMode)
+							Debug.Log("UVA Materials is "+ UVAMaterial);
 					}
 					
 					// Find out if it is UVB
 					if (bonedMesh[mesh].materials[mat].name.IndexOf("UVB") != -1)
 					{
 						UVBMaterial = bonedMesh[mesh].materials[mat];
-						//Debug.Log("UVB Materials is "+ UVBMaterial);
+						if (debugMode)
+							Debug.Log("UVB Materials is "+ UVBMaterial);
 					}
 					
 				}
@@ -112,14 +117,16 @@ public class UVAnimateAuto : MonoBehaviour {
 			{
 				UVAAnimatedBone = childTransform[i];
 				UVAInitialPos = childTransform[i].position;
-				Debug.Log(UVAAnimatedBone.name);
+				if (debugMode)
+					Debug.Log(UVAAnimatedBone.name);
 			}
 			// if the transform has the UVB prefix, if there is a UVBMaterial and there's no current UVB Animated Bone
 			if (childTransform[i].name.IndexOf("UVB") > -1 && UVBMaterial)
 			{
 				UVBAnimatedBone = childTransform[i];
 				UVBInitialPos = childTransform[i].position;
-				Debug.Log(UVBAnimatedBone.name);
+				if (debugMode)
+					Debug.Log(UVBAnimatedBone.name);
 			}
 		}
 

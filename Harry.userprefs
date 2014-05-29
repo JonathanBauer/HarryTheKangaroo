@@ -1,10 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PageControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PageManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\PageControl.cs" Line="17" Column="104" />
-      <File FileName="..\..\Jonno's Work\Unity\Tute Penelope C_Sharp\Assets\Scripts\AnimationController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Z_bw_prototype\Scripts\TouchManagerOld.cs" Line="143" Column="3" />
+      <File FileName="Assets\Scripts\PageControl.cs" Line="250" Column="15" />
+      <File FileName="Assets\Scripts\TouchManager.cs" Line="91" Column="27" />
+      <File FileName="Assets\Scripts\PageManager.cs" Line="60" Column="36" />
+      <File FileName="Assets\Scripts\Animation\UVAnimateAuto.cs" Line="1" Column="1" />
+      <File FileName="Assets\Z_bw_prototype\Scripts\TouchManagerOld.cs" Line="126" Column="68" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

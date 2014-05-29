@@ -88,6 +88,7 @@ public class TouchManagerOld : MonoBehaviour {
 	
 	void InteractionControl()
 	{
+
 		int count = Input.touchCount;
 		
 		bool mouseDown = Input.GetMouseButtonDown(0);

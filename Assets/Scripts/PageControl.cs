@@ -4,17 +4,22 @@ using System.Collections.Generic;
 
 public class PageControl : MonoBehaviour {
 
-	public bool debugMode = true;					// Toggle debug messages
-	public bool isValid = true;						// Ensures there are no empty entries before running
-	public float startPageTime = -1f;				// Records when the page's StartAnimations() began
-	
-	public List<Animation> animationTarget;			// All plugged-in animating objects
-	public List<bool> hasIdleAnimation;				// Does this object have an idle animation that loops on start
-	public List<float> animationStartTime;			// The delay before the story-oriented play animation starts
-	public List<bool> playAnimationStarted;			// Check for the play animation starting due to animationStartTime
-	public List<bool> playAnimationFinished;		// Check for the play animation finishing due to animationStartTime
+	public bool debugMode = false;									// Toggle debug messages
 
-	public List<bool> triggeredAnimationStarted;	// Toggle the animation starting due to user interaction.
+	
+	public List<Animation> animationTarget = new List<Animation>();	// All plugged-in animating objects
+	public List<float> animationStartTime = new List<float>();		// The delay before the story-oriented play animation starts
+	public List<MeshCollider> triggerMesh = new List<MeshCollider>();	// All plugged-in animating objects
+
+	private List<bool> hasIdleAnimation = new List<bool>();			// Does this object have an idle animation that loops on start
+	private List<bool> playAnimationStarted = new List<bool>();		// Check for the play animation starting due to animationStartTime
+	private List<bool> playAnimationFinished = new List<bool>();		// Check for the play animation finishing due to animationStartTime
+	private List<bool> triggeredAnimationStarted = new List<bool>();	// Toggle the animation starting due to user interaction.
+
+	private bool isValid = true;						// Ensures there are no empty entries before running
+	private float startPageTime = -1f;					// Records when the page's StartAnimations() began
+
+	// = new List<bool>() etc are assigned to avoid CS0414 warnings. They aren't needed for public lists, but if it might prevent crashes...
 
 	// Use this for initialization
 	void Start () {
@@ -55,13 +60,15 @@ public class PageControl : MonoBehaviour {
 			
 				// Check that every animationTarget has a play animation.
 				// If it doesn't, check if there is a corresponding start time entry.
-				// animationStartTime.Length must have 1 subtracted, because the first array entry starts at 0
-				// If there isn't a start time entry, create one with -1 in it to prevent playing "play"
-				// If the is a start time entry. Change it to -1.
+
 				if (!animationTarget[i].animation["play"])
 				{
 					if (debugMode)
 						Debug.Log(animationTarget[i].name + " has no play animation.");
+
+					// animationStartTime.Count must have 1 subtracted, because the first array entry starts at 0
+					// If there isn't a start time entry, create one with -1 in it to prevent playing "play"
+					// If the is a start time entry. Change it to -1.
 
 					if (i > (animationStartTime.Count - 1))
 					{
@@ -74,7 +81,8 @@ public class PageControl : MonoBehaviour {
 					}
 					
 				} else {
-					
+
+					// If it does, set the wrapmode to once.
 					animationTarget[i].animation["play"].wrapMode = WrapMode.Once;
 
 					if (i > (animationStartTime.Count - 1))
@@ -90,11 +98,31 @@ public class PageControl : MonoBehaviour {
 				
 				}
 			
-			// Make a trigger bool for this animation to record if it's started and finished.
-			// Also give an de-activated trigger time.
-			playAnimationStarted.Add(false);
-			playAnimationFinished.Add(false);
-			triggeredAnimationStarted.Add(false);
+				// Make a trigger bool for this animation to record if it's started and finished.
+				// Also give an de-activated trigger time.
+				playAnimationStarted.Add(false);
+				playAnimationFinished.Add(false);
+				triggeredAnimationStarted.Add(false);
+
+				// Perform a check on each triggerMesh to find out if there is one there
+				if (i > (triggerMesh.Count - 1))
+				{
+					if (debugMode)
+						Debug.Log(this.name + " has a no MeshCollider entry at index "+i+". Creating a null entry");
+					triggerMesh.Add(null);
+						
+				}
+
+				if (triggerMesh[i] == null)
+				{
+					
+					if (debugMode)
+						Debug.Log(this.name + " has a null MeshCollider entry in index "+i+".");
+
+				}
+
+
+			
 			}
 		}
 
@@ -126,7 +154,7 @@ public class PageControl : MonoBehaviour {
 				if (debugMode)
 					Debug.Log ("TRIGGER 1");
 
-				if (startPageTime != -1)
+				if ((startPageTime != -1) && (triggerMesh[0] != null))
 					triggeredAnimationStarted[0] = true;
 
 			}
@@ -136,7 +164,7 @@ public class PageControl : MonoBehaviour {
 				if (debugMode)
 					Debug.Log ("TRIGGER 2");
 
-				if (startPageTime != -1)
+				if ((startPageTime != -1) && (triggerMesh[1] != null))
 					triggeredAnimationStarted[1] = true;
 			}
 
@@ -145,7 +173,7 @@ public class PageControl : MonoBehaviour {
 				if (debugMode)
 					Debug.Log ("TRIGGER 3");
 
-				if (startPageTime != -1)
+				if ((startPageTime != -1) && (triggerMesh[2] != null))
 					triggeredAnimationStarted[2] = true;
 			}
 			
@@ -204,13 +232,13 @@ public class PageControl : MonoBehaviour {
 
 	}
 
-	void StartAnimations () {
+	public void StartAnimations () {
 		if (isValid)
 		{
 			startPageTime = Time.time;
 			for (int i=0; i < animationTarget.Count; i++)
 			{
-			
+				animationTarget[i].Stop(); 
 				if (hasIdleAnimation[i])
 					animationTarget[i].Play ("idle");
 
@@ -218,7 +246,7 @@ public class PageControl : MonoBehaviour {
 		}
 	}
 
-	void StopAnimations () {
+	public void StopAnimations () {
 		if (isValid)
 		{
 			startPageTime = -1f;
@@ -229,6 +257,14 @@ public class PageControl : MonoBehaviour {
 				playAnimationFinished[i] = false;
 			
 			}
+		}
+	}
+
+	public void TriggerAnimation ( int target) {
+		if (isValid)
+		{
+			if (startPageTime != -1)
+				triggeredAnimationStarted[target] = true;
 		}
 	}
 }
