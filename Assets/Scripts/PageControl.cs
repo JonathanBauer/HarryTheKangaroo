@@ -11,31 +11,23 @@ public class PageControl : MonoBehaviour {
 	public List<float> animationStartTime = new List<float>();		// The delay before the story-oriented play animation starts
 	public List<MeshCollider> triggerMesh = new List<MeshCollider>();	// All plugged-in animating objects
 
-	private List<bool> hasIdleAnimation = new List<bool>();			// Does this object have an idle animation that loops on start
-	private List<bool> playAnimationStarted = new List<bool>();		// Check for the play animation starting due to animationStartTime
-	private List<bool> playAnimationFinished = new List<bool>();		// Check for the play animation finishing due to animationStartTime
-	private List<bool> triggeredAnimationStarted = new List<bool>();	// Toggle the animation starting due to user interaction.
+	public List<bool> hasIdleAnimation = new List<bool>();			// Does this object have an idle animation that loops on start
+	public List<bool> playAnimationStarted = new List<bool>();		// Check for the play animation starting due to animationStartTime
+	public List<bool> playAnimationFinished = new List<bool>();		// Check for the play animation finishing due to animationStartTime
+	public List<bool> triggeredAnimationStarted = new List<bool>();	// Toggle the animation starting due to user interaction.
+
+	//public List<float> autoAnimationStartTime = new List<float>();
+	//public List<float> playAnimationLength = new List<float>();
 
 	private bool isValid = true;						// Ensures there are no empty entries before running
-	private float startPageTime = -1f;					// Records when the page's StartAnimations() began
+	public float startPageTime = -1f;					// Records when the page's StartAnimations() began
 
 	// = new List<bool>() etc are assigned to avoid CS0414 warnings. They aren't needed for public lists, but if it might prevent crashes...
 
 	// Use this for initialization
 	void Start () {
 
-		// Validation check to ensure every entry in animationTarget is an Animation
-		for (int i=0; i < animationTarget.Count; i++)
-		{
-			if (!animationTarget[i])
-			{
-				if (debugMode)
-					Debug.Log(this.name + " has a null entry at index "+i+". This page is invalid.");
-				isValid = false;
-				
-			}
-
-		}
+		ValidEntryCheck();
 	
 		if (isValid)
 		{
@@ -84,6 +76,9 @@ public class PageControl : MonoBehaviour {
 
 					// If it does, set the wrapmode to once.
 					animationTarget[i].animation["play"].wrapMode = WrapMode.Once;
+
+					if (debugMode)
+						Debug.Log(animationTarget[i].name+ " has a play animation. It is "+animationTarget[i].animation["play"].length+" seconds long");
 
 					if (i > (animationStartTime.Count - 1))
 
@@ -267,4 +262,22 @@ public class PageControl : MonoBehaviour {
 				triggeredAnimationStarted[target] = true;
 		}
 	}
+
+	public void ValidEntryCheck () {
+
+		// Validation check to ensure every entry in animationTarget is an Animation
+		for (int i=0; i < animationTarget.Count; i++)
+		{
+			if (!animationTarget[i])
+			{
+				if (debugMode)
+					Debug.Log(this.name + " has a null entry at index "+i+". This page is invalid.");
+				isValid = false;
+				
+			}
+			
+		}
+	
+	}
+
 }

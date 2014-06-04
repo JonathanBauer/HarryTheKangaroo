@@ -122,11 +122,73 @@ public class PageManager : MonoBehaviour {
 		{
 			if (hit == eBookPage[currentPage].triggerMesh[target])
 			{
+				if (hit.name.IndexOf("PageTurnNext") != -1)
+				{
+				    if (debugMode)
+				    	Debug.Log ("The hit object is " + hit + ".It's index is "+target+". It turns to the next page.");
+					PageTurnNext ();
+
+				} else if (hit.name.IndexOf("PageTurnPrevious") != -1)
+				{
+
+					if (debugMode)
+					    Debug.Log ("The hit object is " + hit + ".It's index is "+target+". It turns to the previous page.");
+					PageTurnPrevious ();
+
+				} else 
+				{
+
 				if (debugMode)
 					Debug.Log ("The hit object is " + hit + ".It's index is "+target);
 
 				eBookPage[currentPage].TriggerAnimation(target);
+				}
 			}
 		}
+	}
+
+
+	private void PageTurnNext () {
+
+		if (debugMode)
+			Debug.Log ("PageTurnNext");
+		
+		if (currentPage == lastPage) {
+			if (debugMode)
+				Debug.Log ("You're on the last page");
+		} else {
+			
+			eBookPage[currentPage].StopAnimations ();
+			currentPage ++;
+			eBookPage[currentPage].StartAnimations ();
+			
+			Vector3 position = cameraParent.transform.position;
+			position.x += distanceBetweenPages;
+			cameraParent.transform.position = position;
+			
+		}
+
+	}
+
+	private void PageTurnPrevious () {
+		
+		if (debugMode)
+			Debug.Log ("PageTurnPrevious");
+		
+		if (currentPage == 0) {
+			if (debugMode)
+				Debug.Log ("You're on the first page");
+		} else {
+			
+			eBookPage[currentPage].StopAnimations ();
+			currentPage --;
+			eBookPage[currentPage].StartAnimations ();
+			
+			Vector3 position = cameraParent.transform.position;
+			position.x -= distanceBetweenPages;
+			cameraParent.transform.position = position;
+			
+		}
+		
 	}
 }
