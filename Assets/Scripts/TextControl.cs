@@ -4,22 +4,19 @@ using System.Collections.Generic;
 
 public class TextControl : MonoBehaviour {
 
-	public List<string> textInput = new List<string>();
+	public ParagraphText[] paragraphTexts;
+
+
 
 	public string textOutput = "";
 
 	// Use this for initialization
 	void Start () {
 
-		for (int i=0; i < textInput.Count; i++)
-		{
-			textOutput += textInput[i];
-			textOutput +="\n";
-		}
+		paragraphTexts = this.GetComponentsInChildren<ParagraphText>();
 
-		guiText.text = textOutput;
+		DisableText ();
 
-		guiText.enabled = false;
 	
 	}
 	
@@ -29,14 +26,23 @@ public class TextControl : MonoBehaviour {
 	}
 
 	public void EnableText () {
-		
-		guiText.enabled = true;
+
+		for (int i=0; i < paragraphTexts.Length; i++)
+		{
+			paragraphTexts[i].guiText.enabled = true;
+		}
+	
 		
 	}
 
 	public void DisableText () {
+
+		for (int i=0; i < paragraphTexts.Length; i++)
+		{
+			paragraphTexts[i].guiText.enabled = false;
+		}
 		
-		guiText.enabled = false;
+	
 		
 	}
 }
