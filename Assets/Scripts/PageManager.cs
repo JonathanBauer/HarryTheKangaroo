@@ -33,6 +33,9 @@ public class PageManager : MonoBehaviour {
 	public Transform cameraParent;
 	public float distanceBetweenPages = 200f;
 
+	private GameObject textRoot;
+	public TextControl[] eBookText;
+
 
 
 
@@ -49,9 +52,13 @@ public class PageManager : MonoBehaviour {
 		pageRoot = GameObject.Find("eBookPages");
 		eBookPage = pageRoot.GetComponentsInChildren<PageControl>();
 
+		textRoot = GameObject.Find("eBookTexts");
+		eBookText = textRoot.GetComponentsInChildren<TextControl>();
+
 		lastPage = eBookPage.Length - 1;
 
 		eBookPage[currentPage].StartAnimations ();
+		eBookText[currentPage].EnableText ();
 
 
 	
@@ -159,8 +166,11 @@ public class PageManager : MonoBehaviour {
 		} else {
 			
 			eBookPage[currentPage].StopAnimations ();
+			eBookText[currentPage].DisableText ();
+
 			currentPage ++;
 			eBookPage[currentPage].StartAnimations ();
+			eBookText[currentPage].EnableText ();
 			
 			Vector3 position = cameraParent.transform.position;
 			position.x += distanceBetweenPages;
@@ -181,8 +191,10 @@ public class PageManager : MonoBehaviour {
 		} else {
 			
 			eBookPage[currentPage].StopAnimations ();
+			eBookText[currentPage].DisableText ();
 			currentPage --;
 			eBookPage[currentPage].StartAnimations ();
+			eBookText[currentPage].EnableText ();
 			
 			Vector3 position = cameraParent.transform.position;
 			position.x -= distanceBetweenPages;
