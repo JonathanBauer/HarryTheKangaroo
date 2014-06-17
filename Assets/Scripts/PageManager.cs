@@ -27,8 +27,8 @@ public class PageManager : MonoBehaviour {
 
 	private GameObject pageRoot;
 	public PageControl[] eBookPage;
-	private int currentPage = 0;
-	private int lastPage = 0;
+	public int currentPage = 0;
+	public int lastPage = 0;
 
 	public Transform cameraParent;
 	public float distanceBetweenPages = 200f;
@@ -116,7 +116,7 @@ public class PageManager : MonoBehaviour {
 
 	public void TriggerMeshTouched ( Collider hit ) {
 
-		int currentPageTriggerMeshCount = eBookPage[currentPage].triggerMesh.Count;
+		int currentPageTriggerMeshCount = eBookPage[currentPage].triggerMesh.Count - 1;
 
 		for (int target = 0; target < currentPageTriggerMeshCount; target++)
 		{

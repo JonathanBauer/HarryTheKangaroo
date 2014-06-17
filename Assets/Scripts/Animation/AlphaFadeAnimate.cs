@@ -17,6 +17,8 @@ public class AlphaFadeAnimate : MonoBehaviour {
 
 	private Transform[] childTransform;					// temporary store of all objects in the prefab's heirachy
 
+	public float ypos;
+
 	// Use this for initialization
 	void Start () {
 
@@ -34,7 +36,7 @@ public class AlphaFadeAnimate : MonoBehaviour {
 		// If there's a UVA animated bone, then obviously there's a UVA Material to animate, so start animating
 		if (FADAnimatedBone)
 		{
-			float ypos = FADAnimatedBone.position.y - FADInitialYPos;
+			ypos = FADAnimatedBone.position.y - FADInitialYPos;
 
 			FADMaterial.SetFloat("_AlphaStrength", ypos);
 		}

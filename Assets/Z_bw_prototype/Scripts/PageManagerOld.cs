@@ -28,7 +28,7 @@ public class PageManagerOld : MonoBehaviour {
 	
 	
 	private GameObject pageRoot;				//for the Pages Object
-	private PageControlOld[] ebookPage;
+	public PageControlOld[] ebookPage;
 	
 	private GameObject pageCoverRoot;			//for the Page Screen Covers Object
 	private Renderer[] pageCoverRenderer;
