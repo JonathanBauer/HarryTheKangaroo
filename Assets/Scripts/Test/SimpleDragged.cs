@@ -5,50 +5,44 @@ public class SimpleDragged : MonoBehaviour {
 
 	public enum dragState
 	{
+		InActive,
 		FollowingFinger,
 		IsReleased,
 		IsReturning
-			
+
 	}
 
 	public dragState thisDragState;
 
 	public Vector3 initialPosition = new Vector3 (0,0,0);
 
-	public Vector3 returnVector = new Vector3 (0,0,0);
+	private Vector3 returnVector = new Vector3 (0,0,0);
 
 	public float distanceBack = 15f;
 
-	public float returnSpeed = 0.01f;
+	public float returnSpeed = 4f;
 
-	public float destroyDistance = 0.3f;
+	public float disableDistance = 5f;
+
+	private Camera cam;
+
+	private SimpleDragDropControl dragDropControl;
+
 	
-
-	public Camera cam;
-
-	public SimpleDragDropControl dragDropControl;
-
-	void Awake () {
-
-		dragDropControl = FindObjectOfType(typeof(SimpleDragDropControl)) as SimpleDragDropControl;
-
-		if (dragDropControl)
-		{
-			cam = dragDropControl.cam;
-		
-		}
-
-
-
-	}
-	
-
 	// Use this for initialization
 	void Start () {
 
+		dragDropControl = FindObjectOfType(typeof(SimpleDragDropControl)) as SimpleDragDropControl;
+		
+		if (dragDropControl)
+		{
+			cam = dragDropControl.cam;
+			
+		}
+
 		initialPosition = transform.position;
 
-		thisDragState = dragState.FollowingFinger;
+		thisDragState = dragState.InActive;
 
 	
 	}
@@ -74,13 +68,9 @@ public class SimpleDragged : MonoBehaviour {
 
 			float dist = Vector3.Distance(initialPosition, transform.position);
 
-			Debug.Log (dist);
-
-			if (dist < destroyDistance)
+			if (dist < disableDistance)
 			{
-				Debug.Log (this + " is destroyed");
-
-				Destroy (gameObject);
+				thisDragState = dragState.InActive;
 
 			}
 			

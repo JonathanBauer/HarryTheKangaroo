@@ -3,60 +3,82 @@ using System.Collections;
 
 public class SimpleDragDropControl : MonoBehaviour {
 
+	public bool debugMode = false;
+
 	public Camera cam;
 
-	public Vector3 objectPosition = new Vector3 (0,0,0);
+	//public Vector3 objectPosition = new Vector3 (0,0,0);
 	
 	public Transform shoeDragPickUp;
 
 	public Transform shoeDragged;
 
+	public Transform shoeDragDrop;
+
+	private SimpleDragged shoeDraggedState;
+
+	private SimpleDragDrop shoeDragDropState;
+
 	//public Transform shoeDragDrop;
 
-	public Transform clone;
+	//public Transform clone;
 
-	//public SimpleDragged cloneDrag;
+	//public SimpleDragged shoeDraggedState;
 
-	public bool isPickedUp = false;
+	//public bool isPickedUp = false;
 	
 	private float rayCastX;
 	private float rayCastY;
 
-	public float distanceBack = 15f;
+	//public float distanceBack = 15f;
+
+	public float enableDistance = 5f;
 
 	// Use this for initialization
 	void Start () {
+
+		if (shoeDragged)
+		{
+			shoeDraggedState = shoeDragged.GetComponent<SimpleDragged>();
+
+			shoeDragged.gameObject.SetActive(false);
+
+		} else {
+
+			Debug.Log ("There is no shoe drag object");
+		}
+
+		if (shoeDragDrop)
+		{
+			shoeDragDropState = shoeDragDrop.GetComponent<SimpleDragDrop>();
+
+			
+		} else {
+			
+			Debug.Log ("There is no shoe drag drop object");
+		}
+
+
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		if (isPickedUp)
+
+		bool mouseUp = Input.GetMouseButtonUp(0);
+
+		if (mouseUp) 
 		{
-			bool mouseUp = Input.GetMouseButtonUp(0);
-
-			if (mouseUp)
+			if (shoeDraggedState.thisDragState == SimpleDragged.dragState.FollowingFinger)
 			{
-				SimpleDragged cloneDrag = clone.GetComponent<SimpleDragged>();
-				cloneDrag.thisDragState = SimpleDragged.dragState.IsReleased;
-				isPickedUp = false;
 
-			} else {
+				shoeDraggedState.thisDragState = SimpleDragged.dragState.IsReleased;
 
-				/*
-				objectPosition.x = Input.mousePosition.x;
-				objectPosition.y = Input.mousePosition.y;
-				objectPosition.z = distanceBack;
-
-				clone.transform.position = cam.ScreenToWorldPoint(objectPosition);
-				*/
 			}
 
-		}
-
-
-		
+		} 
+			
 		bool mouseDown = Input.GetMouseButtonDown(0);
 		
 		if (mouseDown)
@@ -73,22 +95,19 @@ public class SimpleDragDropControl : MonoBehaviour {
 			
 			if ( Physics.Raycast ( ray, out hit) )
 			{
-				Debug.Log("Ray Cast Hit on Object");
+				if (debugMode)
+					Debug.Log("Ray Cast Hit on Object");
 				
 				
 				if (hit.collider != null) {
-					
-					//touchActivated = hit.collider.GetComponent<TouchActivateO>();
-					
-					
-					//touchActivated.HasBeenTouched ();
-					
-					Collider target = hit.collider;
-					Debug.Log( target );
-					
-					clone = Instantiate(shoeDragged, shoeDragPickUp.transform.position, shoeDragPickUp.transform.rotation) as Transform;
+				
+					shoeDragged.transform.position = shoeDragPickUp.transform.position;
+					shoeDraggedState.initialPosition = shoeDragPickUp.transform.position;
+					//shoeDragged.transform.rotation = shoeDragPickUp.transform.rotation;
 
-					isPickedUp = true;
+					shoeDraggedState.thisDragState = SimpleDragged.dragState.FollowingFinger;
+
+					shoeDragged.gameObject.SetActive(true);
 
 					shoeDragPickUp.renderer.enabled = false;
 				}
@@ -96,10 +115,40 @@ public class SimpleDragDropControl : MonoBehaviour {
 			}
 			else
 			{
-				Debug.Log("Ray Cast Miss");
+				if (debugMode)
+					Debug.Log("Ray Cast Miss");
 				
 			}
 			
+		}
+
+		if (shoeDragPickUp.renderer.enabled == false)
+		{
+			if (shoeDraggedState.thisDragState == SimpleDragged.dragState.InActive)
+			{
+				if (debugMode)
+					Debug.Log("Shoe returned");
+				
+				shoeDragPickUp.renderer.enabled = true;
+
+				shoeDragged.gameObject.SetActive(false);
+				
+			}
+			
+		}
+
+		float dist = Vector3.Distance(shoeDragged.transform.position, shoeDragDrop.transform.position);
+		
+		if (dist < enableDistance)
+		{
+			if (shoeDragDropState.thisConnectState == SimpleDragDrop.connectState.NotConnected)
+			{
+
+				shoeDragDropState.thisConnectState = SimpleDragDrop.connectState.ConnectionMade;
+
+				shoeDragged.gameObject.SetActive(false);
+
+			}
 		}
 	
 	}
