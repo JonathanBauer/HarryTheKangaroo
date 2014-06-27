@@ -11,7 +11,7 @@ public class SimpleDragDrop : MonoBehaviour {
 		
 	}
 
-	public connectState thisConnectState;
+	public connectState thisConnectState = connectState.NotConnected;
 
 
 

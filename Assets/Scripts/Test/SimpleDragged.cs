@@ -12,7 +12,7 @@ public class SimpleDragged : MonoBehaviour {
 
 	}
 
-	public dragState thisDragState;
+	public dragState thisDragState = dragState.InActive;
 
 	public Vector3 initialPosition = new Vector3 (0,0,0);
 
