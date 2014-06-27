@@ -19,7 +19,7 @@ public class SimpleMRandParallax : MonoBehaviour {
 	
 	
 	private Vector3 targetRotation = new Vector3(0,0,0);
-	private Vector3 trueRotation = new Vector3(0,0,0);
+
 	
 	private Vector2 previousMousePos = new Vector2(0,0);
 	private Vector2 currentMousePos = new Vector2(0,0);
