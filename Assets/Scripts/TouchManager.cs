@@ -23,15 +23,17 @@ public class TouchManager : MonoBehaviour {
 		}
 	}
 
-	enum ControlState
+	public enum ControlState
 	{
 		WaitingForFirstTouch,
 		WaitingForDrag,
-		DragBegins
+		WaitingToDragObject,
+		DragBegins,
+		DraggingObjectBegins
 		
 	}
 
-	private ControlState state = ControlState.WaitingForFirstTouch;
+	public ControlState state = ControlState.WaitingForFirstTouch;
 
 	public bool debugMode = true;
 	public Camera cam;
@@ -46,9 +48,10 @@ public class TouchManager : MonoBehaviour {
 	private Vector2 rayCast = new Vector2 (-1,-1);
 
 	//private float rayCastX;
-	private float rayCastY;
+	//private float rayCastY;
 
 	private float firstTouchTime = 0.0f;
+	private float dragBeginTime = 0.0f;
 	
 	//private bool zeroTouchPromptGiven = false;
 	//private bool oneTouchPromptGiven = false;
@@ -57,7 +60,7 @@ public class TouchManager : MonoBehaviour {
 	public float minimumDragDistance = 300f;
 
 	private Vector2 fingerStartPosition = new Vector2( 0, 0 );
-	private Vector2 fingerRecordedPosition = new Vector2( 0, 0 );
+	public Vector2 fingerRecordedPosition = new Vector2( 0, 0 );
 
 	// Use this for initialization
 	void Start () {
@@ -74,8 +77,10 @@ public class TouchManager : MonoBehaviour {
 		waitingForFirstTouchIcon = GameObject.Find("WaitingForFirstTouch");
 		dragBeginsIcon = GameObject.Find("DragBegins");
 
-		waitingForFirstTouchIcon.SetActive(false);
-		dragBeginsIcon.SetActive(false);
+		if (waitingForFirstTouchIcon)
+			waitingForFirstTouchIcon.SetActive(false);
+		if (dragBeginsIcon)
+			dragBeginsIcon.SetActive(false);
 
 		#if !UNITY_EDITOR && !UNITY_WEBPLAYER
 		if (iPhoneIcon)
@@ -95,8 +100,6 @@ public class TouchManager : MonoBehaviour {
 
 		#endif
 
-		if (debugMode)
-			Debug.Log("iPhoneDevice is "+iPhoneDevice);
 	
 	}
 
@@ -106,10 +109,13 @@ public class TouchManager : MonoBehaviour {
 
 		if (debugMode)
 		{
-			Debug.Log("Waiting for first touch");
+			//Debug.Log("Waiting for first touch");
 
-			waitingForFirstTouchIcon.SetActive(true);
-			dragBeginsIcon.SetActive(false);
+			if (waitingForFirstTouchIcon)
+				waitingForFirstTouchIcon.SetActive(true);
+			
+			if (dragBeginsIcon)
+				dragBeginsIcon.SetActive(false);
 		}
 			
 
@@ -118,6 +124,7 @@ public class TouchManager : MonoBehaviour {
 	// InteractionControl() is called within Update ()
 	void InteractionControl()
 	{
+		// if this is the iPhone, check for touches
 		if (iPhoneDevice)
 		{
 			int count = Input.touchCount;
@@ -127,7 +134,8 @@ public class TouchManager : MonoBehaviour {
 				Touch touch = Input.GetTouch(0);
 				rayCast = touch.position;
 			}
-
+		
+		// otherwise, if this is the webplayer/editor check if the mouse is down
 		} else if (!iPhoneDevice)
 		{
 			bool mouseDown = Input.GetMouseButtonDown(0);
@@ -157,10 +165,53 @@ public class TouchManager : MonoBehaviour {
 					// the types of hit colliders will need to expand to include the game manager
 					// instead of just the page manager
 					Collider target = hit.collider;
+
+					GameObjectMode targetMode;
+					targetMode = target.GetComponent<GameObjectMode>();
+
+					if (targetMode)
+					{
+
+						if (targetMode.gameObjectMode == GameObjectMode.ModeList.PageTurnNext)
+						{
+							if (debugMode)
+								Debug.Log(target+ "has a PageTurnNext script");
+
+							PageManager.Instance.PageTurnNext ();
+
+						} else if (targetMode.gameObjectMode == GameObjectMode.ModeList.PageTurnPrevious)
+						{
+							if (debugMode)
+								Debug.Log(target+ "has a PageTurnPrevious script");
+
+							PageManager.Instance.PageTurnPrevious ();
+
+						} else if (targetMode.gameObjectMode == GameObjectMode.ModeList.StoryAnimation)
+						{
+							PageManager.Instance.TriggerStoryAnimation ( target );
+
+						} else if (targetMode.gameObjectMode == GameObjectMode.ModeList.DragObject)
+						{
+							state = ControlState.WaitingToDragObject;
+							dragBeginTime = Time.time;
+							if (debugMode)
+								Debug.Log("Waiting to drag object");
+
+						} else {
+
+							if (debugMode)
+								Debug.Log(target+ "has an unrecognized GameObjectMode script "+targetMode.gameObjectMode);
+
+						}
+
+					} else {
+						if (debugMode)
+							Debug.Log(target+ "does not have a GameObjectMode script");
+					}
+
 					//PageManager.Instance.TriggerMeshTouched ( target );
 					rayCast = new Vector2(-1,-1);
-				}
-				
+				} 
 			}
 			else
 			{
@@ -265,12 +316,18 @@ public class TouchManager : MonoBehaviour {
 					if (touch.phase != TouchPhase.Canceled )
 					{
 						// since they haven't let go, keep recording
+
+						// dragdrop needs TouchManager's controlstate and fingerRecordedPosition
+
 						fingerRecordedPosition = touch.position;
 						if (debugMode)
 						{
 							Debug.Log("Drag Recording");
-							waitingForFirstTouchIcon.SetActive(false);
-							dragBeginsIcon.SetActive(true);
+							if (waitingForFirstTouchIcon)
+								waitingForFirstTouchIcon.SetActive(false);
+
+							if (dragBeginsIcon)
+								dragBeginsIcon.SetActive(true);
 
 						}
 					}
@@ -302,6 +359,16 @@ public class TouchManager : MonoBehaviour {
 					
 				}
 
+				if (state == ControlState.DraggingObjectBegins)
+				{
+					if (debugMode)
+						Debug.Log("Drag Object Finished");
+					// This is where a finished dragging gesture would finish.
+					// We currently don't use dragging gestures so this is empty.
+					
+					
+				}
+
 				ResetControlState ();
 
 
@@ -314,6 +381,43 @@ public class TouchManager : MonoBehaviour {
 					firstTouchTime = Time.time;
 					if (debugMode)
 						Debug.Log("Waiting for drag");
+					/*
+					rayCast = Input.mousePosition;
+
+					RaycastHit hit;
+					
+					Ray ray = cam.ScreenPointToRay( new Vector3 (rayCast.x, rayCast.y, 0 ) );
+					
+					
+					if ( Physics.Raycast ( ray, out hit) )
+					{
+						if (debugMode)
+							Debug.Log("Ray Cast Hit on Object");
+						
+						// Is this object a collision object?
+						if (hit.collider != null) {
+							
+							// the types of hit colliders will need to expand to include the game manager
+							// instead of just the page manager
+							Collider target = hit.collider;
+							//PageManager.Instance.TriggerMeshTouched ( target );
+							// Go to the collision check function with the collider
+
+							// if it is a draggable object, state is WaitingToDragObject
+
+
+						}
+						
+					}
+					else
+					{
+						if (debugMode)
+							Debug.Log("Ray Cast Miss");
+						
+						rayCast = new Vector2(-1,-1);
+					}
+					*/
+
 				}
 
 				if (state == ControlState.WaitingForDrag )
@@ -331,14 +435,47 @@ public class TouchManager : MonoBehaviour {
 					}	
 				}
 
+				if (state == ControlState.WaitingToDragObject )
+				{
+					
+					if (Time.time > dragBeginTime + minimumTimeUntilDrag) 
+					{
+
+						state = ControlState.DraggingObjectBegins;
+						fingerStartPosition = Input.mousePosition;
+						fingerRecordedPosition = fingerStartPosition;
+						if (debugMode)
+							Debug.Log("Drag Object Begins");
+						
+					}	
+				}
+
 				if (state == ControlState.DragBegins )
 				{
 					fingerRecordedPosition = Input.mousePosition;
 
 					{
 						Debug.Log("Drag Recording");
-						waitingForFirstTouchIcon.SetActive(false);
-						dragBeginsIcon.SetActive(true);
+						if (waitingForFirstTouchIcon)
+							waitingForFirstTouchIcon.SetActive(false);
+						
+						if (dragBeginsIcon)
+							dragBeginsIcon.SetActive(true);
+						
+					}
+				}
+
+				if (state == ControlState.DraggingObjectBegins )
+				{
+					fingerRecordedPosition = Input.mousePosition;
+					
+					{
+						Debug.Log("Drag Object Recording");
+						if (waitingForFirstTouchIcon)
+							waitingForFirstTouchIcon.SetActive(false);
+						
+						if (dragBeginsIcon)
+							dragBeginsIcon.SetActive(true);
 						
 					}
 				}

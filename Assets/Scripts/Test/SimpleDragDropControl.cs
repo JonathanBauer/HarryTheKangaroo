@@ -30,6 +30,8 @@ public class SimpleDragDropControl : MonoBehaviour {
 	private float rayCastX;
 	private float rayCastY;
 
+	private TouchManager touchManager;
+
 	//public float distanceBack = 15f;
 
 	public float enableDistance = 5f;
@@ -58,8 +60,23 @@ public class SimpleDragDropControl : MonoBehaviour {
 			Debug.Log ("There is no shoe drag drop object");
 		}
 
+		GameObject eBookManager = GameObject.Find("eBookManager");
 
-	
+		if(!eBookManager)
+		{
+			Debug.Log("There is no EbookManager in the scene");
+		} else {
+
+			touchManager = eBookManager.GetComponent<TouchManager>();
+
+		}
+
+		if(!touchManager)
+		{
+			Debug.Log("There is no EbookManager with a TouchManager component in the scene");
+		}
+
+
 	}
 	
 	// Update is called once per frame

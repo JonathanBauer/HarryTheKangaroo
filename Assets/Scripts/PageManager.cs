@@ -121,41 +121,30 @@ public class PageManager : MonoBehaviour {
 	
 	}
 
-	public void TriggerMeshTouched ( Collider hit ) {
 
-		int currentPageTriggerMeshCount = eBookPage[currentPage].triggerMesh.Count - 1;
+	public void TriggerStoryAnimation ( Collider hit ) {
 
-		for (int target = 0; target < currentPageTriggerMeshCount; target++)
+		// count the animation meshes on this page
+		int currentPageAnimationCount = eBookPage[currentPage].animationTarget.Count - 1;
+
+		// for each target number
+		for (int target = 0; target < currentPageAnimationCount; target++)
 		{
-			if (hit == eBookPage[currentPage].triggerMesh[target])
+			// if the collider is on this target number
+			if (hit == eBookPage[currentPage].animationTarget[target].collider)
 			{
-				if (hit.name.IndexOf("PageTurnNext") != -1)
-				{
-				    if (debugMode)
-				    	Debug.Log ("The hit object is " + hit + ".It's index is "+target+". It turns to the next page.");
-					PageTurnNext ();
-
-				} else if (hit.name.IndexOf("PageTurnPrevious") != -1)
-				{
-
-					if (debugMode)
-					    Debug.Log ("The hit object is " + hit + ".It's index is "+target+". It turns to the previous page.");
-					PageTurnPrevious ();
-
-				} else 
-				{
 
 				if (debugMode)
 					Debug.Log ("The hit object is " + hit + ".It's index is "+target);
-
+				// trigger the animation for that target number	
 				eBookPage[currentPage].TriggerAnimation(target);
-				}
+
 			}
 		}
 	}
 
 
-	private void PageTurnNext () {
+	public void PageTurnNext () {
 
 		if (debugMode)
 			Debug.Log ("PageTurnNext");
@@ -180,7 +169,7 @@ public class PageManager : MonoBehaviour {
 
 	}
 
-	private void PageTurnPrevious () {
+	public void PageTurnPrevious () {
 		
 		if (debugMode)
 			Debug.Log ("PageTurnPrevious");
