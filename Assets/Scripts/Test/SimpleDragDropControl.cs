@@ -7,34 +7,19 @@ public class SimpleDragDropControl : MonoBehaviour {
 
 	public Camera cam;
 
-	//public Vector3 objectPosition = new Vector3 (0,0,0);
-	
-	public Transform shoeDragPickUp;
+	public Transform shoeDragPickUp;	// The shoe on the ground
 
-	public Transform shoeDragged;
+	public Transform shoeDragged;		// The shoe that moves during drag, disabled on start
 
-	public Transform shoeDragDrop;
+	public Transform shoeDragDrop;		// The hook that the shoe goes to
 
-	private SimpleDragged shoeDraggedState;
+	private SimpleDragged shoeDraggedState;		// The control state of the dragged object
 
-	private SimpleDragDrop shoeDragDropState;
-
-	//public Transform shoeDragDrop;
-
-	//public Transform clone;
-
-	//public SimpleDragged shoeDraggedState;
-
-	//public bool isPickedUp = false;
-	
-	private float rayCastX;
-	private float rayCastY;
+	private SimpleDragDrop shoeDragDropState;	// The control state of the hook
 
 	private TouchManager touchManager;
 
-	//public float distanceBack = 15f;
-
-	public float enableDistance = 5f;
+	public float enableDistance = 5f;	// How close the shoe must be to the hook to be collected
 
 	// Use this for initialization
 	void Start () {
@@ -82,91 +67,49 @@ public class SimpleDragDropControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-
-		bool mouseUp = Input.GetMouseButtonUp(0);
-
-		if (mouseUp) 
+		if (shoeDragPickUp.renderer.enabled == false && shoeDraggedState.thisDragState == SimpleDragged.dragState.InActive)
 		{
-			if (shoeDraggedState.thisDragState == SimpleDragged.dragState.FollowingFinger)
-			{
-
-				shoeDraggedState.thisDragState = SimpleDragged.dragState.IsReleased;
-
-			}
-
-		} 
-			
-		bool mouseDown = Input.GetMouseButtonDown(0);
-		
-		if (mouseDown)
-		{
-			
-			Vector3 cursorScreenPosition = Input.mousePosition;
-			
-			rayCastX = cursorScreenPosition.x;
-			rayCastY = cursorScreenPosition.y;
-			
-			RaycastHit hit;
-			
-			Ray ray = cam.ScreenPointToRay( new Vector3 (rayCastX, rayCastY ) );
-			
-			if ( Physics.Raycast ( ray, out hit) )
-			{
-				if (debugMode)
-					Debug.Log("Ray Cast Hit on Object");
+			if (debugMode)
+				Debug.Log("Shoe returned");
 				
-				
-				if (hit.collider != null) {
-				
-					shoeDragged.transform.position = shoeDragPickUp.transform.position;
-					shoeDraggedState.initialPosition = shoeDragPickUp.transform.position;
-					//shoeDragged.transform.rotation = shoeDragPickUp.transform.rotation;
+			shoeDragPickUp.renderer.enabled = true;
 
-					shoeDraggedState.thisDragState = SimpleDragged.dragState.FollowingFinger;
-
-					shoeDragged.gameObject.SetActive(true);
-
-					shoeDragPickUp.renderer.enabled = false;
-				}
+			shoeDragged.gameObject.SetActive(false);
 				
-			}
-			else
-			{
-				if (debugMode)
-					Debug.Log("Ray Cast Miss");
-				
-			}
-			
-		}
-
-		if (shoeDragPickUp.renderer.enabled == false)
-		{
-			if (shoeDraggedState.thisDragState == SimpleDragged.dragState.InActive)
-			{
-				if (debugMode)
-					Debug.Log("Shoe returned");
-				
-				shoeDragPickUp.renderer.enabled = true;
-
-				shoeDragged.gameObject.SetActive(false);
-				
-			}
-			
 		}
 
 		float dist = Vector3.Distance(shoeDragged.transform.position, shoeDragDrop.transform.position);
 		
-		if (dist < enableDistance)
+		if (dist < enableDistance && shoeDragDropState.thisConnectState == SimpleDragDrop.connectState.NotConnected)
 		{
-			if (shoeDragDropState.thisConnectState == SimpleDragDrop.connectState.NotConnected)
-			{
+			shoeDragDropState.thisConnectState = SimpleDragDrop.connectState.ConnectionMade;
 
-				shoeDragDropState.thisConnectState = SimpleDragDrop.connectState.ConnectionMade;
-
-				shoeDragged.gameObject.SetActive(false);
-
-			}
+			shoeDragged.gameObject.SetActive(false);
 		}
 	
+	}
+
+	// LiftUpDragObject is called by TouchManager
+	public void LiftUpDragObject ( GameObject target )
+	{
+		Debug.Log("Object Lifted");
+
+		shoeDragged.transform.position = shoeDragPickUp.transform.position;
+		shoeDraggedState.initialPosition = shoeDragPickUp.transform.position;
+
+		shoeDraggedState.thisDragState = SimpleDragged.dragState.FollowingFinger;
+		
+		shoeDragged.gameObject.SetActive(true);
+		
+		shoeDragPickUp.renderer.enabled = false;
+
+	}
+
+	// DropDragObject is called by TouchManager
+	public void DropDragObject ( GameObject target )
+	{
+		Debug.Log("Object Dropped");
+		
+		shoeDraggedState.thisDragState = SimpleDragged.dragState.IsReleased;
 	}
 }

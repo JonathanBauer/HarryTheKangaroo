@@ -81,10 +81,10 @@ public class SimpleDragged : MonoBehaviour {
 
 			Vector3 objectPosition = new Vector3 (0,0,0);
 
-			objectPosition.x = Input.mousePosition.x;
-			objectPosition.y = Input.mousePosition.y;
+			objectPosition.x = TouchManager.Instance.fingerRecordedPosition.x;
+			objectPosition.y = TouchManager.Instance.fingerRecordedPosition.y;
 			objectPosition.z = distanceBack;
-			
+
 			transform.position = cam.ScreenToWorldPoint(objectPosition);
 
 		}

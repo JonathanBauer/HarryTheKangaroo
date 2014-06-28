@@ -194,7 +194,7 @@ public class PageControl : MonoBehaviour {
 				    targetMode[i].gameObjectMode == GameObjectMode.ModeList.PageTurnPrevious)
 				{
 					if (debugMode)
-						Debug.Log(animationTarget[i] + "is a PageTurnNext.");
+						Debug.Log(animationTarget[i] + "is a PageTurnNext or PageTurnPrevious.");
 
 					hasIdleAnimation.Add(false);
 					animationTarget[i].animation["play"].wrapMode = WrapMode.Once;
@@ -278,31 +278,5 @@ public class PageControl : MonoBehaviour {
 
 		}
 	}
-	/*
-	public void TriggerMeshCheck () {
 
-		for (int i=0; i < animationTarget.Count; i++)
-		{
-			
-			triggerAnimationTime.Add(-1);
-			
-			// Perform a check on each triggerMesh to find out if there is a triggerMesh present
-			if (i > (triggerMesh.Count - 1))
-			{
-				if (debugMode)
-					Debug.Log(this.name + " has a no MeshCollider entry at index "+i+". Creating a null entry");
-				triggerMesh.Add(null);
-				
-			} else if (triggerMesh[i] == null)
-			{
-				
-				if (debugMode)
-					Debug.Log(this.name + " has a null MeshCollider entry in index "+i+".");
-				
-			}
-			
-		}
-		
-	}
-	*/
 }
