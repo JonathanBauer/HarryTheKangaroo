@@ -25,7 +25,7 @@ public class SimpleMouseRotate : MonoBehaviour {
 
 		// The Y rotation of the Orbit Center controls the longitudinal orbit of the camera
 		targetRotation.y = targetRotation.y + (previousMousePos.x - currentMousePos.x);
-		targetRotation.y = Mathf.Clamp(targetRotation.y, -60, 60);
+		targetRotation.y = Mathf.Clamp(targetRotation.y, -30, 30);
 
 		// The X rotation of the Orbit Center controls the latitudinal orbit of the camera
 		targetRotation.x = targetRotation.x - (previousMousePos.y - currentMousePos.y);
