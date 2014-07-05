@@ -26,6 +26,8 @@ public class TiltManager : MonoBehaviour {
 
 	public float mouseDragAdjust = 0.5f;
 
+	public float iphoneTiltAdjust = 0.5f;
+
 	public float tiltViewAngle = 0f;
 
 	public bool useIncrements = false;
@@ -42,7 +44,18 @@ public class TiltManager : MonoBehaviour {
 
 	private float angleTarget = 0f;
 
-	private float travel;
+	private float angle = 0f;
+
+	//private float previousAngleTarget = 0f;
+
+	private float travelAngle;
+
+	private float travelSpeed;
+
+	private int currentIncrement = 0;
+
+	private int targetIncrement = 0;
+
 
 	// Use this for initialization
 	void Start () {
@@ -116,39 +129,29 @@ public class TiltManager : MonoBehaviour {
 			/* tiltViewAngle returns a negative angle when the device is tilted to the left and a positive to the right. It calculates this from
 			 * the angle between the gyro.gravity x and z vectors. This gives a reasonably reliable tilt value even when the device is upright in
 			 * landscape left */
-			float angle = Mathf.Rad2Deg * Mathf.Atan(Input.gyro.gravity.x / Input.gyro.gravity.z);
+			angle = (Mathf.Rad2Deg * Mathf.Atan(Input.gyro.gravity.x / Input.gyro.gravity.z)) * iphoneTiltAdjust;
 
 			angle = Mathf.Clamp( angle, -iphoneTiltLimit.x, iphoneTiltLimit.x);
 
+			if (useIncrements)
+			{
+				IncrementalTilting ();
+				
+			} else {
+				
 			tiltViewAngle = angle;
+				
+			}
+
 		} else {
 
-			float angle = TouchManager.Instance.draggedViewAngle * mouseDragAdjust;
+			angle = TouchManager.Instance.draggedViewAngle * mouseDragAdjust;
 
 			angle = Mathf.Clamp( angle, -mouseTiltLimit.x, mouseTiltLimit.x);
 
 			if (useIncrements)
 			{
-
-
-				for (int i = 0; i < incrementNumber; i++)
-				{
-					if (angle > (increment[i] - incrementalThreshold) && angle < (increment[i] + incrementalThreshold))
-					{
-						if (angleTarget != increment[i])
-							angleTarget = increment[i];
-
-						travel = 0;
-
-					}
-
-				}
-
-				tiltViewAngle = Mathf.Lerp (angle, angleTarget, travel);
-
-				travel += incrementalSpeed;
-
-
+				IncrementalTilting ();
 
 			} else {
 
@@ -158,6 +161,51 @@ public class TiltManager : MonoBehaviour {
 		}
 
 	
+	}
+
+	void IncrementalTilting () {
+
+		for (int i = 0; i < incrementNumber; i++)
+		{
+			if (angle > (increment[i] - incrementalThreshold) && angle < (increment[i] + incrementalThreshold))
+			{
+				if (i != currentIncrement)
+				{
+					targetIncrement = i;
+					
+					if (i > currentIncrement)
+					{
+						travelSpeed = incrementalSpeed;
+						
+					} else {
+						
+						travelSpeed = - incrementalSpeed;
+						
+					}
+					
+					Debug.Log (travelSpeed );
+				} 
+				
+			}
+			
+		}
+		
+		travelAngle += travelSpeed;
+		
+		if (travelSpeed > 0 && travelAngle > increment[targetIncrement])
+		{
+			travelAngle = increment[targetIncrement];
+			currentIncrement = targetIncrement;
+		}
+		
+		if (travelSpeed < 0 && travelAngle < increment[targetIncrement])
+		{
+			travelAngle = increment[targetIncrement];
+			currentIncrement = targetIncrement;
+		}
+		
+		tiltViewAngle = travelAngle;
+
 	}
 
 	void OnGUI (){
