@@ -4,6 +4,7 @@ using System.Collections;
 public class SimpleGyroObject : MonoBehaviour {
 
 	private bool onGyro = true;
+	private bool adjust = false;
 
 	private bool lookingAround = false;
 	
@@ -13,7 +14,8 @@ public class SimpleGyroObject : MonoBehaviour {
 	public GUITexture lookAroundTexture;
 	public GUITexture centerTexture;
 
-	private Quaternion adjustedRotation;
+	private Quaternion adjustedRotation = Quaternion.identity;
+	private Quaternion adjustmentConstant = Quaternion.identity;
 
 
 	public enum GyroList
@@ -47,13 +49,30 @@ public class SimpleGyroObject : MonoBehaviour {
 			targetRotation = ConvertRotation (Input.gyro.attitude);
 
 
-			transform.rotation = targetRotation;
+			transform.rotation = targetRotation * adjustedRotation * adjustmentConstant;
 		}
 	
 	}
 
 	void OnGUI () {
-	
+
+		if (GUILayout.Button ("Adjustment Constant "+adjust, GUILayout.Height (80)))
+		{
+			if (adjust)
+			{
+				adjustmentConstant = Quaternion.identity;
+				adjust = false;
+
+
+			} else {
+
+				adjustmentConstant = Quaternion.Euler (0,0,-90);
+				adjust = true;
+
+			}
+
+		
+		}
 
 		if (GUILayout.Button ("Gyro Mode "+gyroMode, GUILayout.Height (80)))
 		{
@@ -106,6 +125,11 @@ public class SimpleGyroObject : MonoBehaviour {
 		if (gyroMode == GyroList.PressToCalibrate)
 		{
 
+			if (Input.touchCount > 0  && centerTexture.HitTest(new Vector2 (Input.GetTouch(0).position.x,Input.GetTouch(0).position.y)))
+			{
+				adjustedRotation = Quaternion.Inverse(targetRotation);
+				
+			} 
 		}
 
 	}
