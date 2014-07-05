@@ -9,7 +9,7 @@ public class SimpleAcceleroControl : MonoBehaviour {
 
 	private Vector3 badAngleA = new Vector3(-0.7f,-0.7f,0f);
 	private Vector3 badAngleB = new Vector3(0.7f,-0.7f,0f);
-	private float angleClamp = 
+	//private float angleClamp = 
 	private Vector3 gyroAngle;
 
 	// Use this for initialization
