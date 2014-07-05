@@ -64,6 +64,8 @@ public class TouchManager : MonoBehaviour {
 
 	public GameObject latchedObject;
 
+	public float draggedViewAngle = 0f;
+
 	// Use this for initialization
 	void Start () {
 
@@ -402,26 +404,30 @@ public class TouchManager : MonoBehaviour {
 			if (state == ControlState.DragBegins )
 			{
 				fingerRecordedPosition = Input.mousePosition;
-				{
-					if (debugMode)
-						Debug.Log("WEBPLAYER: Drag Recording");
-					if (waitingForFirstTouchIcon)
-						waitingForFirstTouchIcon.SetActive(false);
-					if (dragBeginsIcon)
-						dragBeginsIcon.SetActive(true);
-				}
+
+				if (debugMode)
+					Debug.Log("WEBPLAYER: Drag Recording");
+				if (waitingForFirstTouchIcon)
+					waitingForFirstTouchIcon.SetActive(false);
+				if (dragBeginsIcon)
+					dragBeginsIcon.SetActive(true);
+
+				draggedViewAngle = fingerRecordedPosition.x - fingerStartPosition.x;
+
+				Debug.Log (draggedViewAngle);
+
 			}
 			if (state == ControlState.DraggingObjectBegins )
 			{
 				fingerRecordedPosition = Input.mousePosition;
-				{
-					if (debugMode)
-						Debug.Log("WEBPLAYER: Drag Object Recording");
-					if (waitingForFirstTouchIcon)
-						waitingForFirstTouchIcon.SetActive(false);	
-					if (dragBeginsIcon)
-						dragBeginsIcon.SetActive(true);	
-				}
+
+				if (debugMode)
+					Debug.Log("WEBPLAYER: Drag Object Recording");
+				if (waitingForFirstTouchIcon)
+					waitingForFirstTouchIcon.SetActive(false);	
+				if (dragBeginsIcon)
+					dragBeginsIcon.SetActive(true);	
+
 			}
 			
 		}
