@@ -238,7 +238,9 @@ public class TouchManager : MonoBehaviour {
 
 	void IPhoneTouchControl ()
 	{
-		// IPHONE: if there are no touches and the state was a drag beginning on open space, finish the drag
+		/*  IPHONE CONTROLS IPHONE CONTROLS IPHONE CONTROLS IPHONE CONTROLS IPHONE CONTROLS IPHONE CONTROLS 
+		 *  if there are no touches and the state was a drag beginning on open space, finish the drag */
+
 		int touchCount = Input.touchCount;
 		if (touchCount == 0) 
 		{
@@ -347,8 +349,9 @@ public class TouchManager : MonoBehaviour {
 
 	void WebPlayerMouseControl ()
 	{
-		// PC Controls, since touches and mousedowns will never happen together
-		// GetMouseButton returns true while the mouse is held
+		/* PC CONTROLS PC CONTROLS PC CONTROLS PC CONTROLS PC CONTROLS PC CONTROLS 
+		 * since touches and mousedowns will never happen together
+		 * GetMouseButton returns true while the mouse is held */
 		
 		bool mouseDown = Input.GetMouseButton(0);
 		if (mouseDown == false)
@@ -413,8 +416,8 @@ public class TouchManager : MonoBehaviour {
 					dragBeginsIcon.SetActive(true);
 
 				draggedViewAngle = fingerRecordedPosition.x - fingerStartPosition.x;
-
-				Debug.Log (draggedViewAngle);
+				if (debugMode)
+					Debug.Log("WEBPLAYER: Dragged View Angle: "+draggedViewAngle);
 
 			}
 			if (state == ControlState.DraggingObjectBegins )
