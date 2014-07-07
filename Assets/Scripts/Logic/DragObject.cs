@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SimpleDragged : MonoBehaviour {
+public class DragObject : MonoBehaviour {
 
 	// All public variables are defined by the controller except returnRange and debugMode
 

@@ -108,7 +108,6 @@ public class TiltManager : MonoBehaviour {
 			for (int t = 0; t < incrementNumber; t++)
 			{
 				increment.Add(lowestValue + (incrementalAmount * t));
-				Debug.Log(increment[t]);
 			}
 
 
@@ -182,8 +181,7 @@ public class TiltManager : MonoBehaviour {
 						travelSpeed = - incrementalSpeed;
 						
 					}
-					
-					Debug.Log (travelSpeed );
+
 				} 
 				
 			}

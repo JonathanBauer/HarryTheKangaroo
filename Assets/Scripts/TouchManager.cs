@@ -185,7 +185,7 @@ public class TouchManager : MonoBehaviour {
 					{
 						PageManager.Instance.TriggerStoryAnimation ( target );
 						
-					} else if (targetMode.gameObjectMode == GameObjectMode.ModeList.DragObject)
+					} else if (targetMode.gameObjectMode == GameObjectMode.ModeList.DragObjectOrigin)
 					{
 						state = ControlState.WaitingToDragObject;
 						dragBeginTime = Time.time;
