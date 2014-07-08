@@ -29,6 +29,8 @@ public class GameObjectMode : MonoBehaviour {
 	}
 	
 	public ConnectState thisConnectState = ConnectState.DragObjTargetNotConnected;
+
+	public int gameObjectID = 0;
 	
 
 	void Update () {

@@ -119,10 +119,94 @@ public class PageManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		/*
+		// Lazy hack to fast forward to desired page
+		if (startingPage != currentPage && startingPage > 0)
+		{
+			InteractionControl iac = eBookPage[currentPage].GetComponent<InteractionControl>();
+			
+			if (iac)
+			{
+				iac.interactionCamera.enabled = false;
+				mainOrthoCamera.enabled = true;
+				TouchManager.Instance.cam = mainOrthoCamera;
+			}
+			
+			eBookPage[currentPage].StopAnimations ();
+			eBookText[currentPage].DisableText ();
+
+			currentPage = startingPage;
+
+			startingPage = -1;
+			
+			iac = eBookPage[currentPage].GetComponent<InteractionControl>();
+			
+			if (iac)
+			{
+				// Find out if the eBook Page Number in the inspector corresponds with the current eBook page
+				// because PageManager only counts PageControls, not InteractionControls, and each 
+				// InteractionControl must be correctly numbered
+				if (iac.eBookPageNumber != currentPage)
+				{
+					if (debugMode)
+						Debug.Log ("Interaction eBook Page Number of "+iac.eBookPageNumber + " does not match Pagemanager Ebook control of "+currentPage);
+					
+				} else {
+					
+					// Does the InteractionControl have a camera attached?
+					if (iac.interactionCamera)
+					{
+						// Turn off the main Camera and enable the InteractionControl's
+						mainOrthoCamera.enabled = false;
+						iac.interactionCamera.enabled = true;
+						TouchManager.Instance.cam = iac.interactionCamera;
+						
+					} else {
+						
+						if (debugMode)
+							Debug.Log(iac.name + " has no camera.");
+						
+					}
+					
+				}
+				
+				
+			} else {
+				
+				if (debugMode)
+					Debug.Log (eBookPage[currentPage] + " does not have an Interaction Control");
+				
+			}
+			
+			eBookPage[currentPage].StartAnimations ();
+			eBookText[currentPage].EnableText ();
+			
+			Vector3 position = cameraParent.transform.position;
+			position.x = distanceBetweenPages * startingPage;
+			cameraParent.transform.position = position;
+
+
+		}
+		*/
 
 
 	}
 
+	public void TriggerDragObjectLift ( Collider hit ) {
+
+		InteractionControl iac = eBookPage[currentPage].GetComponent<InteractionControl>();
+
+		iac.LiftUpDragObject ( hit.gameObject );
+
+	}
+
+	public void TriggerDragObjectDrop ( Collider hit ) {
+		
+		InteractionControl iac = eBookPage[currentPage].GetComponent<InteractionControl>();
+		
+		iac.DropDragObject ( hit.gameObject );
+		
+	}
 
 	public void TriggerStoryAnimation ( Collider hit ) {
 
@@ -205,7 +289,7 @@ public class PageManager : MonoBehaviour {
 			} else {
 				
 				if (debugMode)
-					Debug.Log (iac + " does not have an Interaction Control");
+					Debug.Log (eBookPage[currentPage] + " does not have an Interaction Control");
 				
 			}
 
@@ -279,7 +363,7 @@ public class PageManager : MonoBehaviour {
 			} else {
 				
 				if (debugMode)
-					Debug.Log (iac + " does not have an Interaction Control");
+					Debug.Log (eBookPage[currentPage] + " does not have an Interaction Control");
 				
 			}
 

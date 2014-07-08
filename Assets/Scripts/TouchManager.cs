@@ -62,7 +62,7 @@ public class TouchManager : MonoBehaviour {
 	private Vector2 fingerStartPosition = new Vector2( 0, 0 );
 	public Vector2 fingerRecordedPosition = new Vector2( 0, 0 );
 
-	public GameObject latchedObject;
+	public Collider latchedObject;
 
 	public float draggedViewAngle = 0f;
 
@@ -192,7 +192,7 @@ public class TouchManager : MonoBehaviour {
 						if (debugMode)
 							Debug.Log("Waiting to drag object");
 
-						latchedObject = target.gameObject;
+						latchedObject = target;
 
 						//FindSimpleDragDropControl (latchedObject);
 
@@ -218,9 +218,9 @@ public class TouchManager : MonoBehaviour {
 
 		}
 	}
-
+	/*
 	// These next two functions are temporary. They should be called in PageManager, but it's still debug for drag objects
-	void FindSimpleDragDropControl ( GameObject dragObject)
+	void FindSimpleDragDropControl ( Collider dragObject)
 	{
 		GameObject thisDDcontrol = GameObject.Find("DragDropTest");
 		SimpleDragDropControl sDDControl = thisDDcontrol.GetComponent<SimpleDragDropControl>();
@@ -228,13 +228,14 @@ public class TouchManager : MonoBehaviour {
 
 	}
 
-	void FindSimpleDragDropControl02 ( GameObject dragObject)
+	void FindSimpleDragDropControl02 ( Collider dragObject)
 	{
 		GameObject thisDDcontrol = GameObject.Find("DragDropTest");
 		SimpleDragDropControl sDDControl = thisDDcontrol.GetComponent<SimpleDragDropControl>();
 		sDDControl.DropDragObject( dragObject );
 		
 	}
+	*/
 
 	void IPhoneTouchControl ()
 	{
@@ -254,7 +255,7 @@ public class TouchManager : MonoBehaviour {
 				if (debugMode)
 					Debug.Log("IPHONE: Drag Object Finished");
 				
-				FindSimpleDragDropControl02 (latchedObject);
+				PageManager.Instance.TriggerDragObjectDrop (latchedObject); 
 			}
 			ResetControlState ();
 		} else {
@@ -306,7 +307,7 @@ public class TouchManager : MonoBehaviour {
 						if (debugMode)
 							Debug.Log("IPHONE: Drag Object Begins");
 					
-						FindSimpleDragDropControl (latchedObject);
+						PageManager.Instance.TriggerDragObjectLift (latchedObject);
 					}
 				}	
 			}
@@ -366,7 +367,7 @@ public class TouchManager : MonoBehaviour {
 				if (debugMode)
 					Debug.Log("WEBPLAYER: Drag Object Finished");
 
-				FindSimpleDragDropControl02 (latchedObject);
+				PageManager.Instance.TriggerDragObjectDrop (latchedObject);
 			}
 			ResetControlState ();
 		} else {
@@ -401,7 +402,7 @@ public class TouchManager : MonoBehaviour {
 					if (debugMode)
 						Debug.Log("WEBPLAYER: Drag Object Begins");
 
-					FindSimpleDragDropControl (latchedObject);
+					PageManager.Instance.TriggerDragObjectLift (latchedObject);
 				}	
 			}
 			if (state == ControlState.DragBegins )

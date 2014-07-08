@@ -1,161 +1,190 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class InteractionControl : MonoBehaviour {
 
 	public bool debugMode = false;
 
-	public int eBookPageNumber = 2;
+	public int eBookPageNumber = 2;		// Which eBook page this InteractionControl is intended for
 	
-	public Camera interactionCamera;
+	public Camera interactionCamera;	// The camera the InteractionControl will use
+
+	public List<GameObjectMode> dragObjectOrigins = new List<GameObjectMode>();	// All the Drag Object Origins used by this InteractionControl
+
+	public List<DragObject> dragObjects = new List<DragObject>();	// All Drag Objects found as children of the Drag Object Origins
+
+	public GameObjectMode dragObjectTarget;			// The Drag Object Target that all Drag Objects can be dragged into
 	
-	public Transform shoeDragPickUp;	// The shoe on the ground
+	public float distanceFromCamera = 1f;			// How far all Drag Objects will be from the camera when they are dragged
 	
-	public Transform shoeDragged;		// The shoe that moves during drag, disabled on start
-	
-	public Transform shoeDragDrop;		// The hook that the shoe goes to
-	
-	private GameObjectMode shoeOriginState;	// The control state of the shoe on the ground
-	
-	private SimpleDragged shoeDraggedState;		// The control state of the dragged object
-	
-	private GameObjectMode shoeDragDropState;	// The control state of the hook
-	
-	private TouchManager touchManager;
-	
-	public float distanceFromCamera = 1f;
-	
-	public float returnSpeed = 4f;
+	public float returnSpeed = 4f;					// The speed that drag objects move to return to their origins
 	
 	// Use this for initialization
 	void Start () {
 
 		if (interactionCamera)
 		{
-			interactionCamera.enabled = false;
+			interactionCamera.enabled = false;		// The main orthographic camera will only work when all other cameras are disabled
 		} 
-		
-		if (shoeDragged)
+
+		if (dragObjectOrigins.Count == 0)
 		{
-			shoeDraggedState = shoeDragged.GetComponent<SimpleDragged>();
-			
-			shoeDragged.gameObject.SetActive(false);
-			
-			
+			Debug.Log (this.name + " has no drag object origins");
+		} 
+
+		for (int i=0; i < dragObjectOrigins.Count; i++)
+		{
+			if (dragObjectOrigins[i])
+			{
+
+				if (dragObjectOrigins[i].gameObjectMode == GameObjectMode.ModeList.DragObjectOrigin)
+				{
+					// Set the ConnectState to the initial state for Drag Object Origins
+					dragObjectOrigins[i].thisConnectState = GameObjectMode.ConnectState.DragObjOriginPresent;
+
+					// Check if any children have the Drag Object component attached
+					DragObject dragObj = dragObjectOrigins[i].GetComponentInChildren<DragObject>();
+
+					if (dragObj)
+					{
+						// Collision on Drag Objects prevents the physics raycast striking the Drag Object Origin
+						if (dragObj.collider)
+							Debug.Log (dragObj + " has collision attached. Remove to allow correct detection.");
+
+						// if this had a Drag Object component, add it to the Drag Object list for this Drag Object Origin
+						dragObjects.Add(dragObj);
+
+						// disable this Drag Object to be activated on drag
+						dragObjects[i].gameObject.SetActive(false);
+
+					} else {
+
+						Debug.Log (this.dragObjectOrigins[i] + " has no DragObject child");
+
+					}
+
+					
+				} else {
+					
+					Debug.Log (this.name + " has a GameObjectMode that is not DragObjectOrigin");
+
+				}
+
+
+			} else {
+
+				Debug.Log (this.name + " has an invalid entry at index "+i);
+				dragObjectOrigins.RemoveAt(i);
+			}
+		}
+		
+
+		
+		if (dragObjectTarget)
+		{
+			if (dragObjectTarget.gameObjectMode == GameObjectMode.ModeList.DragObjectTarget)
+			{
+				dragObjectTarget.thisConnectState = GameObjectMode.ConnectState.DragObjTargetNotConnected;
+
+			} else {
+
+				Debug.Log (this.name + " has a GameObjectMode that is not DragObjectTarget");
+			}
+
 		} else {
-			
-			Debug.Log ("There is no shoe drag object");
+
+			Debug.Log (this.name + " has no drag target");
 		}
-		
-		if (shoeDragDrop)
-		{
-			shoeDragDropState = shoeDragDrop.GetComponent<GameObjectMode>();
-			
-			
-		} else {
-			
-			Debug.Log ("There is no shoe drag drop object");
-		}
-		
-		if (shoeDragPickUp)
-		{
-			shoeOriginState = shoeDragPickUp.GetComponent<GameObjectMode>();
-			
-			
-		} else {
-			
-			Debug.Log ("There is no shoe origin object");
-		}
-		GameObject eBookManager = GameObject.Find("eBookManager");
-		
-		if(!eBookManager)
-		{
-			Debug.Log("There is no EbookManager in the scene");
-		} else {
-			
-			touchManager = eBookManager.GetComponent<TouchManager>();
-			
-		}
-		
-		if(!touchManager)
-		{
-			Debug.Log("There is no EbookManager with a TouchManager component in the scene");
-		}
-		
+
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		/*
-		
-		if (shoeDraggedState.thisDragState == SimpleDragged.dragState.Returned)
+		for (int i=0; i < dragObjects.Count; i++)
 		{
-			if (debugMode)
-				Debug.Log("Shoe returned");
-			
-			shoeOriginState.thisConnectState = GameObjectMode.ConnectState.DragObjOriginReturned;
-			
-			//shoeDragPickUp.renderer.enabled = true;
-			
-			shoeDraggedState.thisDragState = SimpleDragged.dragState.InActive;
-			
-			shoeDragged.gameObject.SetActive(false);
-			
+			if (dragObjects[i].thisDragState == DragObject.dragState.Returned)
+			{
+				if (debugMode)
+					Debug.Log(dragObjectOrigins[i] + " returned");
+				
+				dragObjectOrigins[i].thisConnectState = GameObjectMode.ConnectState.DragObjOriginReturned;
+				
+				dragObjects[i].thisDragState = DragObject.dragState.InActive;
+				
+				dragObjects[i].gameObject.SetActive(false);
+				
+			}
+
+			if (dragObjects[i].thisDragState == DragObject.dragState.Collected)
+			{
+				if (debugMode)
+					Debug.Log(dragObjectOrigins[i] + " collected");
+
+				// Conditions for other connection states for dragObjectTarget go here
+
+				dragObjectTarget.thisConnectState = GameObjectMode.ConnectState.DragObjTargetConnectionMade;
+				
+				dragObjects[i].thisDragState = DragObject.dragState.InActive;
+				
+				dragObjects[i].gameObject.SetActive(false);
+				
+			}
 		}
-		
-		
-		if (shoeDraggedState.thisDragState == SimpleDragged.dragState.Collected)
-		{
-			shoeDragDropState.thisConnectState = GameObjectMode.ConnectState.DragObjTargetConnectionMade;
-			
-			shoeDraggedState.thisDragState = SimpleDragged.dragState.InActive;
-			
-			shoeDragged.gameObject.SetActive(false);
-			
-		}
-		*/
-		
+
+
 	}
 	
 	// LiftUpDragObject is called by TouchManager
 	public void LiftUpDragObject ( GameObject target )
 	{
-		Debug.Log("Object Lifted");
-		
-		shoeDragged.transform.position = shoeDragPickUp.transform.position;
-		
-		shoeDraggedState.thisDragState = SimpleDragged.dragState.FollowingFinger;
-		
-		shoeDraggedState.initialPosition = shoeDragPickUp.transform.position;
-		
-		shoeDraggedState.destinationPosition = shoeDragDropState.transform.position;
-		
-		shoeDraggedState.cam = interactionCamera;
-		
-		shoeDraggedState.distanceFromCamera = distanceFromCamera;
-		
-		shoeDraggedState.returnSpeed = returnSpeed;
-		
-		shoeOriginState.thisConnectState = GameObjectMode.ConnectState.DragObjOriginLifted;
-		
-		//shoeOriginState.thisConnectState = GameObjectMode.ConnectState.DragObjOriginReturned;
-		
-		shoeDragged.gameObject.SetActive(true);
-		
-		//shoeDragPickUp.renderer.enabled = false;
-		
+
+		for (int i=0; i < dragObjectOrigins.Count; i++)
+		{
+			if (dragObjectOrigins[i].gameObject == target)
+			{
+				Debug.Log(dragObjectOrigins[i] + " has been Lifted");
+
+				dragObjects[i].transform.position = dragObjectOrigins[i].transform.position;
+
+				dragObjects[i].thisDragState = DragObject.dragState.FollowingFinger;
+
+				dragObjects[i].initialPosition = dragObjectOrigins[i].transform.position;
+
+				dragObjects[i].destinationPosition = dragObjectTarget.transform.position;
+
+				dragObjects[i].cam = interactionCamera;
+
+				dragObjects[i].distanceFromCamera = distanceFromCamera;
+
+				dragObjects[i].returnSpeed = returnSpeed;
+
+				dragObjectOrigins[i].thisConnectState = GameObjectMode.ConnectState.DragObjOriginLifted;
+
+				dragObjects[i].gameObject.SetActive(true);
+
+			}
+		}
+
 	}
 	
 	// DropDragObject is called by TouchManager
 	public void DropDragObject ( GameObject target )
 	{
-		if (shoeDraggedState.thisDragState == SimpleDragged.dragState.FollowingFinger)
+		for (int i=0; i < dragObjectOrigins.Count; i++)
 		{
-			Debug.Log("Object Dropped");
-			
-			shoeDraggedState.thisDragState = SimpleDragged.dragState.IsReleased;
+			if (dragObjectOrigins[i].gameObject == target)
+			{
+				if (dragObjects[i].thisDragState == DragObject.dragState.FollowingFinger)
+				{
+					Debug.Log("Object Dropped");
+					
+					dragObjects[i].thisDragState = DragObject.dragState.IsReleased;
+				}
+			}
 		}
+
 	}
 }
