@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SimpleFaceMe02 : MonoBehaviour {
+public class FaceMe : MonoBehaviour {
 
 	public Camera cameraTarget;
 
 	// Use this for initialization
 	void Start () {
 		if (!cameraTarget)
-			Debug.Log(this.name + " is using SimpleFaceMe02 without a camera.");
+			Debug.Log(this.name + " is using FaceMe without a camera.");
 	
 	}
 	

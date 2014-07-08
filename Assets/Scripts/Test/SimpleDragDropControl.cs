@@ -13,13 +13,17 @@ public class SimpleDragDropControl : MonoBehaviour {
 
 	public Transform shoeDragDrop;		// The hook that the shoe goes to
 
+	private GameObjectMode shoeOriginState;	// The control state of the shoe on the ground
+
 	private SimpleDragged shoeDraggedState;		// The control state of the dragged object
 
-	private SimpleDragDrop shoeDragDropState;	// The control state of the hook
+	private GameObjectMode shoeDragDropState;	// The control state of the hook
 
 	private TouchManager touchManager;
+	
+	public float distanceFromCamera = 1f;
 
-	public float enableDistance = 5f;	// How close the shoe must be to the hook to be collected
+	public float returnSpeed = 4f;
 
 	// Use this for initialization
 	void Start () {
@@ -30,6 +34,7 @@ public class SimpleDragDropControl : MonoBehaviour {
 
 			shoeDragged.gameObject.SetActive(false);
 
+
 		} else {
 
 			Debug.Log ("There is no shoe drag object");
@@ -37,7 +42,7 @@ public class SimpleDragDropControl : MonoBehaviour {
 
 		if (shoeDragDrop)
 		{
-			shoeDragDropState = shoeDragDrop.GetComponent<SimpleDragDrop>();
+			shoeDragDropState = shoeDragDrop.GetComponent<GameObjectMode>();
 
 			
 		} else {
@@ -45,6 +50,15 @@ public class SimpleDragDropControl : MonoBehaviour {
 			Debug.Log ("There is no shoe drag drop object");
 		}
 
+		if (shoeDragPickUp)
+		{
+			shoeOriginState = shoeDragPickUp.GetComponent<GameObjectMode>();
+			
+			
+		} else {
+			
+			Debug.Log ("There is no shoe origin object");
+		}
 		GameObject eBookManager = GameObject.Find("eBookManager");
 
 		if(!eBookManager)
@@ -67,24 +81,30 @@ public class SimpleDragDropControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (shoeDragPickUp.renderer.enabled == false && shoeDraggedState.thisDragState == SimpleDragged.dragState.InActive)
+		if (shoeDraggedState.thisDragState == SimpleDragged.dragState.Returned)
 		{
 			if (debugMode)
 				Debug.Log("Shoe returned");
-				
-			shoeDragPickUp.renderer.enabled = true;
 
+			shoeOriginState.thisConnectState = GameObjectMode.ConnectState.DragObjOriginReturned;
+			
+			//shoeDragPickUp.renderer.enabled = true;
+
+			shoeDraggedState.thisDragState = SimpleDragged.dragState.InActive;
+			
 			shoeDragged.gameObject.SetActive(false);
-				
+			
 		}
 
-		float dist = Vector3.Distance(shoeDragged.transform.position, shoeDragDrop.transform.position);
-		
-		if (dist < enableDistance && shoeDragDropState.thisConnectState == SimpleDragDrop.connectState.NotConnected)
-		{
-			shoeDragDropState.thisConnectState = SimpleDragDrop.connectState.ConnectionMade;
 
+		if (shoeDraggedState.thisDragState == SimpleDragged.dragState.Collected)
+		{
+			shoeDragDropState.thisConnectState = GameObjectMode.ConnectState.DragObjTargetConnectionMade;
+
+			shoeDraggedState.thisDragState = SimpleDragged.dragState.InActive;
+			
 			shoeDragged.gameObject.SetActive(false);
+
 		}
 	
 	}
@@ -95,21 +115,37 @@ public class SimpleDragDropControl : MonoBehaviour {
 		Debug.Log("Object Lifted");
 
 		shoeDragged.transform.position = shoeDragPickUp.transform.position;
+	
+		shoeDraggedState.thisDragState = SimpleDragged.dragState.FollowingFinger;
+
 		shoeDraggedState.initialPosition = shoeDragPickUp.transform.position;
 
-		shoeDraggedState.thisDragState = SimpleDragged.dragState.FollowingFinger;
+		shoeDraggedState.destinationPosition = shoeDragDropState.transform.position;
+
+		shoeDraggedState.cam = cam;
+
+		shoeDraggedState.distanceFromCamera = distanceFromCamera;
+
+		shoeDraggedState.returnSpeed = returnSpeed;
+
+		shoeOriginState.thisConnectState = GameObjectMode.ConnectState.DragObjOriginLifted;
+
+		//shoeOriginState.thisConnectState = GameObjectMode.ConnectState.DragObjOriginReturned;
 		
 		shoeDragged.gameObject.SetActive(true);
 		
-		shoeDragPickUp.renderer.enabled = false;
+		//shoeDragPickUp.renderer.enabled = false;
 
 	}
 
 	// DropDragObject is called by TouchManager
 	public void DropDragObject ( GameObject target )
 	{
-		Debug.Log("Object Dropped");
+		if (shoeDraggedState.thisDragState == SimpleDragged.dragState.FollowingFinger)
+		{
+			Debug.Log("Object Dropped");
 		
-		shoeDraggedState.thisDragState = SimpleDragged.dragState.IsReleased;
+			shoeDraggedState.thisDragState = SimpleDragged.dragState.IsReleased;
+		}
 	}
 }

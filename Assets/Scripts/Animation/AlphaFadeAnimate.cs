@@ -19,6 +19,8 @@ public class AlphaFadeAnimate : MonoBehaviour {
 
 	public float ypos;
 
+	public float yPosAmplify = 1f;
+
 	// Use this for initialization
 	void Start () {
 
@@ -37,6 +39,8 @@ public class AlphaFadeAnimate : MonoBehaviour {
 		if (FADAnimatedBone)
 		{
 			ypos = FADAnimatedBone.position.y - FADInitialYPos;
+
+			ypos *= yPosAmplify;
 
 			FADMaterial.SetFloat("_AlphaStrength", ypos);
 		}
