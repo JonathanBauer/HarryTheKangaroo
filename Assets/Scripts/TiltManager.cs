@@ -24,6 +24,8 @@ public class TiltManager : MonoBehaviour {
 
 	public bool iPhoneDevice = false;
 
+	public float iPhoneTiltAdjust = 0.5f;
+
 	public float mouseDragAdjust = 0.5f;
 
 	public float tiltViewAngle = 0f;
@@ -116,11 +118,38 @@ public class TiltManager : MonoBehaviour {
 			/* tiltViewAngle returns a negative angle when the device is tilted to the left and a positive to the right. It calculates this from
 			 * the angle between the gyro.gravity x and z vectors. This gives a reasonably reliable tilt value even when the device is upright in
 			 * landscape left */
-			float angle = Mathf.Rad2Deg * Mathf.Atan(Input.gyro.gravity.x / Input.gyro.gravity.z);
+			float angle = (Mathf.Rad2Deg * Mathf.Atan(Input.gyro.gravity.x / Input.gyro.gravity.z)) * iPhoneTiltAdjust;
 
 			angle = Mathf.Clamp( angle, -iphoneTiltLimit.x, iphoneTiltLimit.x);
 
-			tiltViewAngle = angle;
+			if (useIncrements)
+			{
+				
+				
+				for (int i = 0; i < incrementNumber; i++)
+				{
+					if (angle > (increment[i] - incrementalThreshold) && angle < (increment[i] + incrementalThreshold))
+					{
+						if (angleTarget != increment[i])
+							angleTarget = increment[i];
+						
+						travel = 0;
+						
+					}
+					
+				}
+				
+				tiltViewAngle = Mathf.Lerp (angle, angleTarget, travel);
+				
+				travel += incrementalSpeed;
+				
+				
+				
+			} else {
+				
+				tiltViewAngle = angle;
+				
+			}
 		} else {
 
 			float angle = TouchManager.Instance.draggedViewAngle * mouseDragAdjust;
