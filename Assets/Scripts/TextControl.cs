@@ -4,20 +4,18 @@ using System.Collections.Generic;
 
 public class TextControl : MonoBehaviour {
 
-	public ParagraphText[] paragraphTexts;
+	public bool debugMode = false;
 
+	public ParagraphText[] paragraphTexts;		// All the GUIText objects that are children of the text control
+	
+	public string textOutput = "";				// Not implemented - The string that all the paragraphs will display
 
-
-	public string textOutput = "";
 
 	// Use this for initialization
 	void Start () {
 
 		paragraphTexts = this.GetComponentsInChildren<ParagraphText>();
 
-		DisableText ();
-
-	
 	}
 	
 	// Update is called once per frame
@@ -29,6 +27,9 @@ public class TextControl : MonoBehaviour {
 
 		for (int i=0; i < paragraphTexts.Length; i++)
 		{
+			if (debugMode)
+				Debug.Log(this.name + " text is enabled.");
+
 			paragraphTexts[i].guiText.enabled = true;
 		}
 	
@@ -39,6 +40,9 @@ public class TextControl : MonoBehaviour {
 
 		for (int i=0; i < paragraphTexts.Length; i++)
 		{
+			if (debugMode)
+				Debug.Log(this.name + " text is disabled.");
+
 			paragraphTexts[i].guiText.enabled = false;
 		}
 		

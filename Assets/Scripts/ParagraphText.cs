@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class ParagraphText : MonoBehaviour {
 
+	/* ParagraphText allows a GUIText object print text on more that one line
+	 * This is only visible when the script starts */
+
 	public List<string> textInput = new List<string>();
 
 	public string textOutput = "";

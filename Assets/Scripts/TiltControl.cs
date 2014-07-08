@@ -3,8 +3,11 @@ using System.Collections;
 
 public class TiltControl : MonoBehaviour {
 
-	public bool isPerspective = false;
-	public bool isValid = false;
+	public bool isPerspective = false;			
+	public bool isValid = false;	
+	/* isPerspective defines whether this page is using a perspective or orthographic camera
+	 * Once defined, CameraCheck () finds out if the perspective camera is attached to an orbit pivot.
+	 * If the settings are incorrect, isValid stays false and this component is disabled. */
 
 	public Transform cameraPivot;
 	public Camera tiltCamera;
@@ -24,7 +27,7 @@ public class TiltControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (isPerspective)
+		if (isPerspective)		// If this is a perspective camera, the pivot rotation is based on the TiltManager's tiltViewAngle
 		{
 			cameraPivotRotation.y = TiltManager.Instance.tiltViewAngle;
 			cameraPivot.localEulerAngles = cameraPivotRotation;

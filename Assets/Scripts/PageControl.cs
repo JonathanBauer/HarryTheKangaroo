@@ -192,7 +192,7 @@ public class PageControl : MonoBehaviour {
 
 				if (targetMode[i].gameObjectMode == GameObjectMode.ModeList.PageTurnNext || 
 				    targetMode[i].gameObjectMode == GameObjectMode.ModeList.PageTurnPrevious)
-				{
+				{ 
 					if (debugMode)
 						Debug.Log(animationTarget[i] + "is a PageTurnNext or PageTurnPrevious.");
 

@@ -180,8 +180,8 @@ public class TouchManager : MonoBehaviour {
 							Debug.Log(target+ "has a PageTurnPrevious script");
 						
 						PageManager.Instance.PageTurnPrevious ();
-						
-					} else if (targetMode.gameObjectMode == GameObjectMode.ModeList.StoryAnimation)
+
+					}  else if (targetMode.gameObjectMode == GameObjectMode.ModeList.StoryAnimation)
 					{
 						PageManager.Instance.TriggerStoryAnimation ( target );
 						
