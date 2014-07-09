@@ -32,7 +32,7 @@ public class DragObject : MonoBehaviour {
 	public float returnRange = 5f;			// The distance the dragged object must get inside for it to become "Returned"
 	
 	
-	void Update () {
+	void LateUpdate () {
 
 		if (thisDragState == dragState.IsReleased)
 		{
