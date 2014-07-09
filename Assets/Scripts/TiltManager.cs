@@ -22,12 +22,15 @@ public class TiltManager : MonoBehaviour {
 
 	public bool iPhoneDevice = false;
 
-	public float mouseDragAdjust = 0.5f;
+	public Vector2 mouseDragMultipler = new Vector2 ( 0.5f, 0.5f);
 
-	public float iphoneTiltAdjust = 0.5f;
+	public Vector2 iphoneTiltMultipler = new Vector2 ( 0.5f, 0.5f);
 
 	public Vector2 tiltAngle = new Vector2( 0, 0);
 
+	public Vector2 iPhoneAngleOffset = new Vector2( 0, 0);
+
+	public Vector2 mouseAngleOffset = new Vector2( 0, 0);
 
 	// Use this for initialization
 	void Start () {
@@ -67,19 +70,28 @@ public class TiltManager : MonoBehaviour {
 			/* tiltViewAngle returns a negative angle when the device is tilted to the left and a positive to the right. It calculates this from
 			 * the angle between the gyro.gravity x and z vectors. This gives a reasonably reliable tilt value even when the device is upright in
 			 * landscape left */
-			tiltAngle.x = (Mathf.Rad2Deg * Mathf.Atan(Input.gyro.gravity.x / Input.gyro.gravity.z)) * iphoneTiltAdjust;
+			tiltAngle.x = (Mathf.Rad2Deg * Mathf.Atan(Input.gyro.gravity.x / Input.gyro.gravity.z)) * iphoneTiltMultipler.x;
 
-			tiltAngle.y = (Mathf.Rad2Deg * Mathf.Atan(Input.gyro.gravity.y / Input.gyro.gravity.z)) * iphoneTiltAdjust;
+			tiltAngle.x = tiltAngle.x + iPhoneAngleOffset.x;
 
+			tiltAngle.y = (Mathf.Rad2Deg * Mathf.Atan(Input.gyro.gravity.y / Input.gyro.gravity.z)) * iphoneTiltMultipler.y;
 
-		} else {
-
-			tiltAngle.x = TouchManager.Instance.draggedViewAngle.x * mouseDragAdjust;
-			tiltAngle.y = TouchManager.Instance.draggedViewAngle.y * mouseDragAdjust;
+			tiltAngle.y = (- tiltAngle.y) + iPhoneAngleOffset.y;
 
 
+		} else { 
+
+			tiltAngle.x = TouchManager.Instance.draggedViewAngle.x * mouseDragMultipler.x;
+
+			tiltAngle.x = tiltAngle.x + mouseAngleOffset.x;
+
+			tiltAngle.y = TouchManager.Instance.draggedViewAngle.y * mouseDragMultipler.y;
+
+			tiltAngle.y = (- tiltAngle.y) + mouseAngleOffset.y;
 		}
 
+		if (debugMode)
+			Debug.Log("tiltAngle is " + tiltAngle);
 	
 	}
 
