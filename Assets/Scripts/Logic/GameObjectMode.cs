@@ -30,7 +30,7 @@ public class GameObjectMode : MonoBehaviour {
 	
 	public ConnectState thisConnectState = ConnectState.DragObjTargetNotConnected;
 
-	public int gameObjectID = 0;
+	public int gameObjectID = 1;
 	
 
 	void Update () {

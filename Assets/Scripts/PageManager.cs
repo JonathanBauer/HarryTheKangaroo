@@ -39,7 +39,11 @@ public class PageManager : MonoBehaviour {
 	private GameObject textRoot;
 	public TextControl[] eBookText;					// Array for the Text Control on each eBookPage
 
+	public Vector2 textSetupResolution = new Vector2 (640,426);
 
+	//private Vector2 currentScreenResolution = new Vector2 (0,0);
+
+	//public Vector2 textPositionMultiplier = new Vector2 (0,0);
 
 
 	// Use this for initialization
@@ -52,13 +56,18 @@ public class PageManager : MonoBehaviour {
 		else
 			myInstance = this;
 
+		//currentScreenResolution = new Vector2 ( Screen.width, Screen.height);
+
+		//textPositionMultiplier.x = currentScreenResolution.x / textSetupResolution.x;
+		//textPositionMultiplier.y = currentScreenResolution.y / textSetupResolution.y;
+
 		pageRoot = GameObject.Find("eBookPages");
 		eBookPage = pageRoot.GetComponentsInChildren<PageControl>();
 
 		textRoot = GameObject.Find("eBookTexts");
 		eBookText = textRoot.GetComponentsInChildren<TextControl>();
 
-		currentPage = startingPage;
+		//currentPage = startingPage;
 
 		lastPage = eBookPage.Length - 1;	// The first entry in an array is always zero, so the last page's ID is 1 short of the length
 		lastText = eBookText.Length - 1;
@@ -98,15 +107,10 @@ public class PageManager : MonoBehaviour {
 			{
 				eBookText[i].EnableText ();
 
-				if (debugMode)
-					Debug.Log(eBookText[i].name + " text is enabled.");
-
 			} else {
 
 				eBookText[i].DisableText ();
 
-				if (debugMode)
-					Debug.Log(eBookText[i].name + " text is disabled.");
 			}
 		}
 
@@ -119,75 +123,15 @@ public class PageManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		/*
-		// Lazy hack to fast forward to desired page
-		if (startingPage != currentPage && startingPage > 0)
+
+		if (startingPage > currentPage)
 		{
-			InteractionControl iac = eBookPage[currentPage].GetComponent<InteractionControl>();
-			
-			if (iac)
-			{
-				iac.interactionCamera.enabled = false;
-				mainOrthoCamera.enabled = true;
-				TouchManager.Instance.cam = mainOrthoCamera;
-			}
-			
-			eBookPage[currentPage].StopAnimations ();
-			eBookText[currentPage].DisableText ();
+			if (startingPage > lastPage)
+				startingPage = lastPage;
 
-			currentPage = startingPage;
-
-			startingPage = -1;
-			
-			iac = eBookPage[currentPage].GetComponent<InteractionControl>();
-			
-			if (iac)
-			{
-				// Find out if the eBook Page Number in the inspector corresponds with the current eBook page
-				// because PageManager only counts PageControls, not InteractionControls, and each 
-				// InteractionControl must be correctly numbered
-				if (iac.eBookPageNumber != currentPage)
-				{
-					if (debugMode)
-						Debug.Log ("Interaction eBook Page Number of "+iac.eBookPageNumber + " does not match Pagemanager Ebook control of "+currentPage);
-					
-				} else {
-					
-					// Does the InteractionControl have a camera attached?
-					if (iac.interactionCamera)
-					{
-						// Turn off the main Camera and enable the InteractionControl's
-						mainOrthoCamera.enabled = false;
-						iac.interactionCamera.enabled = true;
-						TouchManager.Instance.cam = iac.interactionCamera;
-						
-					} else {
-						
-						if (debugMode)
-							Debug.Log(iac.name + " has no camera.");
-						
-					}
-					
-				}
-				
-				
-			} else {
-				
-				if (debugMode)
-					Debug.Log (eBookPage[currentPage] + " does not have an Interaction Control");
-				
-			}
-			
-			eBookPage[currentPage].StartAnimations ();
-			eBookText[currentPage].EnableText ();
-			
-			Vector3 position = cameraParent.transform.position;
-			position.x = distanceBetweenPages * startingPage;
-			cameraParent.transform.position = position;
-
-
+			PageTurnNext ( startingPage );
+			startingPage = 0;
 		}
-		*/
 
 
 	}
@@ -230,7 +174,7 @@ public class PageManager : MonoBehaviour {
 	}
 
 
-	public void PageTurnNext () {
+	public void PageTurnNext ( int pagesToTurn ) {
 
 		if (debugMode)
 			Debug.Log ("PageTurnNext");
@@ -247,12 +191,15 @@ public class PageManager : MonoBehaviour {
 				iac.interactionCamera.enabled = false;
 				mainOrthoCamera.enabled = true;
 				TouchManager.Instance.cam = mainOrthoCamera;
+
+				iac.ResetPuzzle ();
 			}
 
 			eBookPage[currentPage].StopAnimations ();
 			eBookText[currentPage].DisableText ();
 
-			currentPage ++;
+			//currentPage ++;
+			currentPage += pagesToTurn;
 
 			iac = eBookPage[currentPage].GetComponent<InteractionControl>();
 			
@@ -295,16 +242,16 @@ public class PageManager : MonoBehaviour {
 
 			eBookPage[currentPage].StartAnimations ();
 			eBookText[currentPage].EnableText ();
-			
+
 			Vector3 position = cameraParent.transform.position;
-			position.x += distanceBetweenPages;
+			position.x += (distanceBetweenPages * pagesToTurn);
 			cameraParent.transform.position = position;
 			
 		}
 
 	}
 
-	public void PageTurnPrevious () {
+	public void PageTurnPrevious ( int pagesToTurn ) {
 		
 		if (debugMode)
 			Debug.Log ("PageTurnPrevious");
@@ -321,12 +268,14 @@ public class PageManager : MonoBehaviour {
 				iac.interactionCamera.enabled = false;
 				mainOrthoCamera.enabled = true;
 				TouchManager.Instance.cam = mainOrthoCamera;
+
+				iac.ResetPuzzle ();
 			}
 			
 			eBookPage[currentPage].StopAnimations ();
 			eBookText[currentPage].DisableText ();
 
-			currentPage --;
+			currentPage -= pagesToTurn;
 
 			iac = eBookPage[currentPage].GetComponent<InteractionControl>();
 			
@@ -371,7 +320,7 @@ public class PageManager : MonoBehaviour {
 			eBookText[currentPage].EnableText ();
 			
 			Vector3 position = cameraParent.transform.position;
-			position.x -= distanceBetweenPages;
+			position.x -= (distanceBetweenPages * pagesToTurn);
 			cameraParent.transform.position = position;
 			
 		}

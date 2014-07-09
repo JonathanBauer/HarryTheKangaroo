@@ -30,7 +30,8 @@ public class InteractionControl : MonoBehaviour {
 
 		if (dragObjectOrigins.Count == 0)
 		{
-			Debug.Log (this.name + " has no drag object origins");
+			if (debugMode)
+				Debug.Log (this.name + " has no drag object origins");
 		} 
 
 		for (int i=0; i < dragObjectOrigins.Count; i++)
@@ -50,8 +51,10 @@ public class InteractionControl : MonoBehaviour {
 					{
 						// Collision on Drag Objects prevents the physics raycast striking the Drag Object Origin
 						if (dragObj.collider)
-							Debug.Log (dragObj + " has collision attached. Remove to allow correct detection.");
-
+						{
+							if (debugMode)
+								Debug.Log (dragObj + " has collision attached. Remove to allow correct detection.");
+						}
 						// if this had a Drag Object component, add it to the Drag Object list for this Drag Object Origin
 						dragObjects.Add(dragObj);
 
@@ -60,21 +63,24 @@ public class InteractionControl : MonoBehaviour {
 
 					} else {
 
-						Debug.Log (this.dragObjectOrigins[i] + " has no DragObject child");
+						if (debugMode)
+							Debug.Log (this.dragObjectOrigins[i] + " has no DragObject child");
 
 					}
 
 					
 				} else {
-					
-					Debug.Log (this.name + " has a GameObjectMode that is not DragObjectOrigin");
+
+					if (debugMode)
+						Debug.Log (this.name + " has a GameObjectMode that is not DragObjectOrigin");
 
 				}
 
 
 			} else {
 
-				Debug.Log (this.name + " has an invalid entry at index "+i);
+				if (debugMode)
+					Debug.Log (this.name + " has an invalid entry at index "+i);
 				dragObjectOrigins.RemoveAt(i);
 			}
 		}
@@ -89,12 +95,14 @@ public class InteractionControl : MonoBehaviour {
 
 			} else {
 
-				Debug.Log (this.name + " has a GameObjectMode that is not DragObjectTarget");
+				if (debugMode)
+					Debug.Log (this.name + " has a GameObjectMode that is not DragObjectTarget");
 			}
 
 		} else {
 
-			Debug.Log (this.name + " has no drag target");
+			if (debugMode)
+				Debug.Log (this.name + " has no drag target");
 		}
 
 		
@@ -145,7 +153,8 @@ public class InteractionControl : MonoBehaviour {
 		{
 			if (dragObjectOrigins[i].gameObject == target)
 			{
-				Debug.Log(dragObjectOrigins[i] + " has been Lifted");
+				if (debugMode)
+					Debug.Log(dragObjectOrigins[i] + " has been Lifted");
 
 				dragObjects[i].transform.position = dragObjectOrigins[i].transform.position;
 
@@ -179,12 +188,25 @@ public class InteractionControl : MonoBehaviour {
 			{
 				if (dragObjects[i].thisDragState == DragObject.dragState.FollowingFinger)
 				{
-					Debug.Log("Object Dropped");
+					if (debugMode)
+						Debug.Log("Object Dropped");
 					
 					dragObjects[i].thisDragState = DragObject.dragState.IsReleased;
 				}
 			}
 		}
+
+	}
+
+	public void ResetPuzzle () {
+
+		for (int i=0; i < dragObjectOrigins.Count; i++)
+		{
+			dragObjectOrigins[i].thisConnectState = GameObjectMode.ConnectState.DragObjOriginReturned;
+		}
+
+		if (dragObjectTarget)
+			dragObjectTarget.thisConnectState = GameObjectMode.ConnectState.DragObjTargetNotConnected;
 
 	}
 }

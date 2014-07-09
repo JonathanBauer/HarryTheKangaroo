@@ -11,9 +11,9 @@ public class PageControl : MonoBehaviour {
 	private List<GameObjectMode> targetMode = new List<GameObjectMode>();
 	public List<float> storyAnimationStartTime = new List<float>();	// The delay before the story-oriented play animation starts
 	
-	private List<bool> hasIdleAnimation = new List<bool>();			// Does this object have an idle animation that loops on start
+	public List<bool> hasIdleAnimation = new List<bool>();			// Does this object have an idle animation that loops on start
 
-	private enum StoryEvent
+	public enum StoryEvent
 	{
 		Ignore,
 		BackgroundAnimation,
@@ -27,7 +27,7 @@ public class PageControl : MonoBehaviour {
 
 	}
 
-	private List<StoryEvent> storyEvent = new List<StoryEvent>();
+	public List<StoryEvent> storyEvent = new List<StoryEvent>();
 	
 	private List<float> triggerAnimationTime = new List<float>();
 
@@ -39,7 +39,6 @@ public class PageControl : MonoBehaviour {
 	void Start () {
 
 		AnimationCheck();
-
 	}
 	
 	// Update is called once per frame
@@ -119,11 +118,19 @@ public class PageControl : MonoBehaviour {
 
 	public void StartAnimations () {
 
+		/*
+		if (debugMode)
+			Debug.Log(this.name + " crashes at "+ storyEvent[0] );
+		*/
+	
+
 		startPageTime = Time.time;
 		for (int i=0; i < animationTarget.Count; i++)
 		{
 			animationTarget[i].Stop();
 
+			if (debugMode)
+				Debug.Log(animationTarget[i] + " has Story Event "+ storyEvent[i]);
 
 			if (storyEvent[i] != StoryEvent.BackgroundAnimation)
 				storyEvent[i] = StoryEvent.WaitingForTrigger;

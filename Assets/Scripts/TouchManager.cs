@@ -170,16 +170,16 @@ public class TouchManager : MonoBehaviour {
 					if (targetMode.gameObjectMode == GameObjectMode.ModeList.PageTurnNext)
 					{
 						if (debugMode)
-							Debug.Log(target+ "has a PageTurnNext script");
+							Debug.Log(target+ "has a PageTurnNext script to turn the page forward by " + targetMode.gameObjectID);
 						
-						PageManager.Instance.PageTurnNext ();
+						PageManager.Instance.PageTurnNext ( targetMode.gameObjectID );
 						
 					} else if (targetMode.gameObjectMode == GameObjectMode.ModeList.PageTurnPrevious)
 					{
 						if (debugMode)
-							Debug.Log(target+ "has a PageTurnPrevious script");
+							Debug.Log(target+ "has a PageTurnPrevious script to turn the page back by " + targetMode.gameObjectID);
 						
-						PageManager.Instance.PageTurnPrevious ();
+						PageManager.Instance.PageTurnPrevious ( targetMode.gameObjectID );
 
 					}  else if (targetMode.gameObjectMode == GameObjectMode.ModeList.StoryAnimation)
 					{
