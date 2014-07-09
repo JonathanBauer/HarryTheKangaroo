@@ -67,7 +67,7 @@ public class PageManager : MonoBehaviour {
 		textRoot = GameObject.Find("eBookTexts");
 		eBookText = textRoot.GetComponentsInChildren<TextControl>();
 
-		//currentPage = startingPage;
+
 
 		lastPage = eBookPage.Length - 1;	// The first entry in an array is always zero, so the last page's ID is 1 short of the length
 		lastText = eBookText.Length - 1;
@@ -78,6 +78,8 @@ public class PageManager : MonoBehaviour {
 
 			if (debugMode)
 				Debug.Log(mainOrthoCamera);
+
+			mainOrthoCamera.enabled = true;
 
 		} else {
 
