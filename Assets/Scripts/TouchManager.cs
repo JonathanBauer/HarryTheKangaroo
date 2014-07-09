@@ -64,7 +64,7 @@ public class TouchManager : MonoBehaviour {
 
 	public Collider latchedObject;
 
-	public float draggedViewAngle = 0f;
+	public Vector2 draggedViewAngle = new Vector2( 0, 0 );
 
 	// Use this for initialization
 	void Start () {
@@ -416,7 +416,8 @@ public class TouchManager : MonoBehaviour {
 				if (dragBeginsIcon)
 					dragBeginsIcon.SetActive(true);
 
-				draggedViewAngle = fingerRecordedPosition.x - fingerStartPosition.x;
+				draggedViewAngle = fingerRecordedPosition - fingerStartPosition;
+
 				if (debugMode)
 					Debug.Log("WEBPLAYER: Dragged View Angle: "+draggedViewAngle);
 

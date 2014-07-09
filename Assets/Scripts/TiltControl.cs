@@ -19,7 +19,7 @@ public class TiltControl : MonoBehaviour {
 	public Transform cameraPivot;
 	public Camera tiltCamera;
 
-	public float tiltViewAngle = 0f;
+	public Vector2 tiltViewAngle = new Vector2( 0, 0);
 
 	private Vector3 cameraPivotRotation = new Vector3 (0,0,0);
 
@@ -35,7 +35,7 @@ public class TiltControl : MonoBehaviour {
 	
 	private float incrementNumber = 0f;
 	
-	private float angle = 0f;
+	private Vector2 thisTiltAngle = new Vector2( 0, 0);
 	
 	private float travelAngle;
 	
@@ -86,11 +86,12 @@ public class TiltControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		angle = TiltManager.Instance.angle;
+		thisTiltAngle = TiltManager.Instance.tiltAngle;
 
 		if (iPhoneDevice)
 		{
-			angle = Mathf.Clamp( angle, -iphoneTiltLimit.x, iphoneTiltLimit.x);
+			thisTiltAngle.x = Mathf.Clamp( thisTiltAngle.x, -iphoneTiltLimit.x, iphoneTiltLimit.x);
+			thisTiltAngle.y = Mathf.Clamp( thisTiltAngle.y, -iphoneTiltLimit.y, iphoneTiltLimit.y);
 
 			if (useIncrements)
 			{
@@ -98,12 +99,13 @@ public class TiltControl : MonoBehaviour {
 				
 			} else {
 				
-				tiltViewAngle = angle;
+				tiltViewAngle = thisTiltAngle;
 				
 			}
 		} else {
 
-			angle = Mathf.Clamp( angle, -mouseTiltLimit.x, mouseTiltLimit.x);
+			thisTiltAngle.x = Mathf.Clamp( thisTiltAngle.x, -mouseTiltLimit.x, mouseTiltLimit.x);
+			thisTiltAngle.y = Mathf.Clamp( thisTiltAngle.y, -mouseTiltLimit.y, mouseTiltLimit.y);
 
 			if (useIncrements)
 			{
@@ -111,14 +113,15 @@ public class TiltControl : MonoBehaviour {
 				
 			} else {
 				
-				tiltViewAngle = angle;
+				tiltViewAngle = thisTiltAngle;
 				
 			}
 		}
 
 		if (isPerspective)		// If this is a perspective camera, the pivot rotation is based on the TiltManager's tiltViewAngle
 		{
-			cameraPivotRotation.y = tiltViewAngle;
+			cameraPivotRotation.y = tiltViewAngle.x;
+			cameraPivotRotation.x = tiltViewAngle.y;
 
 
 			cameraPivot.localEulerAngles = cameraPivotRotation;
@@ -131,7 +134,7 @@ public class TiltControl : MonoBehaviour {
 		
 		for (int i = 0; i < incrementNumber; i++)
 		{
-			if (angle > (increment[i] - incrementalThreshold) && angle < (increment[i] + incrementalThreshold))
+			if (thisTiltAngle.x > (increment[i] - incrementalThreshold) && thisTiltAngle.x < (increment[i] + incrementalThreshold))
 			{
 				if (i != currentIncrement)
 				{
@@ -167,7 +170,7 @@ public class TiltControl : MonoBehaviour {
 			currentIncrement = targetIncrement;
 		}
 		
-		tiltViewAngle = travelAngle;
+		tiltViewAngle.x = travelAngle;
 		
 	}
 
