@@ -117,8 +117,10 @@ public class PageControl : MonoBehaviour {
 	}
 
 	public void StartAnimations () {
-
 		/*
+		if (debugMode)
+			Debug.Log(this.name + " crashes at "+ animationTarget[0] );
+
 		if (debugMode)
 			Debug.Log(this.name + " crashes at "+ storyEvent[0] );
 		*/

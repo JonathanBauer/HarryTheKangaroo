@@ -41,6 +41,8 @@ public class PageManager : MonoBehaviour {
 
 	public Vector2 textSetupResolution = new Vector2 (640,426);
 
+	public bool startAnimations = true;
+
 	//private Vector2 currentScreenResolution = new Vector2 (0,0);
 
 	//public Vector2 textPositionMultiplier = new Vector2 (0,0);
@@ -81,6 +83,9 @@ public class PageManager : MonoBehaviour {
 
 			mainOrthoCamera.enabled = true;
 
+			// so that I can move the camera to pages other than zero to position GUIText in the editor
+			mainOrthoCamera.transform.position = new Vector3 (0f,0f,-5f);	
+
 		} else {
 
 			if (debugMode)
@@ -116,7 +121,7 @@ public class PageManager : MonoBehaviour {
 			}
 		}
 
-		eBookPage[currentPage].StartAnimations ();
+		//eBookPage[currentPage].StartAnimations ();
 
 
 
@@ -130,11 +135,19 @@ public class PageManager : MonoBehaviour {
 		{
 			if (startingPage > lastPage)
 				startingPage = lastPage;
-
+			
 			PageTurnNext ( startingPage );
 			startingPage = 0;
 		}
 
+		// When the app runs for the first time, the StartAnimations function in each PageControl must be started
+		// after their Start functions have run
+		if (startAnimations)
+		{
+			Debug.Log("Triggering first time StartAnimations from PageManager");
+			eBookPage[currentPage].StartAnimations ();
+			startAnimations = false;
+		}
 
 	}
 
