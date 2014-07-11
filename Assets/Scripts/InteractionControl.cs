@@ -6,6 +6,8 @@ public class InteractionControl : MonoBehaviour {
 
 	public bool debugMode = false;
 
+	public GameObject environmentToEnable;
+
 	public int eBookPageNumber = 2;		// Which eBook page this InteractionControl is intended for
 	
 	public Camera interactionCamera;	// The camera the InteractionControl will use
@@ -22,6 +24,9 @@ public class InteractionControl : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+
+		if (environmentToEnable)
+			environmentToEnable.SetActive(false);
 
 		if (interactionCamera)
 		{

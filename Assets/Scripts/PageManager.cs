@@ -203,6 +203,11 @@ public class PageManager : MonoBehaviour {
 
 			if (iac)
 			{
+				if (iac.environmentToEnable)
+				{
+					iac.environmentToEnable.SetActive(false);
+				}
+
 				iac.interactionCamera.enabled = false;
 				mainOrthoCamera.enabled = true;
 				TouchManager.Instance.cam = mainOrthoCamera;
@@ -217,7 +222,7 @@ public class PageManager : MonoBehaviour {
 			currentPage += pagesToTurn;
 
 			iac = eBookPage[currentPage].GetComponent<InteractionControl>();
-			
+
 			if (iac)
 			{
 				// Find out if the eBook Page Number in the inspector corresponds with the current eBook page
@@ -229,6 +234,14 @@ public class PageManager : MonoBehaviour {
 						Debug.Log ("Interaction eBook Page Number of "+iac.eBookPageNumber + " does not match Pagemanager Ebook control of "+currentPage);
 					
 				} else {
+
+					if (iac.environmentToEnable)
+					{
+						iac.environmentToEnable.SetActive(true);
+					} else {
+						if (debugMode)
+							Debug.Log ("Interaction eBook Page Number of "+currentPage + " has no environment to enable.");
+					}
 					
 					// Does the InteractionControl have a camera attached?
 					if (iac.interactionCamera)
@@ -280,6 +293,11 @@ public class PageManager : MonoBehaviour {
 			
 			if (iac)
 			{
+				if (iac.environmentToEnable)
+				{
+					iac.environmentToEnable.SetActive(false);
+				}
+
 				iac.interactionCamera.enabled = false;
 				mainOrthoCamera.enabled = true;
 				TouchManager.Instance.cam = mainOrthoCamera;
@@ -305,6 +323,14 @@ public class PageManager : MonoBehaviour {
 						Debug.Log ("Interaction eBook Page Number of "+iac.eBookPageNumber + " does not match Pagemanager Ebook control of "+currentPage);
 					
 				} else {
+
+					if (iac.environmentToEnable)
+					{
+						iac.environmentToEnable.SetActive(true);
+					} else {
+						if (debugMode)
+							Debug.Log ("Interaction eBook Page Number of "+currentPage + " has no environment to enable.");
+					}
 					
 					// Does the InteractionControl have a camera attached?
 					if (iac.interactionCamera)

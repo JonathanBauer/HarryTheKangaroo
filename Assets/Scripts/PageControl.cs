@@ -56,6 +56,7 @@ public class PageControl : MonoBehaviour {
 					{
 						animationTarget[i].Stop(); 
 						animationTarget[i].Play ("play");
+
 						storyEvent[i] = StoryEvent.TriggeredForStory;
 
 						if (debugMode)
