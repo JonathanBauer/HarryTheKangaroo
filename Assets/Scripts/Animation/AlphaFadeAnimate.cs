@@ -24,6 +24,9 @@ public class AlphaFadeAnimate : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		if (debugMode)
+			Debug.Log(this+" has debug mode turned on.");
+
 		FindBonedMesh();
 
 		FindFADMaterial();

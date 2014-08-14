@@ -1,11 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\InteractionControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PageControl.cs">
     <Files>
-      <File FileName="Assets\Scripts\InteractionControl.cs" Line="29" Column="41" />
+      <File FileName="Assets\Scripts\TouchManager.cs" Line="31" Column="14" />
+      <File FileName="Assets\Scripts\InteractionControl.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Animation\FaceMe.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\PageManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\InteractionControl.cs" Line="29" Column="41" />
+      <File FileName="Assets\Scripts\PageControl.cs" Line="225" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
